@@ -1,19 +1,14 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import React, { useEffect, useState} from "react";
 import useAuth from '../../hooks/useAuth';
-import BottomNavigator from '../../components/BottomNavigation';
 
 export default function HomeScreen({ navigation }) {
-  
-  window.localStorage.setItem('stackScreen', 'Home');
-
-  const email = window.localStorage.getItem('session')
 
   const styles = StyleSheet.create({
     page: {
       height: "100%",
       width: "100%",
-      minWidth: "330px",
+      minWidth: 330,
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
@@ -28,35 +23,39 @@ export default function HomeScreen({ navigation }) {
     },
     bottomNavigation: {
       width:'100%',
-      height: '70px'
+      height: 70
 
     },
     text: {
-      fontSize: "17px",
-      fontWeight: "700",
-      fontFamily: "inherit",
+
     },
 
   });
 
+  const { logoutUser } = useAuth();
+  async function handleLogout() {
+    try {
+      logoutUser();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View style={styles.page}>
       <View style={styles.pageHome}>
       <View style={{alignItems: 'center', justifyContent: 'center', flexGrow:1}}>
         <Image 
-          style={{width: 120, height: 120}}
-          source={require('../../assets/engkong_logo.png')}
+          style={{width: 200, height: 200}}
+          source={require('../../assets/officequest_logo.png')}
           resizeMode={'contain'}  
         />
-        <Text style={styles.text}>Welcome</Text>
-        <Text style={styles.text}>{email}</Text>
+        <Text onPress={()=>handleLogout()} style={styles.text}>Logout</Text>
         
 
         </View>
       </View>
       <View style={styles.bottomNavigation}>
-      <BottomNavigator navigation={navigation} />
       </View>
     </View>
     

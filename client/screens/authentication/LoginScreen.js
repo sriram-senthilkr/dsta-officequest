@@ -1,22 +1,16 @@
 import { Animated, StyleSheet, Text, View, Image, TouchableOpacity, Alert, TextInput} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Ionicons } from "react-native-vector-icons";
-import { MoveNegAnimation, MovePosAnimation } from '../../assets/animation/AllAnimations';
 import useAuth from '../../hooks/useAuth';
 
 
 export default function LoginScreen({ navigation}) {
-
-  const [isBackButtonHover, setIsBackButtonHover] = useState(false);
-
-  const loginButtonHover = useRef(new Animated.Value(0)).current;
 
   const styles = StyleSheet.create(
     {
       page: {
         height: "100%",
         width: "100%",
-        minWidth: "330px",
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
@@ -30,83 +24,84 @@ export default function LoginScreen({ navigation}) {
         fontFamily: "Arial",
       },
       topBar: {
-        height: "50px",
+        height: "10%",
         width:"90%",
         alignItems: "center",
         flexDirection: "row",
         
       },
       headerBar: {
-        height: '95px',
-        width:'80%',
+        height: "10%",
+        width:'90%',
         flexWrap:'wrap',
         flexDirection: 'row',
+        justifyContent:'center',
         alignItems: 'center',
-        justifyContent:'center'
+
       },
   
       bigText: {
-        fontSize: "35px",
+        fontSize: 35,
         fontWeight: "900",
-        fontFamily: "inherit",
+        fontFamily: "Arial",
       },
       mediumText: {
-        fontSize: "20px",
-        fontWeight: "500",
+        fontSize: 20,
+        fontWeight: 500,
         color: "#6A6A6A",
-        fontFamily: "inherit",
+        fontFamily: "Arial",
       },
       normalBoldText: {
-        fontSize: "15px",
-        fontWeight: "700",
-        fontFamily: "inherit",
-        paddingVertical:'10px'
+        fontSize: 15,
+        fontWeight: 700,
+        fontFamily: "Arial",
+        paddingVertical:10
       },
       textInput: {
-        height: "45px",
+        height: 45,
         color: "#6A6A6A",
-        borderWidth: "1px",
-        borderRadius: "12px",
-        padding: "10px",
+        borderWidth: 1,
+        borderRadius: 12,
+        padding: 10,
         borderColor: "#DADADA",
       },
   
       inputContainer: {
-        paddingVertical:'5px',
+        paddingVertical:5,
         width:'90%',
-        maxWidth: '450px'
+        maxWidth: 450
       },
   
       backButton: {
-        fontFamily: "inherit",
+        fontFamily: "Arial",
         backgroundColor: "#D9D9D9",
         border: "none",
     
         alignItems: 'center',
         justifyContent: 'center',
         
-        width: isBackButtonHover ? "43px" :"40px",
-        height: isBackButtonHover ? "43px" :"40px",
-        borderRadius: "14px",
+        width: 40,
+        height: 40,
+        borderRadius: 14,
     
         cursor: "pointer"
       },
       defaultButton: {
-        fontFamily: "inherit",
-        backgroundColor: "#E04F4F",
+        backgroundColor: "#D9D9D9",
         border: "none",
-    
-        padding: "10px",
-        color: "white",
-        textAlign: "center",
-        fontSize: "16px",
-        fontWeight: "700",
-        
-        height: "40px",
-        borderRadius: "14px",
+        padding: 10,      
+        height: 40,
+        borderRadius: 14,
     
         cursor: "pointer"
       },
+      buttonText: {
+        fontFamily: "Arial",
+        color: "black",
+        textAlign: "center",
+        fontSize: 16,
+        fontWeight: 700,
+      }
   
   
     });
@@ -127,26 +122,23 @@ export default function LoginScreen({ navigation}) {
     <View style={styles.page}>
       <View style={styles.pageLogin}>
         <View style={styles.topBar}>
-        <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}} onMouseEnter={() => setIsBackButtonHover(true)} onMouseLeave={() => setIsBackButtonHover(false)} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}} onPress={() => navigation.goBack()}>
           <View style={styles.backButton}>
           <Text><Ionicons name="chevron-back-outline" color="#444"/></Text>
-          </View>
-          <View style={{paddingHorizontal:'20px'}}>
-          <Text style={styles.mediumText}>Go Back</Text>
           </View>
         </TouchableOpacity>
         </View>
         <View style={styles.headerBar}>
-          <View style={{paddingHorizontal: '7px'}}>
-          <Text style={styles.bigText}>Welcome</Text>
+          <View style={{paddingHorizontal: 7}}>
+          <Text style={styles.bigText}>Log</Text>
           </View>
-          <View style={{padding: '7px'}}>
-          <Text style={styles.bigText}>Back</Text>
+          <View style={{padding: 7}}>
+          <Text style={styles.bigText}>In</Text>
           </View>
         </View>
-        <View style={{height: '64%', width:'100%', alignItems:'center', justifyContent:'center'}}>
+        <View style={{height: '65%', width:'100%', alignItems:'center', justifyContent:'center'}}>
           <View style={styles.inputContainer}>
-          <Text style={styles.normalBoldText}>Company Email</Text>
+          <Text style={styles.normalBoldText}>Email</Text>
           <TextInput style={styles.textInput}
             placeholder="example@mail.com" 
             value={loginDetails.companyEmail} 
@@ -169,10 +161,14 @@ export default function LoginScreen({ navigation}) {
           
         </View>
 
-        <View style={{height: '15%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
-        <Animated.View onMouseEnter={() => MoveNegAnimation(loginButtonHover)} onMouseLeave={() => MovePosAnimation(loginButtonHover)} style={{maxWidth: "400px", width: "90%", transform: [{translateY: loginButtonHover }]}}>
-        <TouchableOpacity style={styles.defaultButton} onPress = {() => handleLogin()}> Login </TouchableOpacity>
-        </Animated.View>
+        <View style={{height: '10%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
+          <View style={{maxWidth: 400, width: "90%"}}>
+          <TouchableOpacity style={styles.defaultButton} onPress = {() => handleLogin()}> 
+            <Text style={styles.buttonText}>
+              Login 
+            </Text>
+          </TouchableOpacity>
+          </View>
         </View>
       </View>
 
