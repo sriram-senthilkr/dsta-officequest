@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import StackNavigator from './navigation/StackNavigator';
+import React from "react";
+import { AuthProvider } from './hooks/useAuth';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+export default function MyStack() {
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your asspssapdd!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <AuthProvider>
+      <Stack.Navigator>
+        <Stack.Screen name="StackNavigator" component={StackNavigator} options={{headerShown: false}}/>
+      </Stack.Navigator>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
