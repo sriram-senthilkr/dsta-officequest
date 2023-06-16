@@ -50,11 +50,11 @@ export default function BottomNavigaton({navigation}) {
         },
         iconDescription: {
             fontSize:11,
-            shadowColor: '#000',
-            shadowOffset: { width: 1, height: 1 },
-            shadowOpacity: 0.5,
-            shadowRadius: 1,
-            elevation: 1,
+            // shadowColor: '#000',
+            // shadowOffset: { width: 1, height: 1 },
+            // shadowOpacity: 0.5,
+            // shadowRadius: 1,
+            // elevation: 1,
         }
 
     
