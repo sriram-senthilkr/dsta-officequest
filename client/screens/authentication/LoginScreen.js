@@ -2,9 +2,10 @@ import { Animated, StyleSheet, Text, View, Image, TouchableOpacity, Alert, TextI
 import React, { useEffect, useRef, useState } from 'react';
 import { Ionicons } from "react-native-vector-icons";
 import useAuth from '../../hooks/useAuth';
+import LongButton from '../../components/LongButton';
 
 
-export default function LoginScreen({ navigation}) {
+export default function LoginScreen({ navigation }) {
 
   const styles = StyleSheet.create(
     {
@@ -107,11 +108,15 @@ export default function LoginScreen({ navigation}) {
     });
 
     const { loginUser } = useAuth();
-    const [loginDetails, setLoginDetails] = useState({companyEmail: null, password: null})
+    const [loginDetails, setLoginDetails] = useState({email: null, password: null})
+    const [error, setError] = useState('')
 
     async function handleLogin() {
       try {
-        loginUser(loginDetails);
+        const resp = await loginUser(loginDetails);
+        if (resp) {
+          setError(resp)
+        }
       } catch (error) {
         console.log(error);
       }
@@ -122,53 +127,47 @@ export default function LoginScreen({ navigation}) {
     <View style={styles.page}>
       <View style={styles.pageLogin}>
         <View style={styles.topBar}>
-        <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}} onPress={() => navigation.goBack()}>
-          <View style={styles.backButton}>
-          <Text><Ionicons name="chevron-back-outline" color="#444"/></Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}} onPress={() => navigation.goBack()}>
+            <View style={styles.backButton}>
+              <Text><Ionicons name="chevron-back-outline" color="#444"/></Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.headerBar}>
           <View style={{paddingHorizontal: 7}}>
-          <Text style={styles.bigText}>Log</Text>
+            <Text style={styles.bigText}>Log</Text>
           </View>
           <View style={{padding: 7}}>
-          <Text style={styles.bigText}>In</Text>
+            <Text style={styles.bigText}>In</Text>
           </View>
         </View>
-        <View style={{height: '65%', width:'100%', alignItems:'center', justifyContent:'center'}}>
+        <View style={{height: '70%', width:'100%', alignItems:'center', justifyContent:'start', paddingTop: 0}}>
           <View style={styles.inputContainer}>
-          <Text style={styles.normalBoldText}>Email</Text>
-          <TextInput style={styles.textInput}
-            placeholder="example@mail.com" 
-            value={loginDetails.companyEmail} 
-            onChangeText={(companyEmail) => setLoginDetails({...loginDetails, companyEmail: companyEmail})} 
-            autoCapitalize="none" 
-            autoCorrect={false} 
-          />
+            <Text style={styles.normalBoldText}>Email</Text>
+            <TextInput style={styles.textInput}
+              placeholder="example@mail.com" 
+              value={loginDetails.email} 
+              onChangeText={(email) => setLoginDetails({...loginDetails, email: email})} 
+              autoCapitalize="none" 
+              autoCorrect={false} 
+            />
           </View>
           <View style={styles.inputContainer}>
-          <Text style={styles.normalBoldText}>Password</Text>
-          <TextInput style={styles.textInput}
-            placeholder="......." 
-            value={loginDetails.password} 
-            onChangeText={(password) => setLoginDetails({...loginDetails, password: password})}
-            autoCapitalize="none" 
-            autoCorrect={false} 
-            secureTextEntry={true}
-          />
+            <Text style={styles.normalBoldText}>Password</Text>
+            <TextInput style={styles.textInput}
+              placeholder="......." 
+              value={loginDetails.password} 
+              onChangeText={(password) => setLoginDetails({...loginDetails, password: password})}
+              autoCapitalize="none" 
+              autoCorrect={false} 
+              secureTextEntry={true}
+            />
           </View>
           
         </View>
 
         <View style={{height: '10%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
-          <View style={{maxWidth: 400, width: "90%"}}>
-          <TouchableOpacity style={styles.defaultButton} onPress = {() => handleLogin()}> 
-            <Text style={styles.buttonText}>
-              Login 
-            </Text>
-          </TouchableOpacity>
-          </View>
+          <LongButton text="Login" onPress={() => handleLogin()}/>
         </View>
       </View>
 
