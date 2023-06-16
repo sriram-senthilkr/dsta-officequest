@@ -10,13 +10,13 @@ export default function HomeScreen({ navigation }) {
       height: "100%",
       width: "100%",
       minWidth: 330,
-      backgroundColor: '#fff',
+      backgroundColor: '#D9D9D9',
       alignItems: 'center',
       justifyContent: 'center',
       fontFamily: "Arial",
     },
     pageHome: {
-      width: "90%",
+      width: "100%",
       flexGrow: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
@@ -24,13 +24,17 @@ export default function HomeScreen({ navigation }) {
     },
     bottomNavigation: {
       width:'100%',
-      height: 70
+      height: 90
 
     },
-    text: {
-
+    topTab: {
+      borderWidth:1,
+      backgroundColor:'#D9D9D9',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width:'100%',
+      height:100
     },
-
   });
 
   const { logoutUser } = useAuth();
@@ -45,16 +49,15 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.page}>
       <View style={styles.pageHome}>
-      <View style={{alignItems: 'center', justifyContent: 'center', flexGrow:1}}>
-        <Image 
-          style={{width: 200, height: 200}}
-          source={require('../../assets/officequest_logo.png')}
-          resizeMode={'contain'}  
-        />
-        <Text onPress={()=>handleLogout()} style={styles.text}>Logout</Text>
-        
+
+        <View style={styles.topTab}>
+          <Text onPress={()=>handleLogout()} style={styles.text}>Logout</Text>
+        </View>
+
+        <View style={{width:'100%', flexGrow:1, backgroundColor:'#D9D9D9', borderWidth:1}}>
 
         </View>
+
       </View>
       <View style={styles.bottomNavigation}>
       <BottomNavigator navigation={navigation} />
