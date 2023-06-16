@@ -11,7 +11,6 @@ export default function BottomNavigaton({navigation}) {
         spaceGiven: {
             height: "100%",
             width: "100%",
-            justifyContent:'center',
             alignItems:'center',
         },
         navigationBar: {
@@ -22,15 +21,19 @@ export default function BottomNavigaton({navigation}) {
             justifyContent: 'center',
             fontFamily: "Arial",
             borderWidth:1,
-            borderRadius:20,
-            borderColor:'#D9D9D9'
+            borderRadius:30,
+            borderColor:'#D9D9D9',
+            shadowColor: '#000',
+            shadowOffset: { width: 1, height: 3 },
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            elevation: 2,
         },
         iconContainer: {
-            width:60,
-            height:50,
+            width:"25%",
+            height:"100%",
             alignItems:'center',
             justifyContent:'center',
-            borderRadius:12,
         },
         button: {
             width:'100%',
@@ -44,6 +47,14 @@ export default function BottomNavigaton({navigation}) {
             backgroundColor: 'black',
             opacity:'10%',
             borderRadius:10
+        },
+        iconDescription: {
+            fontSize:11,
+            shadowColor: '#000',
+            shadowOffset: { width: 1, height: 1 },
+            shadowOpacity: 0.5,
+            shadowRadius: 1,
+            elevation: 1,
         }
 
     
@@ -53,29 +64,33 @@ export default function BottomNavigaton({navigation}) {
         <View style={styles.spaceGiven}>
         <View style={styles.navigationBar}>
         <View style={{width:'100%', height:'100%', flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
-        <View style={{width:300, height:50, flexDirection:'row', alignItems:'center', justifyContent:'space-around'}} onMouseEnter={() => setShowHover(true)} onMouseLeave={() => setShowHover(false)}>
+        <View style={{width:300, height:"100%", flexDirection:'row', alignItems:'center', justifyContent:'space-around'}} onMouseEnter={() => setShowHover(true)} onMouseLeave={() => setShowHover(false)}>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeStack') } >
                 <Ionicons name="home-outline" color="#444" size='25px'/>
+                <Text style={styles.iconDescription}>Home</Text>
             </TouchableOpacity>
             </View>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('QuestsStack')} >
                 <Ionicons name="rocket-outline" color="#444" size='26px'/>
+                <Text style={styles.iconDescription}>Quests</Text>
             </TouchableOpacity>
             </View>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PalsStack')} >
                 <Ionicons name="people-outline" color="#444" size='25px'/>
+                <Text style={styles.iconDescription}>Pals</Text>
             </TouchableOpacity>
             </View>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LeaderboardStack')} >
                 <Ionicons name="stats-chart-outline" color="#444" size='25px'/>
+                <Text style={styles.iconDescription}>Leaderboard</Text>
             </TouchableOpacity>
             </View>
 
