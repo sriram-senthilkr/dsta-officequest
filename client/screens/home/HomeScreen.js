@@ -85,7 +85,7 @@ export default function HomeScreen({ navigation }) {
           </Text>
 
           <View style={{paddingRight:'7%', paddingBottom:'1%',}}>
-            <TouchableOpacity onPress={()=>handleLogout()} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
               <Ionicons name="person" color="#444" size='30px'/>
             </TouchableOpacity>
           </View>

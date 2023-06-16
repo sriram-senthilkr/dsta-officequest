@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated} from 'react-native';
 import React, { useRef, useState, useEffect } from "react";
+import LongButton from '../../components/LongButton';
 
 
 export default function StartScreen({ navigation }) {
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
 
   textLink: {
     fontWeight: "700",
-    textDecorationLine: 'underline',
     color: 'black'
   },
 
@@ -66,16 +66,10 @@ const styles = StyleSheet.create({
         </View>
 
         <View style={{width: "100%", height: "15%", alignItems: 'center',justifyContent: 'center'}}>
-          <View style={{maxWidth: 400, width: "90%", alignItems:'center'}}>
-            <TouchableOpacity onPress={()=>navigation.navigate("LoginScreen")} style={styles.defaultButton} > 
-              <Text style={styles.buttonText}>
-                Login 
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{flexDirection: "row" , paddingTop: 10}}>
+          <LongButton text="Login" onPress={()=>navigation.navigate("LoginScreen")} />
+          <View style={{flexDirection: "row" , paddingTop: 20}}>
             <Text > Don't have an account?</Text>
-            <Text style={styles.textLink} onPress={() => navigation.navigate("RegistrationScreen")}> Register Now!</Text>
+            <Text style={styles.textLink} onPress={() => navigation.navigate("RegistrationScreen")}> Sign up here</Text>
           </View>
         </View>
 
