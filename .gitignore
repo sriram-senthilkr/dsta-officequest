@@ -25,6 +25,7 @@ yarn-error.log*
 .env*.local
 /server/venv
 venv
+*/.env
 
 
 # caches
