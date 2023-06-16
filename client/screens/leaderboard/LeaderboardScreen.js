@@ -3,7 +3,7 @@ import React, { useEffect, useState} from "react";
 import useAuth from '../../hooks/useAuth';
 import BottomNavigator from '../../components/BottomNavigation';
 
-export default function HomeScreen({ navigation }) {
+export default function LeaderboardScreen({ navigation }) {
 
   const styles = StyleSheet.create({
     page: {
@@ -33,25 +33,12 @@ export default function HomeScreen({ navigation }) {
 
   });
 
-  const { logoutUser } = useAuth();
-  async function handleLogout() {
-    try {
-      logoutUser();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <View style={styles.page}>
       <View style={styles.pageHome}>
       <View style={{alignItems: 'center', justifyContent: 'center', flexGrow:1}}>
-        <Image 
-          style={{width: 200, height: 200}}
-          source={require('../../assets/officequest_logo.png')}
-          resizeMode={'contain'}  
-        />
-        <Text onPress={()=>handleLogout()} style={styles.text}>Logout</Text>
+        
+        <Text style={styles.text}>Leaderboard</Text>
         
 
         </View>
