@@ -64,12 +64,12 @@ return (
       <View style={{width:'100%', flexGrow:1, backgroundColor:'#D9D9D9', alignItems:'center', justifyContent:'center'}}>
         <View style={{width:'100%', height:'100%', position:'absolute'}}>
           <View style={{flexGrow:1, justifyContent:'center', alignItems:'center'}}>
-            <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'#ECECEC'}]}>
-              <View style={{height:60, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
+            <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'white'}]}>
+              <View style={{height:65, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
                 <Text style={{fontSize:30, fontWeight:700}}>
                   PantryPals
                 </Text>
-                <TouchableOpacity style={{height:30, width:60, backgroundColor:'#A7A7A7', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
+                <TouchableOpacity style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
                   <Text>
                     Prize
                   </Text>
@@ -162,7 +162,7 @@ return (
                         </View>
                       </View>
                     </View>
-                    <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#A7A7A7', justifyContent:'center', alignItems:'center', zIndex:-1}}>
+                    <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
                       <Text style={{fontSize:16, fontWeight:600}}>
                         Send
                       </Text>
@@ -173,7 +173,7 @@ return (
             </View>
           </View>
           <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
-            <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#A7A7A7', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+            <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
               <Text style={{fontSize:16, fontWeight:600}}>
                 Redeem Prize
               </Text>

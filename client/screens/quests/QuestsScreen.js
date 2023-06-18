@@ -65,6 +65,7 @@ export default function QuestsScreen({ navigation }) {
                         <View style={{ height: '90%', paddingX: 2}}>
                             <FlatList
                                 data={DUMMY}
+                                showsVerticalScrollIndicator={false}
                                 renderItem={renderQuests}
                                 keyExtractor={item => item.id}
                                 ItemSeparatorComponent={() => <View style={{height: 10}} />}
