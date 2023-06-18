@@ -11,14 +11,14 @@ export default function HomeScreen({ navigation }) {
       level: 1,
       total: 200,
       current: 200,
-      isClaimed: false,
+      isClaimed: true,
       prize:'Pal'
     },
     {
       level: 2,
       total: 200,
       current: 200,
-      isClaimed: false,
+      isClaimed: true,
       prize:'Pal'
     },
     {
@@ -38,21 +38,21 @@ export default function HomeScreen({ navigation }) {
     {
       level: 5,
       total: 700,
-      current: 700,
+      current: 400,
       isClaimed: false,
       prize:'Pal'
     },
     {
       level: 6,
       total: 700,
-      current: 700,
+      current: 0,
       isClaimed: false,
       prize:'Pal'
     },
     {
       level: 7,
       total: 1000,
-      current: 1000,
+      current: 0,
       isClaimed: false,
       prize:'Pal'
     },
@@ -123,11 +123,36 @@ export default function HomeScreen({ navigation }) {
 
   }
 
-  const Item = ({percentageString}) => (
-    <View style={{width:'100%'}}>
-      <Text>hello</Text>
-      <View style={{width:'100%', borderWidth:1, height:40}}>
-
+  const Item = ({percentageString, level, total, isClaimed, onPress}) => (
+    <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
+      <View style={{width:'10%', alignItems:'center'}}>
+        <Text style={{fontSize:15, fontWeight:600}}>
+          {level}
+        </Text>
+      </View>
+      <View style={{ width:'65%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+        <View style={{position:'absolute', width:'80%', flexDirection:'row-reverse', paddingBottom:20}}>
+          <Text style={{fontSize:10}}>
+            {total}
+          </Text>
+        </View>
+        <View style={{backgroundColor:'#ECECEC', width:'95%', height:10, borderRadius:5}}>
+          <View style={{backgroundColor:'#4F60FF', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
+          </View>
+        </View>
+      </View>
+      <View style={{width:'25%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+        <TouchableOpacity onPress={onPress} style={{borderRadius:12, height:'80%', width:'90%', backgroundColor:'#ECECEC', alignItems:'center', justifyContent:'center'}}>
+          {isClaimed ? (
+            <Text>
+              Claimed
+            </Text>
+          ):(
+            <Text>
+              Claim
+            </Text>
+          )}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -135,7 +160,7 @@ export default function HomeScreen({ navigation }) {
 
   const renderItem = ({item}) => {
 
-    const percentage = item.current / item.level * 100
+    const percentage = item.current / item.total * 100
     const percentageString = percentage.toString()+'%'
     
     return (
@@ -151,17 +176,6 @@ export default function HomeScreen({ navigation }) {
     )
   }
 
-/*
-                    <FlatList
-                    style={{height:"0px", width:'100%'}}
-                    showsVerticalScrollIndicator={false}
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.level}
-                  />
-                  */
-
-
   return (
     <View style={styles.page}>
       <View style={styles.pageHome}>
@@ -174,7 +188,7 @@ export default function HomeScreen({ navigation }) {
 
           <View style={{paddingRight:'7%', paddingBottom:'1%',}}>
             <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
-              <Ionicons name="person" color="#444" size='30px'/>
+              <Ionicons name="person" color="#444" size={30}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -190,10 +204,9 @@ export default function HomeScreen({ navigation }) {
                 </View>
                 <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
                   <View style={{height:'95%', width:'90%', position:'absolute', borderRadius:15, backgroundColor:'white', justifyContent:'center', alignItems:'center'}}>
-                    <View style={{height:'95%', width:'90%', borderWidth:1}}>
+                    <View style={{height:'95%', width:'90%'}}>
                       <FlatList
-                      style={{height:"0px", width:'100%'}}
-                      showsVerticalScrollIndicator={false}
+                      style={{height:0, width:'100%'}}
                       data={data}
                       renderItem={renderItem}
                       keyExtractor={item => item.level}
