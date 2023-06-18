@@ -188,7 +188,7 @@ export default function HomeScreen({ navigation }) {
 
           <View style={{paddingRight:'7%', paddingBottom:'1%',}}>
             <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
-              <Ionicons name="person" color="#444" size='30px'/>
+              <Ionicons name="person" color="#444" size={30}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -206,7 +206,7 @@ export default function HomeScreen({ navigation }) {
                   <View style={{height:'95%', width:'90%', position:'absolute', borderRadius:15, backgroundColor:'white', justifyContent:'center', alignItems:'center'}}>
                     <View style={{height:'95%', width:'90%'}}>
                       <FlatList
-                      style={{height:"0px", width:'100%'}}
+                      style={{height:0, width:'100%'}}
                       showsVerticalScrollIndicator={false}
                       data={data}
                       renderItem={renderItem}
