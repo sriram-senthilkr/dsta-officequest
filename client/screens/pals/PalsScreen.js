@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, FlatList, TextInput} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, FlatList, TextInput, ScrollView} from 'react-native';
 import React, { useEffect, useState} from "react";
 import useAuth from '../../hooks/useAuth';
 import BottomNavigator from '../../components/BottomNavigation';
@@ -8,56 +8,50 @@ export default function PalsScreen({ navigation }) {
 
   const [username, setUsername] = useState('')
 
-  const data = [
+  const common = [
     {
-      level: 1,
-      total: 200,
-      current: 200,
-      isClaimed: true,
-      prize:'Pal'
+      name:'ben',
+      total:2,
     },
     {
-      level: 2,
-      total: 200,
-      current: 200,
-      isClaimed: true,
-      prize:'Pal'
+      name:'jiunyuan',
+      total:1,
     },
     {
-      level: 3,
-      total: 500,
-      current: 500,
-      isClaimed: false,
-      prize:'Pal'
+      name:'ansenn',
+      total:0,
     },
     {
-      level: 4,
-      total: 500,
-      current: 500,
-      isClaimed: false,
-      prize:'Pal'
+      name:'jiunyuan1',
+      total:1,
     },
     {
-      level: 5,
-      total: 700,
-      current: 400,
-      isClaimed: false,
-      prize:'Pal'
+      name:'ansenn2',
+      total:0,
+    },
+  ]; 
+  
+  const rare = [
+    {
+      name:'sriram',
+      total:2,
     },
     {
-      level: 6,
-      total: 700,
-      current: 0,
-      isClaimed: false,
-      prize:'Pal'
+      name:'lol',
+      total:1,
     },
     {
-      level: 7,
-      total: 1000,
-      current: 0,
-      isClaimed: false,
-      prize:'Pal'
+      name:'hello',
+      total:0,
     },
+  ]; 
+    
+  const superrare = [
+    {
+      name:'cleon',
+      total:2,
+    },
+
   ]; 
     
 
@@ -135,55 +129,43 @@ export default function PalsScreen({ navigation }) {
 
   }
 
-  const Item = ({percentageString, level, total, isClaimed, onPress}) => (
-    <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
-      <View style={{width:'10%', alignItems:'center'}}>
-        <Text style={{fontSize:15, fontWeight:600}}>
-          {level}
-        </Text>
-      </View>
-      <View style={{ width:'65%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-        <View style={{position:'absolute', width:'80%', flexDirection:'row-reverse', paddingBottom:20}}>
-          <Text style={{fontSize:10}}>
-            {total}
-          </Text>
-        </View>
-        <View style={{backgroundColor:'#ECECEC', width:'95%', height:10, borderRadius:5}}>
-          <View style={{backgroundColor:'#4F60FF', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
+  const Item = ({name, total}) => (
+    <View style={{width:80, height:70,alignItems:'center', flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
+
+
+      {total == 0 ? (
+        <View>
+          <View style={{width:60, height:60, backgroundColor:'red', borderRadius:30, justifyContent:'center', alignItems:'center'}}>
+              <Text>
+                ?
+              </Text>
+          </View>
+          <View style={{width:60, height:60, backgroundColor:'black', borderRadius:30, opacity:0.4, position:'absolute'}}>
           </View>
         </View>
-      </View>
-      <View style={{width:'25%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-        <TouchableOpacity onPress={onPress} style={{borderRadius:12, height:'80%', width:'90%', backgroundColor:'#ECECEC', alignItems:'center', justifyContent:'center'}}>
-          {isClaimed ? (
+      ):(
+        <View style={{flexDirection:'row-reverse'}}>
+          <View style={{width:60, height:60, backgroundColor:'red', borderRadius:30, justifyContent:'center', alignItems:'center'}}>
             <Text>
-              Claimed
+              {name}
             </Text>
-          ):(
-            <Text>
-              Claim
+          </View>
+          <View style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
+            <Text style={{fontSize:10}}>
+              {total}
             </Text>
-          )}
-        </TouchableOpacity>
-      </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 
 
   const renderItem = ({item}) => {
-
-    const percentage = item.current / item.total * 100
-    const percentageString = percentage.toString()+'%'
-    
     return (
       <Item 
-        level={item.level} 
+        name={item.name} 
         total={item.total}
-        current={item.current}
-        isClaimed={item.isClaimed}
-        percentageString={percentageString}
-
-        onPress={() => handleClaimPrize(item.level)}
       />
     )
   }
@@ -201,7 +183,7 @@ export default function PalsScreen({ navigation }) {
               <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'#ECECEC'}]}>
                 <View style={{height:60, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
                   <Text style={{fontSize:30, fontWeight:700}}>
-                    The Breakroom
+                    PantryPals
                   </Text>
                   <TouchableOpacity style={{height:30, width:60, backgroundColor:'#A7A7A7', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
                     <Text>
@@ -211,13 +193,61 @@ export default function PalsScreen({ navigation }) {
                 </View>
                 <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
                   <View style={{height:'97%', width:'90%', position:'absolute', justifyContent:'center', alignItems:'center',}}>
-                    <View style={{flexGrow:1, width:'100%', borderWidth:1}}>
-                      
+                    <View style={{flexGrow:1, width:'100%'}}>
+                      <ScrollView style={{position:'absolute', height:'100%', width:'100%'}}>
+                        <View style={{alignItems:'center'}}>
+                          <View style={{width:'95%'}}>
+                            <Text style={{fontWeight:600, fontSize:16}}>
+                              Common
+                            </Text>
+                            <View style={{height:90, width:'100%'}}>
+                              <FlatList
+                                horizontal
+                                style={{height:0, width:'100%'}}
+                                showsHorizontalScrollIndicator={false}
+                                data={common}
+                                renderItem={renderItem}
+                                keyExtractor={item => item.name}
+                              />
+                            </View>
+                          </View>
+                          <View style={{width:'95%'}}>
+                            <Text style={{fontWeight:600, fontSize:16}}>
+                              Rare
+                            </Text>
+                            <View style={{height:90, width:'100%'}}>
+                              <FlatList
+                                horizontal
+                                style={{height:0, width:'100%'}}
+                                showsHorizontalScrollIndicator={false}
+                                data={rare}
+                                renderItem={renderItem}
+                                keyExtractor={item => item.name}
+                              />
+                            </View>
+                          </View>
+                          <View style={{width:'95%'}}>
+                            <Text style={{fontWeight:600, fontSize:16}}>
+                              Super Rare
+                            </Text>
+                            <View style={{height:90, width:'100%'}}>
+                              <FlatList
+                                horizontal
+                                style={{height:0, width:'100%'}}
+                                showsHorizontalScrollIndicator={false}
+                                data={superrare}
+                                renderItem={renderItem}
+                                keyExtractor={item => item.name}
+                              />
+                            </View>
+                          </View>
+                        </View>
+                      </ScrollView>
                     </View>
                     <View style={{width:'90%', height:130, justifyContent:'space-around'}}>
                       <View style={{flexDirection:'row', justifyContent:'space-around'}}>
                         <View style={{width:'63%'}}>
-                          <Text style={{paddingLeft:5}}>
+                          <Text style={{paddingLeft:5, fontWeight:600}}>
                             Send Pals to:
                           </Text>
                           <TextInput style={styles.textInput}
@@ -228,7 +258,7 @@ export default function PalsScreen({ navigation }) {
                           />
                         </View>
                         <View style={{width:'33%'}}>
-                          <Text style={{paddingLeft:5}}>
+                          <Text style={{paddingLeft:5, fontWeight:600}}>
                             Select Pal:
                           </Text>
                           <TextInput style={styles.textInput}

@@ -207,7 +207,6 @@ export default function HomeScreen({ navigation }) {
                     <View style={{height:'95%', width:'90%'}}>
                       <FlatList
                       style={{height:0, width:'100%'}}
-                      showsVerticalScrollIndicator={false}
                       data={data}
                       renderItem={renderItem}
                       keyExtractor={item => item.level}
