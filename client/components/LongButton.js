@@ -2,15 +2,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 
 const LongButton = ({ text, onPress}) => {
-  return (
-    <View style={{height: '10%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
-        <View style={{maxWidth: 400, width: "90%"}}>
-            <TouchableOpacity style={styles.defaultButton} onPress={() => onPress()}> 
-            <Text style={styles.buttonText}>{text} </Text>
-            </TouchableOpacity>
+    return (
+        <View style={{height: '10%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
+            <View style={{maxWidth: 400, width: "90%"}}>
+                <TouchableOpacity style={styles.defaultButton} onPress={() => onPress()}> 
+                    <Text style={styles.buttonText}>{text} </Text>
+                </TouchableOpacity>
+            </View>
         </View>
-    </View>
-  )
+    )
 }
 const styles = StyleSheet.create({
     defaultButton: {

@@ -1,19 +1,21 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React from 'react'
 
-const LongInput = ({ label, placeholder, value, onChangeText, }) => {
-  return (
-    <View style={styles.inputContainer}>
-        <Text style={styles.normalBoldText}>{label}</Text>
-        <TextInput style={styles.textInput}
-            placeholder={placeholder}
-            value={value} 
-            onChangeText={onChangeText} 
-            autoCapitalize="none" 
-            autoCorrect={false} 
-        />
-    </View>
-  )
+const LongInput = ({ label, placeholder, value, onChangeText, password }) => {
+    const secure = password ? true : false
+    return (
+        <View style={styles.inputContainer}>
+            <Text style={styles.normalBoldText}>{label}</Text>
+            <TextInput style={styles.textInput}
+                placeholder={placeholder}
+                value={value} 
+                onChangeText={onChangeText} 
+                autoCapitalize="none" 
+                autoCorrect={false} 
+                secureTextEntry={secure}
+            />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
