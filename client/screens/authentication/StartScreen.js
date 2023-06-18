@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated} from 'react-native';
 import React, { useRef, useState, useEffect } from "react";
 import LongButton from '../../components/LongButton';
+import { createQuest } from '../../api/quest'
 
 
-export default function StartScreen({ navigation }) {
+export default async function StartScreen({ navigation }) {
+  const specificDate = new Date(2023, 5, 18, 10, 30, 0);
 
 const styles = StyleSheet.create({
   page: {
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
           <LongButton text="Login" onPress={()=>navigation.navigate("LoginScreen")} />
           <View style={{flexDirection: "row" , paddingTop: 20}}>
             <Text > Don't have an account?</Text>
-            <Text style={styles.textLink} onPress={() => navigation.navigate("RegistrationScreen")}> Sign up here</Text>
+            <Text style={styles.textLink} onPress={console.log(await createQuest("Login Daily", "Daily Login to earn points", "daily", 200, specificDate, specificDate))}> Sign up here</Text>
           </View>
         </View>
 

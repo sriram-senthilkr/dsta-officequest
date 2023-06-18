@@ -1,11 +1,9 @@
-const express = require('express')
-const {getQuests, createQuest } = require('../controller/questController')
+const express = require('express');
+const { getQuests, createQuest } = require('../controller/questController');
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', getQuests)
+router.get('/', getQuests);
 
-router.post('/', createQuest)
-
-
+router.post('/', createQuest);
 module.exports = router;

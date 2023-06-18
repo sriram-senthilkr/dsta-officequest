@@ -8,6 +8,7 @@ const app = express();
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
 const questRoutes = require('./routes/questRoutes')
+const leaderboardRoutes = require('./routes/leaderboardRoutes')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/quests', questRoutes);
+app.use('/leaderboard', leaderboardRoutes);
 
 const port = process.env.PORT || 8082
 
