@@ -1,20 +1,31 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const QuestSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+        required: true,
     },
     points: {
         type: Number,
-        required: true
+        required: true,
     },
-    completionDate: {
+    startDate: {
+        type: Date,
+    },
+    endDate: {
         type: Date,
     },
     completedUsers: {
         type: Array,
     },
-})
+});
 
 module.exports = Quest = mongoose.model('quests', QuestSchema);

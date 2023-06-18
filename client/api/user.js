@@ -1,5 +1,4 @@
-import Constants from "expo-constants";
-
+import Constants from 'expo-constants';
 
 const { manifest } = Constants;
 
@@ -13,23 +12,23 @@ Returns the points of a user
 */
 export const getUserPoints = async (userId) => {
     try {
-        const url = `${uri}/users/${userId}/points`
+        const url = `${uri}/users/${userId}/points`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
+        });
         if (response.status === 400) {
-            throw new Error("User not Found!")
+            throw new Error('User not Found!');
         }
-        const data = await response.json()
+        const data = await response.json();
         //console.log(data)
-        return data.points
+        return data.points;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
 /*
 Changes the username of the user
@@ -38,26 +37,26 @@ Changes the username of the user
 */
 export const changeUsername = async (userId, username) => {
     try {
-        const url = `${uri}/users/${userId}/update-username`
+        const url = `${uri}/users/${userId}/update-username`;
         const response = await fetch(url, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: username
+                username: username,
             }),
-        })
+        });
         if (response.status === 400) {
-            throw new Error("User not Found/ No Username Input!")
+            throw new Error('User not Found/ No Username Input!');
         }
-        const data = await response.json()
-        //console.log(data) 
-        return data
+        const data = await response.json();
+        //console.log(data)
+        return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
 /*
 Returns the quests of a user
@@ -66,23 +65,23 @@ Returns the quests of a user
 */
 export const getUserQuests = async (userId) => {
     try {
-        const url = `${uri}/users/${userId}/quests`
+        const url = `${uri}/users/${userId}/quests`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
+        });
         if (response.status === 400) {
-            throw new Error("User not Found!")
+            throw new Error('User not Found!');
         }
-        const data = await response.json()
+        const data = await response.json();
         //console.log(data)
-        return data
+        return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
 /*
 @Params: userId: string, questId: string
@@ -90,21 +89,20 @@ export const getUserQuests = async (userId) => {
 */
 export const completeQuest = async (userId, questId) => {
     try {
-        const url = `${uri}/users/${userId}/quests/${questId}`
+        const url = `${uri}/users/${userId}/quests/${questId}`;
         const response = await fetch(url, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
+        });
         if (response.status === 400) {
-            throw new Error("User/ Quest not found!")
+            throw new Error('User/ Quest not found!');
         }
-        const data = await response.json()
-        //console.log(data) 
-        return data
+        const data = await response.json();
+        //console.log(data)
+        return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
-
+};

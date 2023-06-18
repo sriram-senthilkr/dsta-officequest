@@ -1,5 +1,4 @@
-import Constants from "expo-constants";
-
+import Constants from 'expo-constants';
 
 const { manifest } = Constants;
 
@@ -8,33 +7,43 @@ const uri = `http://${manifest.debuggerHost.split(':').shift()}:3001`;
 
 /*
 Creates Quest
-@Params: title, points, completionDate
+@Params: title, description, type, points, startDate (not required), endDate(not required)
 @return: Quest object
 */
-export const createQuest = async (title, points, completionDate) => {
+export const createQuest = async (
+    title,
+    description,
+    type,
+    points,
+    startDate,
+    endDate
+) => {
     try {
-        const url = `${uri}/quests`
+        const url = `${uri}/quests`;
         const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-				title: title,
+                title: title,
+                description: description,
+                type: type,
                 points: points,
-                completionDate: completionDate,
-			}),
-        })
+                startDate: startDate,
+                endDate: endDate,
+            }),
+        });
         if (response.status === 400) {
-            throw new Error("No title/ points given")
+            throw new Error('No title/ points given');
         }
-        const data = await response.json()
+        const data = await response.json();
         //console.log(data)
-        return data
+        return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
 /*
 Get all quests
@@ -42,17 +51,17 @@ Get all quests
 */
 export const getQuests = async () => {
     try {
-        const url = `${uri}/quests`
+        const url = `${uri}/quests`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
-        const data = await response.json()
+        });
+        const data = await response.json();
         //console.log(data)
-        return data
+        return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
