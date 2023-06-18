@@ -3,10 +3,23 @@ import React, { useEffect, useState} from "react";
 import useAuth from '../../hooks/useAuth';
 import BottomNavigator from '../../components/BottomNavigation';
 import { Ionicons } from "react-native-vector-icons";
+import { SelectList} from 'react-native-dropdown-select-list'
 
 export default function PalsScreen({ navigation }) {
 
   const [username, setUsername] = useState('')
+  const [selectPal, setSelectPal] = useState('')
+
+  const pals = [
+    {key:'0', value:'Ben'},
+    {key:'1', value:'JiunYuan'},
+    {key:'2', value:'jiunyuan2'},
+    {key:'3', value:'lol'},
+    {key:'4', value:'sriram'},
+    {key:'5', value:'cleon'},
+  ]
+
+
 
   const common = [
     {
@@ -120,6 +133,29 @@ export default function PalsScreen({ navigation }) {
       borderRadius: 12,
       padding: 10,
       borderColor: "#DADADA",
+    },
+    dropdownStyles: {
+      position:"absolute",
+      width:"100%",
+      top:35,
+      zIndex:99,
+      maxHeight:150,
+      backgroundColor:"white",
+      borderColor:"#DADADA"
+
+    },
+    dropdownItemStyles: {
+        height:35,
+    },
+    dropdownTextStyles: {
+        color: "#6A6A6A",
+    },
+    boxStyles: {
+        borderColor:"#DADADA",
+        paddingHorizontal:10
+    },
+    inputStyles: {
+        color: "#6A6A6A",
     },
 
   });
@@ -261,15 +297,24 @@ export default function PalsScreen({ navigation }) {
                           <Text style={{paddingLeft:5, fontWeight:600}}>
                             Select Pal:
                           </Text>
-                          <TextInput style={styles.textInput}
-                            placeholder="username" 
-                            onChangeText={(val) => setUsername(val)} 
-                            autoCapitalize="none" 
-                            autoCorrect={false} 
-                          />
+                        <View style={{height:45}}>
+                          <SelectList
+                            dropdownStyles={styles.dropdownStyles}
+                            dropdownItemStyles={styles.dropdownItemStyles}
+                            dropdownTextStyles={styles.dropdownTextStyles}
+                            boxStyles={styles.boxStyles}
+                            inputStyles={styles.inputStyles}  
+                            setSelected={(val) => setSelectPal(val)} 
+                            data={pals} 
+                            save="value"
+                            placeholder='Select'
+                            showsVerticalScrollIndicator = {false}
+                            search = {false}
+                            />  
+                          </View>
                         </View>
                       </View>
-                      <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#A7A7A7', justifyContent:'center', alignItems:'center'}}>
+                      <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#A7A7A7', justifyContent:'center', alignItems:'center', zIndex:-1}}>
                         <Text style={{fontSize:16, fontWeight:600}}>
                           Send
                         </Text>
@@ -279,8 +324,8 @@ export default function PalsScreen({ navigation }) {
                 </View>
               </View>
             </View>
-            <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center'}}>
-              <TouchableOpacity style={{ height:'100%', width:'70%', borderRadius:18, backgroundColor:'#A7A7A7', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+            <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
+              <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#A7A7A7', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
                 <Text style={{fontSize:16, fontWeight:600}}>
                   Redeem Prize
                 </Text>

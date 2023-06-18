@@ -68,28 +68,28 @@ export default function BottomNavigaton({navigation}) {
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeStack') } >
-                <Ionicons name="home-outline" color="#444" size='25px'/>
+                <Ionicons name="home-outline" color="#444" size={25}/>
                 <Text style={styles.iconDescription}>Home</Text>
             </TouchableOpacity>
             </View>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('QuestsStack')} >
-                <Ionicons name="rocket-outline" color="#444" size='26px'/>
+                <Ionicons name="rocket-outline" color="#444" size={25}/>
                 <Text style={styles.iconDescription}>Quests</Text>
             </TouchableOpacity>
             </View>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PalsStack')} >
-                <Ionicons name="people-outline" color="#444" size='25px'/>
+                <Ionicons name="people-outline" color="#444" size={25}/>
                 <Text style={styles.iconDescription}>Pals</Text>
             </TouchableOpacity>
             </View>
 
             <View style={styles.iconContainer}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LeaderboardStack')} >
-                <Ionicons name="stats-chart-outline" color="#444" size='25px'/>
+                <Ionicons name="stats-chart-outline" color="#444" size={25}/>
                 <Text style={styles.iconDescription}>Leaderboard</Text>
             </TouchableOpacity>
             </View>
