@@ -4,8 +4,8 @@ POST http://localhost:3001/auth/signup
 Content-Type: application/json
 
 {
-    "email": "test@gmail.com",
-    "username": "test",
+    "email": "123",
+    "username": "admin",
     "password": "123"
 }
 

@@ -14,9 +14,9 @@ export const signIn = async (email, password) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-				email: email,
-				password: password
-			}),
+                email: email,
+                password: password
+            }),
         })
         if (response.status === 401) {
             return {error: true, message: "Invalid Password"}
@@ -45,10 +45,10 @@ export const signUp = async (email, username, password) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-				email: email,
+                email: email,
                 username: username,
-				password: password
-			}),
+                password: password
+            }),
         })
         
         if (response.status === 401) {

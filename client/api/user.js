@@ -45,8 +45,8 @@ export const changeUsername = async (userId, username) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-				username: username
-			}),
+                username: username
+            }),
         })
         if (response.status === 400) {
             throw new Error("User not Found/ No Username Input!")

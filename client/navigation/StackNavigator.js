@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthenticationStack from './AuthenticationStack';
 import HomeStack from './HomeStack';
@@ -13,17 +13,16 @@ export default function StackNavigator() {
     const {isLoggedIn} = useAuth()
     return (
         <Stack.Navigator>
-            {isLoggedIn ? (
+            {isLoggedIn == false ? (
                 <Stack.Group screenOptions={{ headerShown: false, presentation: 'fullScreenModal', animationEnabled: false}}>
-                <Stack.Screen name="HomeStack" component={HomeStack}/> 
-                <Stack.Screen name="QuestsStack" component={QuestsStack}/> 
-                <Stack.Screen name="LeaderboardStack" component={LeaderboardStack}/> 
-                <Stack.Screen name="PalsStack" component={PalsStack}/> 
+                    <Stack.Screen name="HomeStack" component={HomeStack}/> 
+                    <Stack.Screen name="QuestsStack" component={QuestsStack}/> 
+                    <Stack.Screen name="LeaderboardStack" component={LeaderboardStack}/> 
+                    <Stack.Screen name="PalsStack" component={PalsStack}/> 
                 </Stack.Group>
             ):(
                 <Stack.Screen name="AuthenticationStack" component={AuthenticationStack} options={{headerShown: false}}/> 
             )}
         </Stack.Navigator>
     );
-    
-};
+}
