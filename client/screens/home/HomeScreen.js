@@ -162,7 +162,6 @@ export default function HomeScreen({ navigation }) {
 
     const percentage = item.current / item.total * 100
     const percentageString = percentage.toString()+'%'
-    console.log(percentageString)
     
     return (
       <Item 
