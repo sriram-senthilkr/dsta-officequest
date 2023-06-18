@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth';
 import LongButton from '../../components/LongButton';
 import LongInput from '../../components/LongInput';
 
-const SettingScreen = () => {
+const SettingScreen = ({navigation}) => {
     const { user, logoutUser } = useAuth()
     const handleLogout = () => {
         console.log("logout")
