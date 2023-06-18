@@ -1,13 +1,9 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React from "react";
 import LongButton from '../../components/LongButton';
-import { createQuest } from '../../api/quest'
 
 
-export default async function StartScreen({ navigation }) {
-  const specificDate = new Date(2023, 5, 18, 10, 30, 0);
-
-
+export default function StartScreen({ navigation }) {
 
     return (
         <View style={styles.page}>
