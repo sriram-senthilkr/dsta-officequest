@@ -106,3 +106,28 @@ export const completeQuest = async (userId, questId) => {
         console.log(error);
     }
 };
+
+/*
+Returns the points of a user
+@Params: userId: string
+@return: palsCount: array
+*/
+export const getUserPals = async (userId) => {
+    try {
+        const url = `${uri}/users/${userId}/pals`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.status === 400) {
+            throw new Error('User not Found!');
+        }
+        const data = await response.json();
+        //console.log(data.palsCount);
+        return data.palsCount;
+    } catch (error) {
+        console.log(error);
+    }
+};

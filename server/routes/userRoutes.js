@@ -7,6 +7,7 @@ const {
     updateUsername,
     getQuests,
     completeQuest,
+    getUserPals,
 } = require('../controller/userController');
 
 const router = express.Router();
@@ -18,6 +19,8 @@ router.get('/:id', getUser);
 router.delete('/:id', deleteUser);
 
 router.get('/:id/points', getUserPoints);
+
+router.get('/:id/pals', getUserPals);
 
 router.patch('/:id/update-username', updateUsername);
 

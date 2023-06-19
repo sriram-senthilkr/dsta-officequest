@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     },
     palsCount: {
         type: Array,
-        default: [0, 0, 0, 0, 0, 0, 0, 0],
+        default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
 });
 
