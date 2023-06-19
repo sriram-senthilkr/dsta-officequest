@@ -97,15 +97,21 @@ export const completeQuest = async (userId, questId) => {
             },
         });
         if (response.status === 400) {
-            throw new Error('User/ Quest not found!');
+            return {error: true, message: 'User/ Quest not found!'}
         }
-        const data = await response.json();
+        if (response.status == 200) {
+            const data = await response.json();
+
+            return {error: false, message: 'Success', data}
+        }
+        
         //console.log(data)
-        return data;
+        
     } catch (error) {
         console.log(error);
     }
 };
+
 
 /*
 Returns the points of a user
@@ -131,3 +137,34 @@ export const getUserPals = async (userId) => {
         console.log(error);
     }
 };
+
+export const completeQuiz = async (userId, points) => {
+    try {
+        const url = `${uri}/users/completequiz`;
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                points: points
+            })
+        })
+
+        if (response.status === 400) {
+            return {error: true, message: 'User not found'}
+        }
+        if (response.status === 404) {
+            return {error: true, message: 'No Quiz'}
+        }
+        if (response.status === 200) {
+            const data = await response.json()
+            return {error: false, message: 'Success', data}
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+

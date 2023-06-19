@@ -65,3 +65,24 @@ export const getQuests = async () => {
         console.log(error);
     }
 };
+
+export const resetQuests = async (userId) => {
+    try {
+        const url = `${uri}/quests/resetquests`;
+        console.log(userId)
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+            })
+        });
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
