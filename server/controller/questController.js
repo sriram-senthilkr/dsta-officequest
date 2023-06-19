@@ -58,7 +58,7 @@ const getUsername = async (req, res) => {
 // store in OTP collection {password, userId, taskId, expiry}
 const generatePassword = async (req, res) => {
     const { questId, username } = req.body;
-
+    console.log(questId)
     try {
         const user = await User.findOne({ username })
         if (!user) {
@@ -95,7 +95,7 @@ const validatePassword = async (req, res) => {
     const { questId, password, userId } = req.body;
 
     try {
-        const otpInstance = OTP.find({
+        const otpInstance = await OTP.findOne({
             questId: questId,
             otp: password,
             userId: userId,
@@ -103,6 +103,7 @@ const validatePassword = async (req, res) => {
         if (!otpInstance) {
             return res.status(401).end("Invalid Password")
         }
+        console.log(otpInstance)
         const points = await Quest.findById(questId).select('points')
         if (!points) {
             return res.status(404).end("Quest does not exist")
@@ -128,20 +129,13 @@ const validatePassword = async (req, res) => {
     }
 }
 
-const resetQuiz = async (req, res) => {
+const resetQuests = async (req, res) => {
     const { userId } = req.body;
-    const type = "quiz"
     try {
-        const quiz = await Quest.findOne({ type })
-        if (!quiz) {
-            return res.status(400).end("No quiz")
-        }
-        let arr = quiz.completedUsers
-        const newArr = arr.filter(item => item !== userId)
-        quiz.completedUsers = newArr
-        const data = await quiz.save()
+        const quiz = await Quest.updateMany({}, { $pull: { completedUsers: userId}})
 
-        return res.status(200).json({ message: 'Success', data})
+        console.log(quiz)
+        return res.status(200).json({ message: 'Success' })
     } catch (error) {
         console.log(error)
         return res.status(500).send("Server Error")
@@ -154,5 +148,5 @@ module.exports = {
     generatePassword,
     getUsername,
     validatePassword,
-    resetQuiz,
+    resetQuests,
 };

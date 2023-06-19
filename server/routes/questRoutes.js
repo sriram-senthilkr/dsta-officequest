@@ -1,5 +1,5 @@
 const express = require('express');
-const { getQuests, createQuest, generatePassword, getUsername, validatePassword, resetQuiz } = require('../controller/questController');
+const { getQuests, createQuest, generatePassword, getUsername, validatePassword, resetQuests } = require('../controller/questController');
 
 const router = express.Router();
 
@@ -13,6 +13,6 @@ router.post('/pw/generate', generatePassword);
 
 router.post('/pw/validate', validatePassword);
 
-router.post('/resetquiz', resetQuiz);
+router.post('/resetquests', resetQuests);
 
 module.exports = router;
