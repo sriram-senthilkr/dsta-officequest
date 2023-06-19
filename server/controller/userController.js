@@ -1,4 +1,5 @@
 const User = require('../models/Users');
+const Quest = require('../models/Quests');
 const asyncHandler = require('express-async-handler');
 
 const getUsers = async (req, res) => {
@@ -66,18 +67,20 @@ const getQuests = asyncHandler(async (req, res) => {
 });
 
 const completeQuest = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.userId);
+    const { userId, questId } = req.params
+
+    const user = await User.findById(userId);
     if (!user) {
         res.status(400);
         throw new Error('User Not Found');
     }
-    const quest = await Quest.findById(req.params.questId);
+    const quest = await Quest.findById(questId);
     if (!quest) {
         res.status(400);
         throw new Error('Quest Not Found');
     }
-    if (!quest.completedUsers.includes(req.params.userId)) {
-        quest.completedUsers.push(req.params.userId);
+    if (!quest.completedUsers.includes(userId)) {
+        quest.completedUsers.push(userId);
     }
     //add the quest points to user points
     user.points += quest.points;
@@ -85,6 +88,30 @@ const completeQuest = asyncHandler(async (req, res) => {
     await user.save();
     res.status(200).json(quest);
 });
+
+const completeQuiz = async (req, res) => {
+    const { userId, points } = req.body
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).end('User not found')
+        }
+        const quest = await Quest.findOne({ type:'quiz' })
+        if (!quest) {
+            return res.status(404).end('No Quiz')
+        }
+        if (!quest.completedUsers.includes(userId)) {
+            quest.completedUsers.push(userId);
+        }
+        user.points += quest.points;
+        await quest.save();
+        await user.save();
+        return res.status(200).json(quest);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 module.exports = {
     getUser,
@@ -94,4 +121,5 @@ module.exports = {
     updateUsername,
     getQuests,
     completeQuest,
+    completeQuiz,
 };
