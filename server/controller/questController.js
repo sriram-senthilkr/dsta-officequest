@@ -1,6 +1,10 @@
+const crypto = require('crypto')
+const mongoose = require('mongoose');
+const asyncHandler = require('express-async-handler');
 const Quest = require('../models/Quests');
 const User = require('../models/Users');
-const asyncHandler = require('express-async-handler');
+const OTP = require('../models/OTP')
+
 
 const getQuests = asyncHandler(async (req, res) => {
     const quests = await Quest.find();
@@ -29,7 +33,105 @@ const createQuest = asyncHandler(async (req, res) => {
     res.status(200).json(newQuest);
 });
 
+//display form asking for username
+//gets userId from username and goes to the generate password view
+const getUsername = async (req, res) => {
+    const { questId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(questId)) {
+        return res.status(404).end('Quest Id invalid')
+    }
+    try {
+        const quest = await Quest.findById(questId)
+        if (!quest) {
+            res.status(404).end("Quest does not exist")
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+    
+    // console.log("quest", questType)
+    res.status(200).render('username.ejs', { questId: questId })
+}
+
+// generates a 8 digit password, expiry set in 5min
+// store in OTP collection {password, userId, taskId, expiry}
+const generatePassword = async (req, res) => {
+    const { questId, username } = req.body;
+
+    try {
+        const user = await User.findOne({ username })
+        if (!user) {
+            res.status(404).end('User does not exist')
+        }
+        const quest = await Quest.findById(questId)
+        if (!quest) {
+            res.status(402).end('Quest does not exist')
+        }
+        // console.log(user)
+        const userId = user._id
+        const password = crypto.randomBytes(4).toString('hex').toUpperCase()
+        const expiry = new Date(Date.now() + 5*60*100)
+        const otp = new OTP({
+            questId: questId,
+            otp: password,
+            expiresAt: expiry,
+            userId: userId,
+        })
+        await otp.save()
+
+        res.status(200).render('password.ejs', {password})
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Server Error")
+    }
+}
+
+
+
+// checks password with OTP collection against userId and questId
+// if valid, reward points based on questId
+const validatePassword = async (req, res) => {
+    const { questId, password, userId } = req.body;
+
+    try {
+        const otpInstance = OTP.find({
+            questId: questId,
+            otp: password,
+            userId: userId,
+        });
+        if (!otpInstance) {
+            res.status(401).end("Invalid Password")
+        }
+        const points = await Quest.findById(questId).select('points')
+        if (!points) {
+            res.status(404).end("Quest does not exist")
+        }
+        console.log(points.points)
+        const expiry = new Date(otpInstance.expiresAt);
+        const currentTime = new Date()
+        if (currentTime >= expiry) {
+            res.status(402).end("Password Expired")
+        }
+
+        // reward points to user
+        const updatedUser = await User.findById(userId);
+        // console.log(updatedUser)
+        updatedUser.points += points.points
+        await updatedUser.save()
+
+        res.status(200).json({ message: 'Success'})
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Server Error")
+    }
+}
+
 module.exports = {
     createQuest,
     getQuests,
+    generatePassword,
+    getUsername,
+    validatePassword,
 };
