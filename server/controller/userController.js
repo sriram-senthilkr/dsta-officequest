@@ -89,6 +89,17 @@ const completeQuest = asyncHandler(async (req, res) => {
     res.status(200).json(quest);
 });
 
+
+const getUserPals = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        res.status(400);
+        throw new Error('User Not Found');
+    }
+    const userPals = await User.findById(req.params.id).select('palsCount');
+    res.status(200).json(userPals);
+});
+
 const completeQuiz = async (req, res) => {
     const { userId, points } = req.body
 
@@ -113,6 +124,7 @@ const completeQuiz = async (req, res) => {
     }
 }
 
+
 module.exports = {
     getUser,
     getUsers,
@@ -121,5 +133,6 @@ module.exports = {
     updateUsername,
     getQuests,
     completeQuest,
+    getUserPals,
     completeQuiz,
 };
