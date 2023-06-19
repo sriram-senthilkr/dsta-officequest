@@ -25,6 +25,7 @@ const SettingScreen = ({ navigation }) => {
                 <View style={{ width:'90%', alignSelf:'center', gap:5}}>
                     <Text style={styles.bodyText}>Username: {user.username}</Text>
                     <Text style={styles.bodyText}>Email: {user.email}</Text>
+                    <Text style={styles.bodyText}>UserID: {user._id}</Text>
                 </View>
             </View>
             <LongInput 
@@ -32,7 +33,6 @@ const SettingScreen = ({ navigation }) => {
                 placeholder="username" 
                 value={user.username} 
                 onChangeText={()=>{console.log("onchange")}}
-
             />
             <LongButton text="Save" onPress={()=>{console.log("save username")}}/>
             <LongButton text="Logout" onPress={()=>{handleLogout()}}/>
