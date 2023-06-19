@@ -47,11 +47,11 @@ const getUsername = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: error.message })
+        return res.status(500).json({ message: error.message })
     }
     
     // console.log("quest", questType)
-    res.status(200).render('username.ejs', { questId: questId })
+    return res.status(200).render('username.ejs', { questId: questId })
 }
 
 // generates a 8 digit password, expiry set in 5min
@@ -62,11 +62,11 @@ const generatePassword = async (req, res) => {
     try {
         const user = await User.findOne({ username })
         if (!user) {
-            res.status(404).end('User does not exist')
+            return res.status(404).end('User does not exist')
         }
         const quest = await Quest.findById(questId)
         if (!quest) {
-            res.status(402).end('Quest does not exist')
+            return res.status(402).end('Quest does not exist')
         }
         // console.log(user)
         const userId = user._id
@@ -80,10 +80,10 @@ const generatePassword = async (req, res) => {
         })
         await otp.save()
 
-        res.status(200).render('password.ejs', {password})
+        return res.status(200).render('password.ejs', {password})
     } catch (error) {
         console.log(error)
-        res.status(500).send("Server Error")
+        return res.status(500).send("Server Error")
     }
 }
 
@@ -101,17 +101,17 @@ const validatePassword = async (req, res) => {
             userId: userId,
         });
         if (!otpInstance) {
-            res.status(401).end("Invalid Password")
+            return res.status(401).end("Invalid Password")
         }
         const points = await Quest.findById(questId).select('points')
         if (!points) {
-            res.status(404).end("Quest does not exist")
+            return res.status(404).end("Quest does not exist")
         }
         console.log(points.points)
         const expiry = new Date(otpInstance.expiresAt);
         const currentTime = new Date()
         if (currentTime >= expiry) {
-            res.status(402).end("Password Expired")
+            return res.status(402).end("Password Expired")
         }
 
         // reward points to user
@@ -120,11 +120,31 @@ const validatePassword = async (req, res) => {
         updatedUser.points += points.points
         await updatedUser.save()
 
-        res.status(200).json({ message: 'Success'})
+        return res.status(200).json({ message: 'Success'})
 
     } catch (error) {
         console.log(error)
-        res.status(500).send("Server Error")
+        return res.status(500).send("Server Error")
+    }
+}
+
+const resetQuiz = async (req, res) => {
+    const { userId } = req.body;
+    const type = "quiz"
+    try {
+        const quiz = await Quest.findOne({ type })
+        if (!quiz) {
+            return res.status(400).end("No quiz")
+        }
+        let arr = quiz.completedUsers
+        const newArr = arr.filter(item => item !== userId)
+        quiz.completedUsers = newArr
+        const data = await quiz.save()
+
+        return res.status(200).json({ message: 'Success', data})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send("Server Error")
     }
 }
 
@@ -134,4 +154,5 @@ module.exports = {
     generatePassword,
     getUsername,
     validatePassword,
+    resetQuiz,
 };
