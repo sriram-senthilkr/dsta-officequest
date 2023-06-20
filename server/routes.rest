@@ -18,3 +18,43 @@ Content-Type: application/json
     "email": "test@gmail.com",
     "password": "123"
 }
+
+###
+//urls for valid password generator
+# 648ef118dd6517cc06c4e6f1
+# 648fcf9a93c637b4fda41513
+# 648fcfcc93c637b4fda41515
+# 648fcfe293c637b4fda41517
+# 648fcff793c637b4fda41519
+GET http://localhost:3001/quests/pw/648ef118dd6517cc06c4e6f1
+
+Content-Type: application/json
+
+###
+// create quest
+POST http://localhost:3001/quests
+Content-Type: application/json
+
+{
+    "title": "Company Event",
+    "description":"Bonding at ORTO",
+    "type":"qr",
+    "points": 1000
+}
+
+###
+// validate pw
+POST http://localhost:3001/quests/pw/validate
+Content-Type: application/json
+
+{
+    "questId": "648ef118dd6517cc06c4e6f1",
+    "password":"4009DE41",
+    "userId":"648bc0173b750d3f01774532"
+}
+
+
+###
+// get all ysers
+GET http://localhost:3001/users
+Content-Type: application/json

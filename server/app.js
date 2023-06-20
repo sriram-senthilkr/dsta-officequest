@@ -15,6 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/quests', questRoutes);
