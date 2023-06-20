@@ -41,7 +41,7 @@ const RollModal = ({ visible, closeModal, prize }) => {
 
     
 
-    return prize && (
+    return prize !== null ? (
         <View style={styles.back}>
             <Modal
                 transparent={true}
@@ -73,7 +73,7 @@ const RollModal = ({ visible, closeModal, prize }) => {
                 </View>
             </Modal>
         </View>
-    )
+    ) : null
 }
 
 
