@@ -4,7 +4,7 @@ import BottomNavigator from '../../components/BottomNavigation';
 import { getLeaderboard } from "../../api/leaderboard";
 
 export default function LeaderboardScreen({ navigation }) {
-    // const [data, setData] = useState(oldData);
+
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -92,71 +92,6 @@ export default function LeaderboardScreen({ navigation }) {
         </View>
     );
 }
-
-
-// const oldData = [
-//     {
-//         level: 1,
-//         total: 300,
-//         name: 'Ben Toh',
-//     },
-//     {
-//         level: 2,
-//         total: 300,
-//         name: 'Cleon Liew',
-//     },
-//     {
-//         level: 3,
-//         total: 500,
-//         name: 'Ge Wei',
-//     },
-//     {
-//         level: 4,
-//         total: 500,
-//         name: 'Jiun Yuan',
-//     },
-//     {
-//         level: 5,
-//         total: 700,
-//         name: 'JY',
-//     },
-//     {
-//         level: 6,
-//         total: 700,
-//         name: 'Sriram',
-//     },
-//     {
-//         level: 7,
-//         total: 1000,
-//         name: 'Senthilkumar',
-//     },
-//     {
-//         level: 8,
-//         total: 1000,
-//         name: 'Stella Tan',
-//     },
-//     {
-//         level: 9,
-//         total: 1200,
-//         name: 'Joe Mama',
-//     },
-//     {
-//         level: 10,
-//         total: 1400,
-//         name: 'Hugh Janus',
-//     },
-//     {
-//         level: 11,
-//         total: 1700,
-//         name: 'Steven Lim',
-//     },
-//     {
-//         level: 12,
-//         total: 1900,
-//         name: 'dogsloop',
-//     },
-// ];
-    
 
 const styles = StyleSheet.create({
     page: {
