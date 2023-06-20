@@ -131,7 +131,6 @@ export const getUserPals = async (userId) => {
             throw new Error('User not Found!');
         }
         const data = await response.json();
-        //console.log(data.palsCount);
         return data.palsCount;
     } catch (error) {
         console.log(error);
