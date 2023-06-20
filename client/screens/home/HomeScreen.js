@@ -3,9 +3,9 @@ import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, V
 import { Ionicons } from "react-native-vector-icons";
 import { generatePal } from '../../api/pals';
 import { getUserPoints } from "../../api/user";
-import PrizeModal from '../../components/PrizeModal';
-import useAuth from '../../hooks/useAuth';
 import BottomNavigator from '../../components/BottomNavigation';
+import PrizeModal from '../../components/ViewPrizeModal';
+import useAuth from '../../hooks/useAuth';
 import CountdownTimer from "./CountdownTimer";
 
 export default function HomeScreen({ navigation }) {
