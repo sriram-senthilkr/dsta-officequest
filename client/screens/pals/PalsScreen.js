@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 
 
+
 export default function PalsScreen({ navigation }) {
     const [refresh, setRefresh] = useState(false)
     const [username, setUsername] = useState('')
@@ -14,40 +15,63 @@ export default function PalsScreen({ navigation }) {
     const isFocused = useIsFocused()
     const [palsNumber, setPalsNumber] = useState([])
     const { user } = useAuth()
-
-
-    const commonPals = [
-        {key: 0, name:'a', total:palsNumber[0], image:require('../../assets/cheeseburger.png')},
-        {key: 1, name:'b', total:palsNumber[1], image:require('../../assets/coffee.png')},
-        {key: 2, name:'c', total:palsNumber[2], image:require('../../assets/ice_cream.png')},
-        {key: 3, name:'d', total:palsNumber[3], image:require('../../assets/microwave.png')},
-        {key: 4, name:'e', total:palsNumber[4], image:require('../../assets/onigiri.png')},
-    ]
-    const rarePals = [
-        {key: 5, name:'f', total:palsNumber[5], image:require('../../assets/salmon_maki.png')},
-        {key: 6, name:'g', total:palsNumber[6], image:require('../../assets/soda.png')},
-        {key: 7, name:'h', total:palsNumber[7], image:require('../../assets/vending_machine.png')},
-    ]
-    const superRarePals = [
-        {key: 8, name:'i', total:palsNumber[8], image:require('../../assets/cheeseburger.png')},
-        {key: 9, name:'j', total:palsNumber[9], image:require('../../assets/cheeseburger.png')},
-    ]
+    const [pals, setPals] = useState([])
+    const [allPals, setAllPals]= useState([
+        {key: 0, name:'Cheeseburger', total:0, image:require('../../assets/cheeseburger.png')},
+        {key: 1, name:'coffee', total:0, image:require('../../assets/coffee.png')},
+        {key: 2, name:'ice cream', total:0, image:require('../../assets/ice_cream.png')},
+        {key: 3, name:'microwave', total:0, image:require('../../assets/microwave.png')},
+        {key: 4, name:'onigiri', total:0, image:require('../../assets/onigiri.png')},
+        {key: 5, name:'salmon', total:0, image:require('../../assets/salmon_maki.png')},
+        {key: 6, name:'soda', total:0, image:require('../../assets/soda.png')},
+        {key: 7, name:'vending machine', total:0, image:require('../../assets/vending_machine.png')},
+        {key: 8, name:'lol', total:0, image:require('../../assets/cheeseburger.png')},
+        {key: 9, name:'lol2', total:0, image:require('../../assets/cheeseburger.png')},
+    ])
+    const [commonPals, setCommonPals] = useState([])
+    const [rarePals, setRarePals] = useState([])
+    const [superRarePals, setSuperRarePals] = useState([])
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getUserPals(user._id)
-                setPalsNumber(data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
+            
         fetchData()
+
         if (refresh) {
             setRefresh(false)
         }
     }, [isFocused])
 
+
+    async function fetchData() {
+        
+        try {
+            const data = await getUserPals(user._id)
+            setPalsNumber(data)
+
+            for (var i = 0; i < data.length; i++) {
+                const objectIndex = allPals.findIndex(pal => pal.key === i);
+                const updatedPals = [...allPals];
+                const total = data[i]
+                updatedPals[objectIndex].total = total;
+                setAllPals(updatedPals);
+            }
+
+            setCommonPals(allPals.slice(0,5))
+            setRarePals(allPals.slice(5,8))
+            setSuperRarePals(allPals.slice(8,10))
+
+        } catch (error) {
+            console.log(error)
+        }
+    
+        var palsAvailable=[]
+        for(var i = 0; i < allPals.length; i++){
+            if (allPals[i].total > 0) {
+                palsAvailable.push({key:i, value:allPals[i].name})
+            }
+        }
+        setPals(palsAvailable)
+    }
 
 
     function handleClaimPrize () {
@@ -58,31 +82,29 @@ export default function PalsScreen({ navigation }) {
     const Item = ({name, total, image}) => (
         <View style={{width:80, height:70,alignItems:'center', flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
 
-
-            {total == 0 ? (
-                <View>
-                    <View style={{width:60, height:60, backgroundColor:'grey', borderRadius:30, justifyContent:'center', alignItems:'center'}}>
-                        <Text>?</Text>
-                    </View>
-                    <View style={{width:60, height:60, backgroundColor:'black', borderRadius:30, opacity:0.4, position:'absolute'}}>
-                    </View>
-                </View>
-            ):(
-                <View style={{flexDirection:'row-reverse'}}>
-                    <View style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
+            <View style={{flexDirection:'row-reverse'}}>
+                <View style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
+                    {total == 0 ? (
+                        <Image 
+                        style={{width: 45, height: 45}}
+                        source={image}
+                        resizeMode={'contain'}
+                        opacity={0.3}
+                        />
+                    ):(
                         <Image 
                             style={{width: 45, height: 45}}
                             source={image}
                             resizeMode={'contain'}
                         />
-                    </View>
-                    <View style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
-                        <Text style={{fontSize:10}}>
-                            {total}
-                        </Text>
-                    </View>
+                    )}
                 </View>
-            )}
+                <View style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
+                    <Text style={{fontSize:10}}>
+                        {total}
+                    </Text>
+                </View>
+            </View>
         </View>
     );
 
@@ -233,15 +255,6 @@ export default function PalsScreen({ navigation }) {
     );
 }
 
-
-const pals = [
-    {key:'0', value:'Ben'},
-    {key:'1', value:'JiunYuan'},
-    {key:'2', value:'jiunyuan2'},
-    {key:'3', value:'lol'},
-    {key:'4', value:'sriram'},
-    {key:'5', value:'cleon'},
-]
 
 
 
