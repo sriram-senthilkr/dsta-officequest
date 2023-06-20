@@ -1,16 +1,30 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {FlatList, StyleSheet, Text, View } from 'react-native';
+import BottomNavigator from '../../components/BottomNavigation';
+import { getLeaderboard } from "../../api/leaderboard";
 
 export default function LeaderboardScreen({ navigation }) {
-    const [data, setData] = useState(oldData);
-    // const [data, setData] = useState([]);
+    // const [data, setData] = useState(oldData);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const leaderboardArray = await getLeaderboard();
+          setData(leaderboardArray.data)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      getData()
+    }, [])
 
     // Each Individual Level Component
     const Item = ({total, name, level}) => (
         <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
             <View style={{width:'10%', alignItems:'center'}}>
                 <Text style={{fontSize:15, fontWeight:600}}>
-                    {level}
+                    {level + 1}
                 </Text>
             </View>
             
@@ -28,27 +42,14 @@ export default function LeaderboardScreen({ navigation }) {
     );    
 
     // Rendering the list of levels
-    const renderItem = ({item}) => {
+    const renderItem = ({item, index}) => {
       return (
-        // return async () => {
-
-        //   const leaderboardArray = await getLeaderboard();
-
-        //   for (let user = 0; user < leaderboardArray.length; user++) {
-        //     <Item
-        //     level={user+1} //rank to show on the leaderboard
-        //     id={leaderboardArray[user]._id} //user's id
-        //     total={leaderboardArray[user].points} //user's total points
-        //     name={leaderboardArray[user].username} //user's name
-        // />
-        // }
         <Item
-        level={item.level}
-        total={item.total}
-        name={item.name}
+        level={index}
+        total={item.points}
+        name={item.username}
         />
       )
-
     }
 
     // Rendering the page
@@ -70,7 +71,7 @@ export default function LeaderboardScreen({ navigation }) {
                                         <View style={{height:'90%', width:'90%'}}>
                                             <FlatList
                                                 style={{ height: 0, width: '100%' }}
-                                                keyExtractor={item => item.level}
+                                                keyExtractor={item => item._id}
                                                 data={data}
                                                 renderItem={renderItem}
                                                 showsVerticalScrollIndicator={false}
@@ -86,75 +87,75 @@ export default function LeaderboardScreen({ navigation }) {
                 </View>
             </View>
             <View style={styles.bottomNavigation}>
-                {/* <BottomNavigator navigation={navigation} /> */}
+                <BottomNavigator navigation={navigation} />
             </View>
         </View>
     );
 }
 
 
-const oldData = [
-    {
-        level: 1,
-        total: 300,
-        name: 'Ben Toh',
-    },
-    {
-        level: 2,
-        total: 300,
-        name: 'Cleon Liew',
-    },
-    {
-        level: 3,
-        total: 500,
-        name: 'Ge Wei',
-    },
-    {
-        level: 4,
-        total: 500,
-        name: 'Jiun Yuan',
-    },
-    {
-        level: 5,
-        total: 700,
-        name: 'JY',
-    },
-    {
-        level: 6,
-        total: 700,
-        name: 'Sriram',
-    },
-    {
-        level: 7,
-        total: 1000,
-        name: 'Senthilkumar',
-    },
-    {
-        level: 8,
-        total: 1000,
-        name: 'Stella Tan',
-    },
-    {
-        level: 9,
-        total: 1200,
-        name: 'Joe Mama',
-    },
-    {
-        level: 10,
-        total: 1400,
-        name: 'Hugh Janus',
-    },
-    {
-        level: 11,
-        total: 1700,
-        name: 'Steven Lim',
-    },
-    {
-        level: 12,
-        total: 1900,
-        name: 'dogsloop',
-    },
-];
+// const oldData = [
+//     {
+//         level: 1,
+//         total: 300,
+//         name: 'Ben Toh',
+//     },
+//     {
+//         level: 2,
+//         total: 300,
+//         name: 'Cleon Liew',
+//     },
+//     {
+//         level: 3,
+//         total: 500,
+//         name: 'Ge Wei',
+//     },
+//     {
+//         level: 4,
+//         total: 500,
+//         name: 'Jiun Yuan',
+//     },
+//     {
+//         level: 5,
+//         total: 700,
+//         name: 'JY',
+//     },
+//     {
+//         level: 6,
+//         total: 700,
+//         name: 'Sriram',
+//     },
+//     {
+//         level: 7,
+//         total: 1000,
+//         name: 'Senthilkumar',
+//     },
+//     {
+//         level: 8,
+//         total: 1000,
+//         name: 'Stella Tan',
+//     },
+//     {
+//         level: 9,
+//         total: 1200,
+//         name: 'Joe Mama',
+//     },
+//     {
+//         level: 10,
+//         total: 1400,
+//         name: 'Hugh Janus',
+//     },
+//     {
+//         level: 11,
+//         total: 1700,
+//         name: 'Steven Lim',
+//     },
+//     {
+//         level: 12,
+//         total: 1900,
+//         name: 'dogsloop',
+//     },
+// ];
     
 
 const styles = StyleSheet.create({
