@@ -53,7 +53,8 @@ export default function PalsScreen({ navigation }) {
     async function fetchData() {
         
         try {
-            const data = await getUserPals(user._id)
+            const fullData = await getUserPals(user._id)
+            const data = fullData.data
 
             for (var i = 0; i < data.length; i++) {
                 const objectIndex = allPals.findIndex(pal => pal.key === i);
@@ -91,13 +92,18 @@ export default function PalsScreen({ navigation }) {
         Alert.alert('claimed')
     }
 
-    function handleSendPal () {
+    async function handleSendPal () {
         const nameToFind = selectPal;
         const palNumber = allPals.findIndex(pal => pal.name === nameToFind);  
         try {
-            sendPal (user._id, username, palNumber)
-            Alert.alert('sent successful')
-            setRefresh(true)
+            const response = await sendPal (user._id, username, palNumber)
+            if (response.error === true) {
+                SetError(response.message)
+                Alert.alert(response.message)
+            }
+            else {
+                Alert.alert('sent successful')
+            }
         } catch (error) {
             Alert.alert("error")
         }
