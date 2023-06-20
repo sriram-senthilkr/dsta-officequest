@@ -35,7 +35,7 @@ const TabBar = ({ state, descriptors, navigation}) => {
                     <View key={index} style={styles.mainItemContainer}>
                         <Pressable
                             onPress={onPress}
-                            style = {{backgroundColor: isFocused?"#D9D9D9": "#FFF", borderRadius: 20, }}
+                            style = {{backgroundColor: isFocused?"#D9D9D9": "#FFF", borderRadius: 21, }}
                         >
                             <View style={{ justifyContent: 'center', alignItems:'center', flex:1, padding:15 }}>
                                 <NavigationIcon isFocused={isFocused} route={label}/>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 25,
         backgroundColor: "#FFF",
-        borderRadius: 25,
+        borderRadius: 30,
         marginHorizontal: width*0.1,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 3 },
