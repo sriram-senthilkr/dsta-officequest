@@ -41,7 +41,7 @@ const SettingScreen = ({ navigation }) => {
         console.log("roll")
         
         const res = await generatePal(userId)
-        setPrize(res)
+        setPrize(res.data)
         setShowModal(true)
     }
 

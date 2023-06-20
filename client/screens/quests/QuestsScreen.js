@@ -16,7 +16,7 @@ export default function QuestsScreen({ navigation }) {
         const fetchData = async () => {
             try {
                 const data = await getQuests()
-                setQuests(data)
+                setQuests(data.data)
             } catch (error) {
                 console.log(error)
             }
