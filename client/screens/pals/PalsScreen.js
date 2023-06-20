@@ -15,7 +15,8 @@ export default function PalsScreen({ navigation }) {
     const [showPrizeModal, setShowPrizeModal] = useState(false)
     const [showPalModal, setShowPalModal] = useState(false)
     const [refresh, setRefresh] = useState(false)
-    const username = useRef('')
+    const [username, setUsername] = useState('')
+    // const username = useRef('')
     const [highlightedPal, setHighlightedPal] = useState([])
     const [selectPal, setSelectPal] = useState('')
     const isFocused = useIsFocused()
@@ -26,15 +27,15 @@ export default function PalsScreen({ navigation }) {
     const [superRarePals, setSuperRarePals] = useState([])
     const [allPals, setAllPals]= useState([
         {key: 0, name:'Cheeseburger', description:'You are what you eat', total:0, image:require('../../assets/cheeseburger.png'), lockedImage:require('../../assets/cheeseburger_black.png')},
-        {key: 1, name:'coffee', description:'Drink me!', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
-        {key: 2, name:'ice cream', description:'Cold Cold Cold', total:0, image:require('../../assets/ice_cream.png'), lockedImage:require('../../assets/ice_cream_black.png')},
-        {key: 3, name:'microwave', description:'I cook food!', total:0, image:require('../../assets/microwave.png'), lockedImage:require('../../assets/microwave_black.png')},
-        {key: 4, name:'onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
-        {key: 5, name:'salmon', description:'Salmon-nella...', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
-        {key: 6, name:'soda', description:'Coke? Or Pepsi...', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
-        {key: 7, name:'vending machine', description:'Dorameon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
-        {key: 8, name:'toaster', description:'Better then microwave', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
-        {key: 9, name:'hotdog', description:'Hot dwagg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
+        {key: 1, name:'Coffee', description:'Drink me!', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
+        {key: 2, name:'Ice cream', description:'Cold Cold Cold', total:0, image:require('../../assets/ice_cream.png'), lockedImage:require('../../assets/ice_cream_black.png')},
+        {key: 3, name:'Microwave', description:'I cook food!', total:0, image:require('../../assets/microwave.png'), lockedImage:require('../../assets/microwave_black.png')},
+        {key: 4, name:'Onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
+        {key: 5, name:'Salmon', description:'Salmon-nella...', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
+        {key: 6, name:'Soda', description:'Coke? Or Pepsi...', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
+        {key: 7, name:'Vending machine', description:'Dorameon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
+        {key: 8, name:'Toaster', description:'Better then microwave', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
+        {key: 9, name:'Hotdog', description:'Hot dwagg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
     ])
 
     useEffect(() => {
@@ -95,7 +96,7 @@ export default function PalsScreen({ navigation }) {
         const nameToFind = selectPal;
         const palNumber = allPals.findIndex(pal => pal.name === nameToFind);  
         try {
-            sendPal (user._id, username.current, palNumber)
+            sendPal (user._id, username, palNumber)
             Alert.alert('sent successful')
             setRefresh(true)
         } catch (error) {
@@ -116,10 +117,10 @@ export default function PalsScreen({ navigation }) {
                 <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
                         <Image 
-                        style={{width: 45, height: 45}}
-                        source={lockedImage}
-                        resizeMode={'contain'}
-                        opacity={0.3}
+                            style={{width: 45, height: 45}}
+                            source={lockedImage}
+                            resizeMode={'contain'}
+                            opacity={0.3}
                         />
                     ):(
                         <Image 
@@ -178,9 +179,9 @@ export default function PalsScreen({ navigation }) {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                        <View style={{height:'97%', width:'90%', position:'absolute', justifyContent:'center', alignItems:'center',}}>
-                                            <View style={{flexGrow:1, width:'100%'}}>
-                                                <ScrollView style={{position:'absolute', height:'100%', width:'100%'}}>
+                                        <View style={{height:'100%', width:'90%', position:'absolute', justifyContent:'flex-start', alignItems:'center',}}>
+                                            <View style={{height:'60%', width:'100%'}}>
+                                                <ScrollView style={{position:'absolute', height:'100%', width:'100%',}}>
                                                     <View style={{alignItems:'center'}}>
                                                         <View style={{width:'95%'}}>
                                                             <Text style={{fontWeight:600, fontSize:16}}>
@@ -236,7 +237,7 @@ export default function PalsScreen({ navigation }) {
                                                         </Text>
                                                         <TextInput style={styles.textInput}
                                                             placeholder="username" 
-                                                            onChangeText={(val) => username.current = val} 
+                                                            onChangeText={(val) => setUsername(val)} 
                                                             autoCapitalize="none" 
                                                             autoCorrect={false} 
                                                             value={username}
@@ -274,7 +275,7 @@ export default function PalsScreen({ navigation }) {
                                 </View>
                             </View>
                             <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                                <TouchableOpacity onPress={()=>handleClaimPrize()} style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+                                <TouchableOpacity activeOpacity={0.9} onPress={()=>handleClaimPrize()} style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
                                     <Text style={{fontSize:16, fontWeight:600}}>
                                     Redeem Prize
                                     </Text>
@@ -285,7 +286,7 @@ export default function PalsScreen({ navigation }) {
 
                 </View>
                 <View style={styles.bottomNavigation}>
-                    <BottomNavigator navigation={navigation} />
+                    {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
             </View>
             <ViewPrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
@@ -330,7 +331,7 @@ const styles = StyleSheet.create({
     },
     bottomNavigation: {
         width:'100%',
-        height: 90
+        height: 100
 
     },
     topTab: {
@@ -343,7 +344,7 @@ const styles = StyleSheet.create({
     },
     defaultCard:{
         height:'100%',
-        backgroundColor:'white',
+        backgroundColor:'#333A45',
         borderRadius:30,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 2 },

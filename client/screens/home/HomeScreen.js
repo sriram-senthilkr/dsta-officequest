@@ -207,7 +207,7 @@ export default function HomeScreen({ navigation }) {
 
                 </View>
                 <View style={styles.bottomNavigation}>
-                    <BottomNavigator navigation={navigation} />
+                    {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
             </View>
         </View>
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     },
     bottomNavigation: {
         width:'100%',
-        height: 90
+        height: 100
 
     },
     topTab: {
