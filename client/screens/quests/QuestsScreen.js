@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getQuests } from '../../api/quest';
 import { completeQuest } from '../../api/user';
-import BottomNavigator from '../../components/BottomNavigation';
 import useAuth from '../../hooks/useAuth';
 
 export default function QuestsScreen({ navigation }) {
@@ -222,7 +221,7 @@ export default function QuestsScreen({ navigation }) {
                 </View>
 
                 <View style={styles.bottomNavigation}>
-                    <BottomNavigator navigation={navigation} />
+                    {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
             </View>
         </View>
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
     },
     bottomNavigation: {
         width:'100%',
-        height: 90
+        height: 70
 
     },
     defaultCard:{

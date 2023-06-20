@@ -7,23 +7,23 @@ import React from 'react'
 //closeModal: setState for visiblestate (setState())
 //prize: prize to show (string)
 //prizetype: "gacha" or "others"
-const PrizeModal = ({ visible, closeModal, prize, prizeType }) => {
-    const gacha = (prizeType === 'gacha') ? (prize + " to replace with gacha") : prize
+const ViewPrizeModal = ({ visible, closeModal }) => {
     return (
         <View style={styles.back}>
             <Modal
                 transparent={true}
-                animationType="slide"
+                animationType="fade"
                 visible={visible}
                 onRequestClose={() => {
                     closeModal()
                 }}
             >
                 <View style={styles.centeredView}>
+                    <View style={styles.background}></View>
                     <View style={styles.modalView}>
-                        <Text style={{fontWeight: 600, fontSize: 40, marginBottom:20}}>Congrats!</Text>
-                        <Text style={{fontSize: 20, marginBottom: 20}}>You received:</Text>
-                        <Text style={styles.modalText}>{gacha}</Text>
+                        <Text style={{fontWeight: 600, fontSize: 40, marginBottom:20}}>This Season</Text>
+                        <Text style={{fontSize: 20, marginBottom: 20}}>Prize:</Text>
+                        <Text style={styles.modalText}>2 x GV Tickets </Text>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => closeModal()}
@@ -37,6 +37,13 @@ const PrizeModal = ({ visible, closeModal, prize, prizeType }) => {
     )
 }
 const styles = StyleSheet.create({
+    background:{
+        backgroundColor:'black',
+        height:'100%',
+        width:'100%',
+        position:'absolute',
+        opacity:0.5
+    },
     centeredView: {
         flex: 1,
         justifyContent: 'center',
@@ -80,4 +87,4 @@ const styles = StyleSheet.create({
 });
 
   
-export default PrizeModal
+export default ViewPrizeModal

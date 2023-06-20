@@ -5,7 +5,6 @@ import { generatePal } from '../../api/pals';
 import { getUserPoints } from "../../api/user";
 import PrizeModal from '../../components/PrizeModal';
 import useAuth from '../../hooks/useAuth';
-
 import BottomNavigator from '../../components/BottomNavigation';
 import CountdownTimer from "./CountdownTimer";
 
@@ -255,7 +254,7 @@ export default function HomeScreen({ navigation }) {
 
                 </View>
                 <View style={styles.bottomNavigation}>
-                    <BottomNavigator navigation={navigation} />
+                    {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
                 <PrizeModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
             </View>
@@ -383,7 +382,7 @@ const styles = StyleSheet.create({
     },
     bottomNavigation: {
         width:'100%',
-        height: 90
+        height: 100
 
     },
     topTab: {

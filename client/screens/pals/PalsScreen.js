@@ -1,83 +1,155 @@
+import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Image, Alert } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { SelectList} from 'react-native-dropdown-select-list'
+import { getUserPals } from '../../api/user';
+import { sendPal } from '../../api/pals';
 import { useIsFocused } from '@react-navigation/native';
-import React, { useEffect, useState } from "react";
-import { FlatList, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
-import BottomNavigator from '../../components/BottomNavigation';
+import useAuth from '../../hooks/useAuth';
+import ViewPrizeModal from '../../components/ViewPrizeModal';
+import ViewPalModal from '../../components/ViewPalModal'
+
+
 
 export default function PalsScreen({ navigation }) {
+    const [showPrizeModal, setShowPrizeModal] = useState(false)
+    const [showPalModal, setShowPalModal] = useState(false)
+    const [refresh, setRefresh] = useState(false)
     const [username, setUsername] = useState('')
+    // const username = useRef('')
+    const [highlightedPal, setHighlightedPal] = useState([])
     const [selectPal, setSelectPal] = useState('')
     const isFocused = useIsFocused()
-    const [palsNumber, setPalsNumber] = useState([])
-
-    const dummyData = [13,12,13,3,3,4,7,0,0,1]; 
-
-
-    const commonPals = [
-        {key: 0, name:'a', total:palsNumber[0], image:null},
-        {key: 1, name:'b', total:palsNumber[1], image:null},
-        {key: 2, name:'c', total:palsNumber[2], image:null},
-        {key: 3, name:'d', total:palsNumber[3], image:null},
-        {key: 4, name:'e', total:palsNumber[4], image:null},
-    ]
-    const rarePals = [
-        {key: 5, name:'f', total:palsNumber[5], image:null},
-        {key: 6, name:'g', total:palsNumber[6], image:null},
-        {key: 7, name:'h', total:palsNumber[7], image:null},
-    ]
-    const superRarePals = [
-        {key: 8, name:'i', total:palsNumber[8], image:null},
-        {key: 9, name:'j', total:palsNumber[9], image:null},
-    ]
+    const { user } = useAuth()
+    const [pals, setPals] = useState([])
+    const [commonPals, setCommonPals] = useState([])
+    const [rarePals, setRarePals] = useState([])
+    const [superRarePals, setSuperRarePals] = useState([])
+    const [allPals, setAllPals]= useState([
+        {key: 0, name:'Cheeseburger', description:'You are what you eat', total:0, image:require('../../assets/cheeseburger.png'), lockedImage:require('../../assets/cheeseburger_black.png')},
+        {key: 1, name:'Coffee', description:'Drink me!', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
+        {key: 2, name:'Ice cream', description:'Cold Cold Cold', total:0, image:require('../../assets/ice_cream.png'), lockedImage:require('../../assets/ice_cream_black.png')},
+        {key: 3, name:'Microwave', description:'I cook food!', total:0, image:require('../../assets/microwave.png'), lockedImage:require('../../assets/microwave_black.png')},
+        {key: 4, name:'Onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
+        {key: 5, name:'Salmon', description:'Salmon-nella...', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
+        {key: 6, name:'Soda', description:'Coke? Or Pepsi...', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
+        {key: 7, name:'Vending machine', description:'Dorameon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
+        {key: 8, name:'Toaster', description:'Better then microwave', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
+        {key: 9, name:'Hotdog', description:'Hot dwagg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
+    ])
 
     useEffect(() => {
-        try {
-            setPalsNumber(dummyData) //change this line to fetch actual data
-        } catch (error) {
-            console.log(error)
+        console.log('asddas')
+        if (isFocused) {
+            fetchData()
+        }
+
+        if (refresh) {
+            setRefresh(false)
+            fetchData()
         }
     }, [isFocused])
 
 
+    async function fetchData() {
+        
+        try {
+            const data = await getUserPals(user._id)
 
-    function handleClaimPrize () {
+            for (var i = 0; i < data.length; i++) {
+                const objectIndex = allPals.findIndex(pal => pal.key === i);
+                const updatedPals = [...allPals];
+                const total = data[i]
+                updatedPals[objectIndex].total = total;
+                setAllPals(updatedPals);
+            }
 
+            setCommonPals(allPals.slice(0,5))
+            setRarePals(allPals.slice(5,8))
+            setSuperRarePals(allPals.slice(8,10))
+
+        } catch (error) {
+            console.log(error)
+        }
+    
+        var palsAvailable=[]
+        for(var i = 0; i < allPals.length; i++){
+            if (allPals[i].total > 0) {
+                palsAvailable.push({key:i, value:allPals[i].name})
+            }
+        }
+        setPals(palsAvailable)
     }
 
 
-    const Item = ({name, total}) => (
+    function handleClaimPrize () {
+        for(var i = 0; i < allPals.length; i++) {
+            if (allPals[i].total == 0) {
+                Alert.alert("Collect all pals to claim!")
+                return
+            }
+        }
+        Alert.alert('claimed')
+    }
+
+    function handleSendPal () {
+        const nameToFind = selectPal;
+        const palNumber = allPals.findIndex(pal => pal.name === nameToFind);  
+        try {
+            sendPal (user._id, username, palNumber)
+            Alert.alert('sent successful')
+            setRefresh(true)
+        } catch (error) {
+            Alert.alert("error")
+        }
+    }
+
+    const togglePrizeModal = () => {
+        setShowPrizeModal(!showPrizeModal)
+    }
+    const togglePalModal = () => {
+        setShowPalModal(!showPalModal)
+    }
+
+    const Item = ({name, total, image, lockedImage, onPress}) => (
         <View style={{width:80, height:70,alignItems:'center', flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
-
-
-            {total == 0 ? (
-                <View>
-                    <View style={{width:60, height:60, backgroundColor:'red', borderRadius:30, justifyContent:'center', alignItems:'center'}}>
-                        <Text>
-                        ?
-                        </Text>
-                    </View>
-                    <View style={{width:60, height:60, backgroundColor:'black', borderRadius:30, opacity:0.4, position:'absolute'}}>
-                    </View>
-                </View>
-            ):(
-                <View style={{flexDirection:'row-reverse'}}>
-                    <View style={{width:60, height:60, backgroundColor:'red', borderRadius:30, justifyContent:'center', alignItems:'center'}}>
-                    </View>
-                    <View style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
-                        <Text style={{fontSize:10}}>
-                            {total}
-                        </Text>
-                    </View>
-                </View>
-            )}
+            <View style={{flexDirection:'row-reverse'}}>
+                <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
+                    {total == 0 ? (
+                        <Image 
+                            style={{width: 45, height: 45}}
+                            source={lockedImage}
+                            resizeMode={'contain'}
+                            opacity={0.3}
+                        />
+                    ):(
+                        <Image 
+                            style={{width: 45, height: 45}}
+                            source={image}
+                            resizeMode={'contain'}
+                        />
+                    )}
+                </TouchableOpacity>
+                <TouchableOpacity style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
+                    <Text style={{fontSize:10}}>
+                        {total}
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 
 
     const renderItem = ({item}) => {
+        function handleHighlightPal () {
+            setHighlightedPal(item)
+            togglePalModal()
+        }
         return (
             <Item 
                 total={item.total}
+                image={item.image}
+                lockedImage={item.lockedImage}
+                onPress={()=>handleHighlightPal()}
             />
         )
     }
@@ -97,22 +169,22 @@ export default function PalsScreen({ navigation }) {
                                 <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'white'}]}>
                                     <View style={{height:65, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
                                         <Text style={{fontSize:30, fontWeight:700}}>
-                                    PantryPals
+                                            PantryPals
                                         </Text>
-                                        <TouchableOpacity style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
+                                        <TouchableOpacity onPress={togglePrizeModal} style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
                                             <Text>
-                                            Prize
+                                                Prize
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                        <View style={{height:'97%', width:'90%', position:'absolute', justifyContent:'center', alignItems:'center',}}>
-                                            <View style={{flexGrow:1, width:'100%'}}>
-                                                <ScrollView style={{position:'absolute', height:'100%', width:'100%'}}>
+                                        <View style={{height:'100%', width:'90%', position:'absolute', justifyContent:'flex-start', alignItems:'center',}}>
+                                            <View style={{height:'60%', width:'100%'}}>
+                                                <ScrollView style={{position:'absolute', height:'100%', width:'100%',}}>
                                                     <View style={{alignItems:'center'}}>
                                                         <View style={{width:'95%'}}>
                                                             <Text style={{fontWeight:600, fontSize:16}}>
-                                                            Common
+                                                                Common
                                                             </Text>
                                                             <View style={{height:90, width:'100%'}}>
                                                                 {<FlatList
@@ -121,12 +193,13 @@ export default function PalsScreen({ navigation }) {
                                                                     showsHorizontalScrollIndicator={false}
                                                                     data={commonPals}
                                                                     renderItem={renderItem}
+                                                                    maxToRenderPerBatch={3}
                                                                 />}
                                                             </View>
                                                         </View>
                                                         <View style={{width:'95%'}}>
                                                             <Text style={{fontWeight:600, fontSize:16}}>
-                                                            Rare
+                                                                Rare
                                                             </Text>
                                                             <View style={{height:90, width:'100%'}}>
                                                                 <FlatList
@@ -190,7 +263,7 @@ export default function PalsScreen({ navigation }) {
                                                         </View>
                                                     </View>
                                                 </View>
-                                                <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
+                                                <TouchableOpacity onPress={()=>handleSendPal()} style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
                                                     <Text style={{fontSize:16, fontWeight:600}}>
                                                     Send
                                                     </Text>
@@ -201,7 +274,7 @@ export default function PalsScreen({ navigation }) {
                                 </View>
                             </View>
                             <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                                <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+                                <TouchableOpacity activeOpacity={0.9} onPress={()=>handleClaimPrize()} style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
                                     <Text style={{fontSize:16, fontWeight:600}}>
                                     Redeem Prize
                                     </Text>
@@ -212,22 +285,15 @@ export default function PalsScreen({ navigation }) {
 
                 </View>
                 <View style={styles.bottomNavigation}>
-                    <BottomNavigator navigation={navigation} />
+                    {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
             </View>
+            <ViewPrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
+            <ViewPalModal visible={showPalModal} closeModal={togglePalModal} highlightedPal={highlightedPal}/>
         </View>
     );
 }
 
-
-const pals = [
-    {key:'0', value:'Ben'},
-    {key:'1', value:'JiunYuan'},
-    {key:'2', value:'jiunyuan2'},
-    {key:'3', value:'lol'},
-    {key:'4', value:'sriram'},
-    {key:'5', value:'cleon'},
-]
 
 
 
@@ -264,7 +330,7 @@ const styles = StyleSheet.create({
     },
     bottomNavigation: {
         width:'100%',
-        height: 90
+        height: 100
 
     },
     topTab: {
@@ -277,7 +343,7 @@ const styles = StyleSheet.create({
     },
     defaultCard:{
         height:'100%',
-        backgroundColor:'white',
+        backgroundColor:'#333A45',
         borderRadius:30,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 2 },
