@@ -1,6 +1,5 @@
 import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Image, Alert } from 'react-native';
 import React, { useState, useEffect, useRef } from "react";
-import BottomNavigator from '../../components/BottomNavigation';
 import { SelectList} from 'react-native-dropdown-select-list'
 import { getUserPals } from '../../api/user';
 import { sendPal } from '../../api/pals';

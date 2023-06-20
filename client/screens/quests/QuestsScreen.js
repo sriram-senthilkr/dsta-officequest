@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getQuests } from '../../api/quest';
 import { completeQuest } from '../../api/user';
-import BottomNavigator from '../../components/BottomNavigation';
 import useAuth from '../../hooks/useAuth';
 
 export default function QuestsScreen({ navigation }) {

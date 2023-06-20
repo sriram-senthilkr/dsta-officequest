@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from "react";
-import BottomNavigator from '../../components/BottomNavigation';
 
 export default function LeaderboardScreen({ navigation }) {
 

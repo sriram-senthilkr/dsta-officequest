@@ -1,6 +1,5 @@
 import {View, Pressable, Dimensions, StyleSheet} from 'react-native'
 import React from 'react'
-import { Ionicons } from "react-native-vector-icons";
 import NavigationIcon from './NavigationIcon';
 
 const {width} = Dimensions.get('window')

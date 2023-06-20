@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from "react-native-vector-icons";
 import { getUserPoints } from "../../api/user";
-import BottomNavigator from '../../components/BottomNavigation';
 import CountdownTimer from "./CountdownTimer";
 
 export default function HomeScreen({ navigation }) {
