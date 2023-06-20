@@ -97,21 +97,19 @@ export const completeQuest = async (userId, questId) => {
             },
         });
         if (response.status === 400) {
-            return {error: true, message: 'User/ Quest not found!'}
+            return { error: true, message: 'User/ Quest not found!' };
         }
         if (response.status == 200) {
             const data = await response.json();
 
-            return {error: false, message: 'Success', data}
+            return { error: false, message: 'Success', data };
         }
-        
+
         //console.log(data)
-        
     } catch (error) {
         console.log(error);
     }
 };
-
 
 /*
 Returns the points of a user
@@ -147,23 +145,98 @@ export const completeQuiz = async (userId, points) => {
             },
             body: JSON.stringify({
                 userId: userId,
-                points: points
-            })
-        })
+                points: points,
+            }),
+        });
 
         if (response.status === 400) {
-            return {error: true, message: 'User not found'}
+            return { error: true, message: 'User not found' };
         }
         if (response.status === 404) {
-            return {error: true, message: 'No Quiz'}
+            return { error: true, message: 'No Quiz' };
         }
         if (response.status === 200) {
-            const data = await response.json()
-            return {error: false, message: 'Success', data}
+            const data = await response.json();
+            return { error: false, message: 'Success', data };
         }
-
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
+/*
+Get the prizeClaimed Array
+@Param: userId
+@Return An object with 3 fields { data: array, error: boolean, message: string }
+*/
+export const getPrizeClaimed = async (userId) => {
+    try {
+        const url = `${uri}/users/${userId}/prize-claimed`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.status === 400) {
+            return { error: true, message: 'User not found' };
+        }
+        if (response.status === 500) {
+            return { error: true, message: 'Server is down' };
+        }
+        if (response.status === 200) {
+            const data = await response.json();
+            //console.log(data.prizeClaimed);
+            return {
+                error: false,
+                message: 'Success',
+                data: data.prizeClaimed,
+            };
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+/*
+Sets the prize in prizeClaimed Array to 1
+@Param: userId, level number (1-indexed)
+@Returns:{ data: User Object, error: boolean, message: string }
+*/
+export const claimPrize = async (userId, level) => {
+    try {
+        const url = `${uri}/users/${userId}/claim-prize`;
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                level: level,
+            }),
+        });
+        if (response.status === 400) {
+            return { error: true, message: 'User not found' };
+        }
+        if (response.status === 404) {
+            return { error: true, message: 'Prize is already claimed' };
+        }
+        if (response.status === 405) {
+            return { error: true, message: 'Level out of index' };
+        }
+        if (response.status === 500) {
+            return { error: true, message: 'Server is down' };
+        }
+        if (response.status === 200) {
+            const data = await response.json();
+            //console.log(data);
+            return {
+                error: false,
+                message: 'Success',
+                data: data,
+            };
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
