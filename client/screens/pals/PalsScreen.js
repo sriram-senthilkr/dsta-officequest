@@ -1,8 +1,9 @@
-import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Image } from 'react-native';
-import React, { useState, useEffect} from "react";
+import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Image, Alert } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
 import BottomNavigator from '../../components/BottomNavigation';
 import { SelectList} from 'react-native-dropdown-select-list'
 import { getUserPals } from '../../api/user';
+import { sendPal } from '../../api/pals';
 import { useIsFocused } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 import ViewPrizeModal from '../../components/ViewPrizeModal';
@@ -14,11 +15,10 @@ export default function PalsScreen({ navigation }) {
     const [showPrizeModal, setShowPrizeModal] = useState(false)
     const [showPalModal, setShowPalModal] = useState(false)
     const [refresh, setRefresh] = useState(false)
-    const [username, setUsername] = useState('')
+    const username = useRef('')
     const [highlightedPal, setHighlightedPal] = useState([])
     const [selectPal, setSelectPal] = useState('')
     const isFocused = useIsFocused()
-    const [palsNumber, setPalsNumber] = useState([])
     const { user } = useAuth()
     const [pals, setPals] = useState([])
     const [commonPals, setCommonPals] = useState([])
@@ -38,11 +38,14 @@ export default function PalsScreen({ navigation }) {
     ])
 
     useEffect(() => {
-            
-        fetchData()
+        console.log('asddas')
+        if (isFocused) {
+            fetchData()
+        }
 
         if (refresh) {
             setRefresh(false)
+            fetchData()
         }
     }, [isFocused])
 
@@ -51,7 +54,6 @@ export default function PalsScreen({ navigation }) {
         
         try {
             const data = await getUserPals(user._id)
-            setPalsNumber(data)
 
             for (var i = 0; i < data.length; i++) {
                 const objectIndex = allPals.findIndex(pal => pal.key === i);
@@ -80,7 +82,25 @@ export default function PalsScreen({ navigation }) {
 
 
     function handleClaimPrize () {
+        for(var i = 0; i < allPals.length; i++) {
+            if (allPals[i].total == 0) {
+                Alert.alert("Collect all pals to claim!")
+                return
+            }
+        }
+        Alert.alert('claimed')
+    }
 
+    function handleSendPal () {
+        const nameToFind = selectPal;
+        const palNumber = allPals.findIndex(pal => pal.name === nameToFind);  
+        try {
+            sendPal (user._id, username.current, palNumber)
+            Alert.alert('sent successful')
+            setRefresh(true)
+        } catch (error) {
+            Alert.alert("error")
+        }
     }
 
     const togglePrizeModal = () => {
@@ -124,7 +144,6 @@ export default function PalsScreen({ navigation }) {
             setHighlightedPal(item)
             togglePalModal()
         }
-
         return (
             <Item 
                 total={item.total}
@@ -174,6 +193,7 @@ export default function PalsScreen({ navigation }) {
                                                                     showsHorizontalScrollIndicator={false}
                                                                     data={commonPals}
                                                                     renderItem={renderItem}
+                                                                    maxToRenderPerBatch={3}
                                                                 />}
                                                             </View>
                                                         </View>
@@ -216,7 +236,7 @@ export default function PalsScreen({ navigation }) {
                                                         </Text>
                                                         <TextInput style={styles.textInput}
                                                             placeholder="username" 
-                                                            onChangeText={(val) => setUsername(val)} 
+                                                            onChangeText={(val) => username.current = val} 
                                                             autoCapitalize="none" 
                                                             autoCorrect={false} 
                                                             value={username}
@@ -243,7 +263,7 @@ export default function PalsScreen({ navigation }) {
                                                         </View>
                                                     </View>
                                                 </View>
-                                                <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
+                                                <TouchableOpacity onPress={()=>handleSendPal()} style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
                                                     <Text style={{fontSize:16, fontWeight:600}}>
                                                     Send
                                                     </Text>
@@ -254,7 +274,7 @@ export default function PalsScreen({ navigation }) {
                                 </View>
                             </View>
                             <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                                <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+                                <TouchableOpacity onPress={()=>handleClaimPrize()} style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
                                     <Text style={{fontSize:16, fontWeight:600}}>
                                     Redeem Prize
                                     </Text>
