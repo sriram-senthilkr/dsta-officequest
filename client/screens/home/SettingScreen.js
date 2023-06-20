@@ -55,11 +55,11 @@ const SettingScreen = ({ navigation }) => {
             </View>
             <View style={{ width:'100%', alignItems:'start', marginTop:10, gap:5}}>
                 <Text style={styles.mediumText}>Profile</Text>
-                <View style={{ width:'90%', alignSelf:'center', gap:5}}>
+                {user && <View style={{ width:'90%', alignSelf:'center', gap:5}}>
                     <Text style={styles.bodyText}>Username: {user.username}</Text>
                     <Text style={styles.bodyText}>Email: {user.email}</Text>
                     <Text style={styles.bodyText}>UserID: {user._id}</Text>
-                </View>
+                </View>}
             </View>
             <LongInput 
                 label="Change Username" 
