@@ -16,7 +16,7 @@ export default function QuestsScreen({ navigation }) {
         const fetchData = async () => {
             try {
                 const data = await getQuests()
-                setQuests(data)
+                setQuests(data.data)
             } catch (error) {
                 console.log(error)
             }
@@ -158,12 +158,13 @@ export default function QuestsScreen({ navigation }) {
             }
             if (type === "daily" &&  !isComplete) {
                 text = "Click to login!"
+                state = "Ongoing"
             }
 
             return (
                 <View>
                     <Text style={{ color: 'gray'}}>{text}</Text>
-                    <View style={{ marginTop: 4, borderRadius: 10, backgroundColor: '#D9D9D9', padding: 4, width:'30%', justifyContent:'center', alignItems:'center'}}>
+                    <View style={{ marginTop: 4, borderRadius: 10, backgroundColor: '#D9D9D9', padding: 4, width:'35%', justifyContent:'center', alignItems:'center'}}>
                         <Text style={{ color: 'gray'}}>{state}</Text>
                     </View>
                 </View>

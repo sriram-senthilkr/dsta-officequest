@@ -192,11 +192,11 @@ export default function HomeScreen({ navigation }) {
     const renderItem = ({item}) => {
 
         const percentage = item.current / item.total * 100
-        const percentageString = percentage.toString()+'%'
-        
+        const percentageString = percentage.toString() + '%'
+
         return (
-            <Item 
-                level={item.level} 
+            <Item
+                level={item.level}
                 total={item.total}
                 current={item.current}
                 isClaimed={item.isClaimed}
@@ -280,7 +280,6 @@ export default function HomeScreen({ navigation }) {
                 {/* <RollModal visible={showPalModal} closeModal={togglePalModal} prize={prize} prizeType="gacha"/> */}
             </View>
         </View>
-
         
     );
 }
@@ -413,18 +412,18 @@ const styles = StyleSheet.create({
         width:'100%',
         height:100,
     },
-    defaultCard:{
-        height:'100%',
-        backgroundColor:'white',
-        borderRadius:30,
+    defaultCard: {
+        height: '100%',
+        backgroundColor: 'white',
+        borderRadius: 30,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 2 },
         shadowOpacity: 0.5,
         shadowRadius: 2,
         elevation: 2,
 
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     headerText:{
         paddingLeft:'7%',
