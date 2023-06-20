@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import BottomNavigator from '../../components/BottomNavigation';
-import { getLeaderboard } from "../../api/leaderboard";
+//import { getLeaderboard } from "../../api/leaderboard";
 
 export default function LeaderboardScreen({ navigation }) {
     const [data, setData] = useState(oldData);
