@@ -1,16 +1,49 @@
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput, ScrollView } from 'react-native';
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import BottomNavigator from '../../components/BottomNavigation';
 import { SelectList} from 'react-native-dropdown-select-list'
+import { useIsFocused } from '@react-navigation/native';
 
 export default function PalsScreen({ navigation }) {
     const [username, setUsername] = useState('')
     const [selectPal, setSelectPal] = useState('')
+    const isFocused = useIsFocused()
+    const [palsNumber, setPalsNumber] = useState([])
+
+    const dummyData = [13,12,13,3,3,4,7,0,0,1]; 
+
+
+    const commonPals = [
+        {key: 0, name:'a', total:palsNumber[0], image:null},
+        {key: 1, name:'b', total:palsNumber[1], image:null},
+        {key: 2, name:'c', total:palsNumber[2], image:null},
+        {key: 3, name:'d', total:palsNumber[3], image:null},
+        {key: 4, name:'e', total:palsNumber[4], image:null},
+    ]
+    const rarePals = [
+        {key: 5, name:'f', total:palsNumber[5], image:null},
+        {key: 6, name:'g', total:palsNumber[6], image:null},
+        {key: 7, name:'h', total:palsNumber[7], image:null},
+    ]
+    const superRarePals = [
+        {key: 8, name:'i', total:palsNumber[8], image:null},
+        {key: 9, name:'j', total:palsNumber[9], image:null},
+    ]
+
+    useEffect(() => {
+        try {
+            setPalsNumber(dummyData) //change this line to fetch actual data
+        } catch (error) {
+            console.log(error)
+        }
+    }, [isFocused])
+
 
 
     function handleClaimPrize () {
 
     }
+
 
     const Item = ({name, total}) => (
         <View style={{width:80, height:70,alignItems:'center', flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
@@ -29,9 +62,6 @@ export default function PalsScreen({ navigation }) {
             ):(
                 <View style={{flexDirection:'row-reverse'}}>
                     <View style={{width:60, height:60, backgroundColor:'red', borderRadius:30, justifyContent:'center', alignItems:'center'}}>
-                        <Text>
-                            {name}
-                        </Text>
                     </View>
                     <View style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
                         <Text style={{fontSize:10}}>
@@ -47,7 +77,6 @@ export default function PalsScreen({ navigation }) {
     const renderItem = ({item}) => {
         return (
             <Item 
-                name={item.name} 
                 total={item.total}
             />
         )
@@ -84,14 +113,13 @@ export default function PalsScreen({ navigation }) {
                                                             Common
                                                         </Text>
                                                         <View style={{height:90, width:'100%'}}>
-                                                            <FlatList
+                                                            {<FlatList
                                                                 horizontal
                                                                 style={{height:0, width:'100%'}}
                                                                 showsHorizontalScrollIndicator={false}
-                                                                data={common}
+                                                                data={commonPals}
                                                                 renderItem={renderItem}
-                                                                keyExtractor={item => item.name}
-                                                            />
+                                                            />}
                                                         </View>
                                                     </View>
                                                     <View style={{width:'95%'}}>
@@ -103,9 +131,8 @@ export default function PalsScreen({ navigation }) {
                                                                 horizontal
                                                                 style={{height:0, width:'100%'}}
                                                                 showsHorizontalScrollIndicator={false}
-                                                                data={rare}
+                                                                data={rarePals}
                                                                 renderItem={renderItem}
-                                                                keyExtractor={item => item.name}
                                                             />
                                                         </View>
                                                     </View>
@@ -118,9 +145,8 @@ export default function PalsScreen({ navigation }) {
                                                                 horizontal
                                                                 style={{height:0, width:'100%'}}
                                                                 showsHorizontalScrollIndicator={false}
-                                                                data={superrare}
+                                                                data={superRarePals}
                                                                 renderItem={renderItem}
-                                                                keyExtractor={item => item.name}
                                                             />
                                                         </View>
                                                     </View>
@@ -190,51 +216,6 @@ export default function PalsScreen({ navigation }) {
     );
 }
 
-const common = [
-    {
-        name:'ben',
-        total:2,
-    },
-    {
-        name:'jiunyuan',
-        total:1,
-    },
-    {
-        name:'ansenn',
-        total:0,
-    },
-    {
-        name:'jiunyuan1',
-        total:1,
-    },
-    {
-        name:'ansenn2',
-        total:0,
-    },
-]; 
-
-const rare = [
-    {
-        name:'sriram',
-        total:2,
-    },
-    {
-        name:'lol',
-        total:1,
-    },
-    {
-        name:'hello',
-        total:0,
-    },
-]; 
-    
-const superrare = [
-    {
-        name:'cleon',
-        total:2,
-    },
-
-]; 
 
 const pals = [
     {key:'0', value:'Ben'},
@@ -244,6 +225,8 @@ const pals = [
     {key:'4', value:'sriram'},
     {key:'5', value:'cleon'},
 ]
+
+
 
 const styles = StyleSheet.create({
     page: {

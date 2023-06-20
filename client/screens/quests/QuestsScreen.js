@@ -1,16 +1,40 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
-import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert } from 'react-native';
+import React, { useEffect, useState } from "react";
 import BottomNavigator from '../../components/BottomNavigation';
+import { getQuests } from '../../api/quest';
+import useAuth from '../../hooks/useAuth';
+import { useIsFocused } from '@react-navigation/native';
+import { completeQuest } from '../../api/user';
 
 export default function QuestsScreen({ navigation }) {
+    const [quests, setQuests] = useState([])
+    const [refresh, setRefresh] = useState(false)
+    const { user } = useAuth()
+    const isFocused = useIsFocused()
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getQuests()
+                setQuests(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchData()
+        if (refresh) {
+            setRefresh(false)
+        }
+        
+    }, [isFocused, refresh])
+
     const convertTZ = (date) => {
         return ((typeof date === "string" ? new Date(date) : date).toLocaleString('en-US', {timezone: 'Asia/Singapore'}))
     }
     
     const convertDate = (timestamp) => {
         const time = convertTZ(timestamp)
-        console.log("convert", time)
-        console.log(time)
         return time
         // const day = timestamp.getDay()
         // let dotw = ""
@@ -48,13 +72,27 @@ export default function QuestsScreen({ navigation }) {
         // return dotw + " " + date + "/" + month + ", " + hr + minutes + "hrs"
     }
 
+    const alert = (points) => 
+        Alert.alert('Success!', `${points} rewarded`, [
+            {
+                text: 'Close',
+                onPress: () => setRefresh(true),
+                style: 'cancel'
+            }
+        ]);
+
+
     const renderQuests = ({ item }) => {
+        // console.log(item)
         const currentTime = new Date()
+
         const isClickable = (type) => {
             switch (type) {
             case 'daily':
                 console.log("daily")
-                return null;
+                handleDaily(item.points, item._id)
+                break
+
 
             case 'quiz':
                 openQuiz()
@@ -65,35 +103,48 @@ export default function QuestsScreen({ navigation }) {
                 break
             }
         }
+
+        const handleDaily = async (points, taskId) => {
+            console.log("submit daily")
+            try {
+                const resp = await completeQuest(user._id, taskId)
+                if (resp.error === true) {
+                    console.log(resp.error)
+                } else {
+                    alert(points)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
         // check type then update expiry date
         const openQuiz = () => {
-            navigation.navigate('QuizModal', { id: item.id, points: item.points})
+            navigation.navigate('QuizModal', { id: item._id, points: item.points})
         }
 
         const openPassword = () => {
-            navigation.navigate('PasswordModal', { id: item.id, points: item.points})
+            navigation.navigate('PasswordModal', { id: item._id, points: item.points})
         }
 
-        const Remark = ({ status, startTime, endTime }) => {
-            
-            console.log("remark")
-            console.log(currentTime)
-            console.log(startTime)
+        const Remark = ({ status, startTime, endTime, type }) => {
+            let isComplete = false
+            if (status.includes(user._id)) {
+                isComplete = true
+            }
             const start = new Date(startTime)
             const end = new Date(endTime)
             let text = ""
             let state = ""
-
-            if (status === "completed") {
+            if (isComplete) {
                 text = "Done!"
                 state = "Completed"
             } 
-            if (status === "incomplete") {
+            else if (!isComplete) {
                 if (currentTime < start) {
                     //not started: startdate not reached
                     state = "Not Started"
                     text = "Starting on: " + convertDate(start)
-                } else if (start <= currentTime < end) {
+                } else if (start <= currentTime && currentTime < end) {
                     //ongoing: startdate passed but not enddate
                     state = "Ongoing"
                     text = "Expires: " + convertDate(end)
@@ -102,12 +153,13 @@ export default function QuestsScreen({ navigation }) {
                     state = "Failed"
                     text = "Expired: " + convertDate(end)
                 } else {
-                    state = "unknown"
-                    text= "unknown"
+                    state = ""
+                    text= ""
                 }
             }
-
-
+            if (type === "daily" &&  !isComplete) {
+                text = "Click to login!"
+            }
 
             return (
                 <View>
@@ -120,7 +172,7 @@ export default function QuestsScreen({ navigation }) {
         }
 
         return (
-            <TouchableOpacity style={styles.listcard} onPress={()=>isClickable(item.type)} disabled={item.status === "completed" || currentTime < new Date(item.startDate) || currentTime >= new Date(item.endDate)}>
+            <TouchableOpacity style={styles.listcard} onPress={()=>isClickable(item.type)} disabled={item.completedUsers.includes(user._id) || (item.type !== "daily" ? currentTime < new Date(item.startDate): false) || (item.type !== "daily" ? currentTime >= new Date(item.endDate) : false) }>
                 <View style={{ width:'95%'}}>
                     <View>
                         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
@@ -133,8 +185,8 @@ export default function QuestsScreen({ navigation }) {
                         
                     </View>
                     
-                    <Text style={{ color: 'black'}}>{item.desc}</Text>
-                    <Remark status={item.status} startTime={item.startDate} endTime={item.endDate}/>
+                    <Text style={{ color: 'black'}}>{item.description}</Text>
+                    <Remark status={item.completedUsers} startTime={item.startDate} endTime={item.endDate} type={item.type}/>
                 </View>
             </TouchableOpacity>
         )
@@ -152,13 +204,15 @@ export default function QuestsScreen({ navigation }) {
                         Quests
                         </Text>
                         <View style={{ height: '90%', paddingX: 2}}>
-                            <FlatList
-                                data={DUMMY}
-                                showsVerticalScrollIndicator={false}
-                                renderItem={renderQuests}
-                                keyExtractor={item => item.id}
-                                ItemSeparatorComponent={() => <View style={{height: 10}} />}
-                            />
+                            {quests.length >= 1 && 
+                                <FlatList
+                                    data={quests}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={renderQuests}
+                                    keyExtractor={item => item._id}
+                                    ItemSeparatorComponent={() => <View style={{height: 10}} />}
+                                />
+                            }
                         </View>
                     </View>
                 </View>
@@ -222,55 +276,55 @@ const styles = StyleSheet.create({
 });
 
 
-const DUMMY = [
-    {
-        id: 1,
-        title: 'Daily Login',
-        desc: 'Login to the app daily',
-        status: 'completed',
-        points: 200,
-        startDate: '',
-        endDate: '',
-        type: 'daily'
-    },
-    {
-        id: 2,
-        title: 'Weekly Quiz',
-        desc: 'How well do you know us',
-        status: 'incomplete',
-        points: 600,
-        startDate: '2023-06-15T17:10:28.132Z',
-        endDate: '2023-06-20T17:10:28.132Z',
-        type: 'quiz'
-    },
-    {
-        id: 3,
-        title: 'Daily Drop',
-        desc: 'Scan the QR code at the pantry',
-        status: 'incomplete',
-        points: 300,
-        startDate: '2023-06-21T17:10:28.132Z',
-        endDate: '2023-06-21T19:10:28.132Z',
-        type: 'qr'
-    },
-    {
-        id: 4,
-        title: 'On Time',
-        desc: 'Come to work on time',
-        status: 'incomplete',
-        points: 400,
-        startDate: '2023-06-17T17:10:28.132Z',
-        endDate: '2023-06-19T17:10:28.132Z',
-        type: 'qr'
-    },
-    {
-        id: 5,
-        title: 'Company Event',
-        desc: 'Bonding at ORTO',
-        status: 'incomplete',
-        points: 1000,
-        startDate: '2023-06-20T17:10:28.132Z',
-        endDate: '2023-06-24T17:10:28.132Z',
-        type: 'qr'
-    },
-]
+// const DUMMY = [
+//     {
+//         id: 1,
+//         title: 'Daily Login',
+//         desc: 'Login to the app daily',
+//         status: 'completed',
+//         points: 200,
+//         startDate: '',
+//         endDate: '',
+//         type: 'daily'
+//     },
+//     {
+//         id: 2,
+//         title: 'Weekly Quiz',
+//         desc: 'How well do you know us',
+//         status: 'incomplete',
+//         points: 600,
+//         startDate: '2023-06-15T17:10:28.132Z',
+//         endDate: '2023-06-20T17:10:28.132Z',
+//         type: 'quiz'
+//     },
+//     {
+//         id: 3,
+//         title: 'Daily Drop',
+//         desc: 'Scan the QR code at the pantry',
+//         status: 'incomplete',
+//         points: 300,
+//         startDate: '2023-06-21T17:10:28.132Z',
+//         endDate: '2023-06-21T19:10:28.132Z',
+//         type: 'qr'
+//     },
+//     {
+//         id: 4,
+//         title: 'On Time',
+//         desc: 'Come to work on time',
+//         status: 'incomplete',
+//         points: 400,
+//         startDate: '2023-06-17T17:10:28.132Z',
+//         endDate: '2023-06-19T17:10:28.132Z',
+//         type: 'qr'
+//     },
+//     {
+//         id: 5,
+//         title: 'Company Event',
+//         desc: 'Bonding at ORTO',
+//         status: 'incomplete',
+//         points: 1000,
+//         startDate: '2023-06-20T17:10:28.132Z',
+//         endDate: '2023-06-24T17:10:28.132Z',
+//         type: 'qr'
+//     },
+// ]

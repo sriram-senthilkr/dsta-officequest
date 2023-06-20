@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import React from 'react'
 import useAuth from '../../hooks/useAuth';
 import LongButton from '../../components/LongButton';
 import LongInput from '../../components/LongInput';
 import BackButton from '../../components/BackButton';
+import { resetQuests } from '../../api/quest';
 
 // eslint-disable-next-line no-unused-vars
 const SettingScreen = ({ navigation }) => {
@@ -12,6 +13,21 @@ const SettingScreen = ({ navigation }) => {
         console.log("logout")
         logoutUser()
     }
+    const alert = () => 
+        Alert.alert('Success!', `Quests reset`, [
+            {
+                text: 'Close',
+                style: 'cancel'
+            }
+        ]);
+
+    const handleReset = async ( userId ) => {
+        console.log("reset", userId)
+        await resetQuests(userId).then(
+            alert()
+        )
+    }
+
     return (
         <View style={styles.page}>
             <View style={styles.topBar}>
@@ -25,6 +41,7 @@ const SettingScreen = ({ navigation }) => {
                 <View style={{ width:'90%', alignSelf:'center', gap:5}}>
                     <Text style={styles.bodyText}>Username: {user.username}</Text>
                     <Text style={styles.bodyText}>Email: {user.email}</Text>
+                    <Text style={styles.bodyText}>UserID: {user._id}</Text>
                 </View>
             </View>
             <LongInput 
@@ -32,10 +49,10 @@ const SettingScreen = ({ navigation }) => {
                 placeholder="username" 
                 value={user.username} 
                 onChangeText={()=>{console.log("onchange")}}
-
             />
             <LongButton text="Save" onPress={()=>{console.log("save username")}}/>
-            <LongButton text="Logout" onPress={()=>{handleLogout()}}/>
+            <LongButton text="Logout" textColor="white" color="#FD5B61" onPress={()=>{handleLogout()}}/>
+            <LongButton text="Reset Quests" onPress={()=>{handleReset(user._id)}}/>
         </View>
     )
 }

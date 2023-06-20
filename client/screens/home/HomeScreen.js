@@ -177,6 +177,7 @@ export default function HomeScreen({ navigation }) {
                                             <View style={{paddingVertical:8}}>
                                                 <CountdownTimer />
                                             </View>
+
                                         </View>
                                     </View>
                                 </View>
