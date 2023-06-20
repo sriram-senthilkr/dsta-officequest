@@ -1,5 +1,4 @@
 import Constants from 'expo-constants';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const { manifest } = Constants;
 

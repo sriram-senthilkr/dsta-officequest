@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import BottomNavigator from '../../components/BottomNavigation';
-//import { getLeaderboard } from "../../api/leaderboard";
+import { getLeaderboard } from "../../api/leaderboard";
 
 export default function LeaderboardScreen({ navigation }) {
     const [data, setData] = useState(oldData);
+    // const [data, setData] = useState([]);
 
     // Each Individual Level Component
-    const Item = ({level, total, name}) => (
+    const Item = ({total, name, level}) => (
         <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
             <View style={{width:'10%', alignItems:'center'}}>
                 <Text style={{fontSize:15, fontWeight:600}}>
@@ -30,13 +31,26 @@ export default function LeaderboardScreen({ navigation }) {
 
     // Rendering the list of levels
     const renderItem = ({item}) => {
-        return (
-            <Item
-                level={item.level} //user's ranking on the leaderboard
-                total={item.total} //user's total points
-                name={item.name} //user's name
-            />
-        )
+      return (
+        // return async () => {
+
+        //   const leaderboardArray = await getLeaderboard();
+
+        //   for (let user = 0; user < leaderboardArray.length; user++) {
+        //     <Item
+        //     level={user+1} //rank to show on the leaderboard
+        //     id={leaderboardArray[user]._id} //user's id
+        //     total={leaderboardArray[user].points} //user's total points
+        //     name={leaderboardArray[user].username} //user's name
+        // />
+        // }
+        <Item
+        level={item.level}
+        total={item.total}
+        name={item.name}
+        />
+      )
+
     }
 
     // Rendering the page
@@ -77,8 +91,6 @@ export default function LeaderboardScreen({ navigation }) {
                 <BottomNavigator navigation={navigation} />
             </View>
         </View>
-
-
     );
 }
 
