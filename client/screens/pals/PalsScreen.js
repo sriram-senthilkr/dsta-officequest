@@ -17,16 +17,16 @@ export default function PalsScreen({ navigation }) {
     const { user } = useAuth()
     const [pals, setPals] = useState([])
     const [allPals, setAllPals]= useState([
-        {key: 0, name:'Cheeseburger', total:0, image:require('../../assets/cheeseburger.png')},
-        {key: 1, name:'coffee', total:0, image:require('../../assets/coffee.png')},
-        {key: 2, name:'ice cream', total:0, image:require('../../assets/ice_cream.png')},
-        {key: 3, name:'microwave', total:0, image:require('../../assets/microwave.png')},
-        {key: 4, name:'onigiri', total:0, image:require('../../assets/onigiri.png')},
-        {key: 5, name:'salmon', total:0, image:require('../../assets/salmon_maki.png')},
-        {key: 6, name:'soda', total:0, image:require('../../assets/soda.png')},
-        {key: 7, name:'vending machine', total:0, image:require('../../assets/vending_machine.png')},
-        {key: 8, name:'lol', total:0, image:require('../../assets/cheeseburger.png')},
-        {key: 9, name:'lol2', total:0, image:require('../../assets/cheeseburger.png')},
+        {key: 0, name:'Cheeseburger', total:0, image:require('../../assets/cheeseburger.png'), unlockedImage:require('../../assets/cheeseburger_black.png')},
+        {key: 1, name:'coffee', total:0, image:require('../../assets/coffee.png'), unlockedImage:require('../../assets/coffee_black.png')},
+        {key: 2, name:'ice cream', total:0, image:require('../../assets/ice_cream.png'), unlockedImage:require('../../assets/ice_cream_black.png')},
+        {key: 3, name:'microwave', total:0, image:require('../../assets/microwave.png'), unlockedImage:require('../../assets/microwave_black.png')},
+        {key: 4, name:'onigiri', total:0, image:require('../../assets/onigiri.png'), unlockedImage:require('../../assets/onigiri_black.png')},
+        {key: 5, name:'salmon', total:0, image:require('../../assets/salmon_maki.png'), unlockedImage:require('../../assets/salmon_maki_black.png')},
+        {key: 6, name:'soda', total:0, image:require('../../assets/soda.png'), unlockedImage:require('../../assets/soda_black.png')},
+        {key: 7, name:'vending machine', total:0, image:require('../../assets/vending_machine.png'), unlockedImage:require('../../assets/vending_machine_black.png')},
+        {key: 8, name:'toaster', total:0, image:require('../../assets/toaster.png'), unlockedImage:require('../../assets/toaster_black.png')},
+        {key: 9, name:'soda', total:0, image:require('../../assets/soda.png'), unlockedImage:require('../../assets/soda_black.png')},
     ])
     const [commonPals, setCommonPals] = useState([])
     const [rarePals, setRarePals] = useState([])
@@ -79,7 +79,7 @@ export default function PalsScreen({ navigation }) {
     }
 
 
-    const Item = ({name, total, image}) => (
+    const Item = ({name, total, image, unlockedImage}) => (
         <View style={{width:80, height:70,alignItems:'center', flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
 
             <View style={{flexDirection:'row-reverse'}}>
@@ -87,7 +87,7 @@ export default function PalsScreen({ navigation }) {
                     {total == 0 ? (
                         <Image 
                         style={{width: 45, height: 45}}
-                        source={image}
+                        source={unlockedImage}
                         resizeMode={'contain'}
                         opacity={0.3}
                         />
@@ -114,6 +114,7 @@ export default function PalsScreen({ navigation }) {
             <Item 
                 total={item.total}
                 image={item.image}
+                unlockedImage={item.unlockedImage}
             />
         )
     }
