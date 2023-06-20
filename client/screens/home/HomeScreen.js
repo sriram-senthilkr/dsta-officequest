@@ -4,6 +4,7 @@ import { Ionicons } from "react-native-vector-icons";
 import { generatePal } from '../../api/pals';
 import { getUserPoints } from "../../api/user";
 import BottomNavigator from '../../components/BottomNavigation';
+import RollModal from '../../components/RollModal';
 import PrizeModal from '../../components/ViewPrizeModal';
 import useAuth from '../../hooks/useAuth';
 import CountdownTimer from "./CountdownTimer";
@@ -11,7 +12,8 @@ import CountdownTimer from "./CountdownTimer";
 export default function HomeScreen({ navigation }) {
     const { user } = useAuth();
     const [data, setData] = useState(oldData);
-    const [showModal, setShowModal] = useState(false)
+    const [showPrizeModal, setShowPrizeModal] = useState(false)
+    const [showPalModal, setShowPalModal] = useState(false)
     const [prize, setPrize] = useState(null)
     const [refresh, setRefresh] = useState(false)
     // const isFocused = useIsFocused()
@@ -57,36 +59,50 @@ export default function HomeScreen({ navigation }) {
     useEffect(() => {
         calculateTotalPoints();
     }, []);
-    */}
+    
+    OR
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             setData(data)
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    //     fetchData()
-    //     if (refresh) {
-    //         setRefresh(false)
-    //     }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setData(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchData()
+        if (refresh) {
+            setRefresh(false)
+        }
         
-    // }, [refresh]);
+    }, [refresh]);
+    */}
     
 
-    const toggleModal = () => {
-        setShowModal(!showModal)
+    const togglePrizeModal = () => {
+        setShowPrizeModal(!showPrizeModal)
         setRefresh(true)
     }
 
-    const claimGacha = async ( userId ) => {
-        console.log("claim")
-        
+    const togglePalModal = () => {
+        setShowPalModal(!showPalModal)
+        setRefresh(true)
+    }
+
+    const claimPrize = async ( userId ) => {
+        console.log("claim Prize")
         const res = await generatePal(userId)
         setPrize(res)
-        setShowModal(true)
+        setShowPrizeModal(true)
     }
+
+    const claimPal = async ( userId ) => { 
+        console.log("claim Pal")
+        const res = await generatePal(userId)
+        setPrize(res)
+        setShowPalModal(true)
+    }
+
 
     const updateClaim = (level) => {
         const newData = data.map(item => {
@@ -105,7 +121,11 @@ export default function HomeScreen({ navigation }) {
         } else if (isClaimed == false && levelCompleted == false) {
             Alert.alert("Error", "You cannot redeem this yet!");
         } else {
-            claimGacha(user._id);
+            if (level == 5 || level == 10) {
+                claimPrize(user._id);
+            } else {
+                claimPal(user._id);
+            }
             // isClaimed = true;
             // mongoDBData[level].isClaimed = true;
             // const newData = data.map(item => {
@@ -256,7 +276,8 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.bottomNavigation}>
                     {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
-                <PrizeModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
+                <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
+                {/* <RollModal visible={showPalModal} closeModal={togglePalModal} prize={prize} prizeType="gacha"/> */}
             </View>
         </View>
 
