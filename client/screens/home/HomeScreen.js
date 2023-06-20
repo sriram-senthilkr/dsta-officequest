@@ -164,7 +164,7 @@ export default function HomeScreen({ navigation }) {
                                         </Text>
                                     </View>
                                     <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                        <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, backgroundColor:'white', justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
+                                        <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
                                             <View style={{height:'90%', width:'90%'}}>
                                                 <FlatList
                                                     style={{height:0, width:'100%'}}

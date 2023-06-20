@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert } from 'react-native';
-import React, { useEffect, useState } from "react";
-import BottomNavigator from '../../components/BottomNavigation';
-import { getQuests } from '../../api/quest';
-import useAuth from '../../hooks/useAuth';
 import { useIsFocused } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getQuests } from '../../api/quest';
 import { completeQuest } from '../../api/user';
+import BottomNavigator from '../../components/BottomNavigation';
+import useAuth from '../../hooks/useAuth';
 
 export default function QuestsScreen({ navigation }) {
     const [quests, setQuests] = useState([])
@@ -194,17 +194,19 @@ export default function QuestsScreen({ navigation }) {
     
 
     return (
-        <View style={styles.page}>
-            <View style={styles.pageHome}>
+        <View style={styles.background}>
+            <ImageBackground source={require('../../assets/background.png')} style={styles.backgroundImage}/>
+            <View style={styles.page}>
+                <View style={styles.pageHome}>
 
 
-                <View style={styles.defaultCard}>
-                    <View style={{ width:'85%', height:'95%'}}>
-                        <Text style={{fontSize:30, fontWeight:700, marginBottom:10}}>
+                    <View style={styles.defaultCard}>
+                        <View style={{ width:'85%', height:'95%'}}>
+                            <Text style={{fontSize:30, fontWeight:700, marginBottom:10}}>
                         Quests
-                        </Text>
-                        <View style={{ height: '90%', paddingX: 2}}>
-                            {quests.length >= 1 && 
+                            </Text>
+                            <View style={{ height: '90%', paddingX: 2}}>
+                                {quests.length >= 1 && 
                                 <FlatList
                                     data={quests}
                                     showsVerticalScrollIndicator={false}
@@ -212,29 +214,42 @@ export default function QuestsScreen({ navigation }) {
                                     keyExtractor={item => item._id}
                                     ItemSeparatorComponent={() => <View style={{height: 10}} />}
                                 />
-                            }
+                                }
+                            </View>
                         </View>
                     </View>
+
                 </View>
 
-            </View>
-
-            <View style={styles.bottomNavigation}>
-                <BottomNavigator navigation={navigation} />
+                <View style={styles.bottomNavigation}>
+                    <BottomNavigator navigation={navigation} />
+                </View>
             </View>
         </View>
-        
 
     );
 }
 
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: "cover",
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        position: "absolute",
+    },
     page: {
         height: "100%",
         width: "100%",
         minWidth: 330,
-        backgroundColor: '#D9D9D9',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: "Arial",
@@ -242,7 +257,6 @@ const styles = StyleSheet.create({
     pageHome: {
         width: "100%",
         flexGrow: 1,
-        backgroundColor: '#D9D9D9',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: "column",
