@@ -1,18 +1,28 @@
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import React from 'react'
+import React, { useState } from 'react'
 import useAuth from '../../hooks/useAuth';
 import LongButton from '../../components/LongButton';
 import LongInput from '../../components/LongInput';
 import BackButton from '../../components/BackButton';
 import { resetQuests } from '../../api/quest';
+import { generatePal } from '../../api/pals';
+import PrizeModal from '../../components/PrizeModal';
 
 // eslint-disable-next-line no-unused-vars
 const SettingScreen = ({ navigation }) => {
     const { user, logoutUser } = useAuth()
+    const [showModal, setShowModal] = useState(false)
+    const [prize, setPrize] = useState(null)
+
     const handleLogout = () => {
         console.log("logout")
         logoutUser()
     }
+
+    const toggleModal = () => {
+        setShowModal(!showModal)
+    }
+
     const alert = () => 
         Alert.alert('Success!', `Quests reset`, [
             {
@@ -26,6 +36,13 @@ const SettingScreen = ({ navigation }) => {
         await resetQuests(userId).then(
             alert()
         )
+    }
+    const handleRoll = async ( userId ) => {
+        console.log("roll")
+        
+        const res = await generatePal(userId)
+        setPrize(res)
+        setShowModal(true)
     }
 
     return (
@@ -51,8 +68,13 @@ const SettingScreen = ({ navigation }) => {
                 onChangeText={()=>{console.log("onchange")}}
             />
             <LongButton text="Save" onPress={()=>{console.log("save username")}}/>
-            <LongButton text="Logout" textColor="white" color="#FD5B61" onPress={()=>{handleLogout()}}/>
+
+            <Text style={styles.mediumText}>Cheats</Text>
             <LongButton text="Reset Quests" onPress={()=>{handleReset(user._id)}}/>
+            <LongButton text="Roll Gacha" onPress={()=>{handleRoll(user._id)}}/>
+
+            <LongButton text="Logout" textColor="white" color="#FD5B61" onPress={()=>{handleLogout()}}/>
+            <PrizeModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
         </View>
     )
 }
@@ -81,6 +103,7 @@ const styles = StyleSheet.create({
         fontWeight: 500,
         color: "#6A6A6A",
         fontFamily: "Arial",
+        alignSelf:'flex-start'
     },
     bodyText: {
         width:"100%",

@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput, ScrollView, Image } from 'react-native';
+import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, TextInput, ScrollView, Image } from 'react-native';
 import React, { useState, useEffect} from "react";
 import BottomNavigator from '../../components/BottomNavigation';
 import { SelectList} from 'react-native-dropdown-select-list'
 import { getUserPals } from '../../api/user';
 import { useIsFocused } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
+
 
 export default function PalsScreen({ navigation }) {
     const [refresh, setRefresh] = useState(false)
@@ -96,134 +97,137 @@ export default function PalsScreen({ navigation }) {
     }
 
     return (
-        <View style={styles.page}>
-            <View style={styles.pageHome}>
+        <View style={styles.background}>
+            <ImageBackground source={require('../../assets/background.png')} style={styles.backgroundImage}/>
+            <View style={styles.page}>
+                <View style={styles.pageHome}>
 
-                <View style={styles.topTab}>
-                </View>
+                    <View style={styles.topTab}>
+                    </View>
 
-                <View style={{width:'100%', flexGrow:1, backgroundColor:'#D9D9D9', alignItems:'center', justifyContent:'center'}}>
-                    <View style={{width:'100%', height:'100%', position:'absolute'}}>
-                        <View style={{flexGrow:1, justifyContent:'center', alignItems:'center'}}>
-                            <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'white'}]}>
-                                <View style={{height:65, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
-                                    <Text style={{fontSize:30, fontWeight:700}}>
+                    <View style={{width:'100%', flexGrow:1, alignItems:'center', justifyContent:'center'}}>
+                        <View style={{width:'100%', height:'100%', position:'absolute'}}>
+                            <View style={{flexGrow:1, justifyContent:'center', alignItems:'center'}}>
+                                <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'white'}]}>
+                                    <View style={{height:65, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
+                                        <Text style={{fontSize:30, fontWeight:700}}>
                                     PantryPals
-                                    </Text>
-                                    <TouchableOpacity style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
-                                        <Text>
-                                            Prize
                                         </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                    <View style={{height:'97%', width:'90%', position:'absolute', justifyContent:'center', alignItems:'center',}}>
-                                        <View style={{flexGrow:1, width:'100%'}}>
-                                            <ScrollView style={{position:'absolute', height:'100%', width:'100%'}}>
-                                                <View style={{alignItems:'center'}}>
-                                                    <View style={{width:'95%'}}>
-                                                        <Text style={{fontWeight:600, fontSize:16}}>
+                                        <TouchableOpacity style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
+                                            <Text>
+                                            Prize
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
+                                        <View style={{height:'97%', width:'90%', position:'absolute', justifyContent:'center', alignItems:'center',}}>
+                                            <View style={{flexGrow:1, width:'100%'}}>
+                                                <ScrollView style={{position:'absolute', height:'100%', width:'100%'}}>
+                                                    <View style={{alignItems:'center'}}>
+                                                        <View style={{width:'95%'}}>
+                                                            <Text style={{fontWeight:600, fontSize:16}}>
                                                             Common
-                                                        </Text>
-                                                        <View style={{height:90, width:'100%'}}>
-                                                            {<FlatList
-                                                                horizontal
-                                                                style={{height:0, width:'100%'}}
-                                                                showsHorizontalScrollIndicator={false}
-                                                                data={commonPals}
-                                                                renderItem={renderItem}
-                                                            />}
+                                                            </Text>
+                                                            <View style={{height:90, width:'100%'}}>
+                                                                {<FlatList
+                                                                    horizontal
+                                                                    style={{height:0, width:'100%'}}
+                                                                    showsHorizontalScrollIndicator={false}
+                                                                    data={commonPals}
+                                                                    renderItem={renderItem}
+                                                                />}
+                                                            </View>
                                                         </View>
-                                                    </View>
-                                                    <View style={{width:'95%'}}>
-                                                        <Text style={{fontWeight:600, fontSize:16}}>
+                                                        <View style={{width:'95%'}}>
+                                                            <Text style={{fontWeight:600, fontSize:16}}>
                                                             Rare
-                                                        </Text>
-                                                        <View style={{height:90, width:'100%'}}>
-                                                            <FlatList
-                                                                horizontal
-                                                                style={{height:0, width:'100%'}}
-                                                                showsHorizontalScrollIndicator={false}
-                                                                data={rarePals}
-                                                                renderItem={renderItem}
-                                                            />
+                                                            </Text>
+                                                            <View style={{height:90, width:'100%'}}>
+                                                                <FlatList
+                                                                    horizontal
+                                                                    style={{height:0, width:'100%'}}
+                                                                    showsHorizontalScrollIndicator={false}
+                                                                    data={rarePals}
+                                                                    renderItem={renderItem}
+                                                                />
+                                                            </View>
                                                         </View>
-                                                    </View>
-                                                    <View style={{width:'95%'}}>
-                                                        <Text style={{fontWeight:600, fontSize:16}}>
+                                                        <View style={{width:'95%'}}>
+                                                            <Text style={{fontWeight:600, fontSize:16}}>
                                                             Super Rare
+                                                            </Text>
+                                                            <View style={{height:90, width:'100%'}}>
+                                                                <FlatList
+                                                                    horizontal
+                                                                    style={{height:0, width:'100%'}}
+                                                                    showsHorizontalScrollIndicator={false}
+                                                                    data={superRarePals}
+                                                                    renderItem={renderItem}
+                                                                />
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                </ScrollView>
+                                            </View>
+                                            <View style={{width:'90%', height:130, justifyContent:'space-around'}}>
+                                                <View style={{flexDirection:'row', justifyContent:'space-around'}}>
+                                                    <View style={{width:'63%'}}>
+                                                        <Text style={{paddingLeft:5, fontWeight:600}}>
+                                                    Send Pals to:
                                                         </Text>
-                                                        <View style={{height:90, width:'100%'}}>
-                                                            <FlatList
-                                                                horizontal
-                                                                style={{height:0, width:'100%'}}
-                                                                showsHorizontalScrollIndicator={false}
-                                                                data={superRarePals}
-                                                                renderItem={renderItem}
-                                                            />
+                                                        <TextInput style={styles.textInput}
+                                                            placeholder="username" 
+                                                            onChangeText={(val) => setUsername(val)} 
+                                                            autoCapitalize="none" 
+                                                            autoCorrect={false} 
+                                                            value={username}
+                                                        />
+                                                    </View>
+                                                    <View style={{width:'33%'}}>
+                                                        <Text style={{paddingLeft:5, fontWeight:600}}>
+                                                    Select Pal:
+                                                        </Text>
+                                                        <View style={{height:45}}>
+                                                            <SelectList
+                                                                dropdownStyles={styles.dropdownStyles}
+                                                                dropdownItemStyles={styles.dropdownItemStyles}
+                                                                dropdownTextStyles={styles.dropdownTextStyles}
+                                                                boxStyles={styles.boxStyles}
+                                                                inputStyles={styles.inputStyles}  
+                                                                setSelected={(val) => setSelectPal(val)} 
+                                                                data={pals} 
+                                                                save="value"
+                                                                placeholder='Select'
+                                                                showsVerticalScrollIndicator = {false}
+                                                                search = {false}
+                                                            />  
                                                         </View>
                                                     </View>
                                                 </View>
-                                            </ScrollView>
-                                        </View>
-                                        <View style={{width:'90%', height:130, justifyContent:'space-around'}}>
-                                            <View style={{flexDirection:'row', justifyContent:'space-around'}}>
-                                                <View style={{width:'63%'}}>
-                                                    <Text style={{paddingLeft:5, fontWeight:600}}>
-                                                    Send Pals to:
-                                                    </Text>
-                                                    <TextInput style={styles.textInput}
-                                                        placeholder="username" 
-                                                        onChangeText={(val) => setUsername(val)} 
-                                                        autoCapitalize="none" 
-                                                        autoCorrect={false} 
-                                                        value={username}
-                                                    />
-                                                </View>
-                                                <View style={{width:'33%'}}>
-                                                    <Text style={{paddingLeft:5, fontWeight:600}}>
-                                                    Select Pal:
-                                                    </Text>
-                                                    <View style={{height:45}}>
-                                                        <SelectList
-                                                            dropdownStyles={styles.dropdownStyles}
-                                                            dropdownItemStyles={styles.dropdownItemStyles}
-                                                            dropdownTextStyles={styles.dropdownTextStyles}
-                                                            boxStyles={styles.boxStyles}
-                                                            inputStyles={styles.inputStyles}  
-                                                            setSelected={(val) => setSelectPal(val)} 
-                                                            data={pals} 
-                                                            save="value"
-                                                            placeholder='Select'
-                                                            showsVerticalScrollIndicator = {false}
-                                                            search = {false}
-                                                        />  
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                                                <Text style={{fontSize:16, fontWeight:600}}>
+                                                <TouchableOpacity style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
+                                                    <Text style={{fontSize:16, fontWeight:600}}>
                                                     Send
-                                                </Text>
-                                            </TouchableOpacity>
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                            <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
-                                <Text style={{fontSize:16, fontWeight:600}}>
+                            <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
+                                <TouchableOpacity style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+                                    <Text style={{fontSize:16, fontWeight:600}}>
                                     Redeem Prize
-                                </Text>
-                            </TouchableOpacity>
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </View>
 
-            </View>
-            <View style={styles.bottomNavigation}>
-                <BottomNavigator navigation={navigation} />
+                </View>
+                <View style={styles.bottomNavigation}>
+                    <BottomNavigator navigation={navigation} />
+                </View>
             </View>
         </View>
     );
@@ -242,11 +246,25 @@ const pals = [
 
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: "cover",
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        position: "absolute",
+    },
     page: {
         height: "100%",
         width: "100%",
         minWidth: 330,
-        backgroundColor: '#D9D9D9',
+        // backgroundColor: '#D9D9D9',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: "Arial",
@@ -254,7 +272,7 @@ const styles = StyleSheet.create({
     pageHome: {
         width: "100%",
         flexGrow: 1,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         alignItems: 'center',
         flexDirection: "column",
     },
@@ -264,7 +282,7 @@ const styles = StyleSheet.create({
 
     },
     topTab: {
-        backgroundColor:'#D9D9D9',
+        // backgroundColor:'#D9D9D9',
         flexDirection:'row',
         alignItems: 'flex-end',
         justifyContent: 'space-between',
