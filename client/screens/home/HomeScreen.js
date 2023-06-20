@@ -10,7 +10,7 @@ export default function HomeScreen({ navigation }) {
 
     // Calculating the current level and points for each bar
     // let totalPoints = getUserPoints(userID);
-    let totalPoints = 500;
+    let totalPoints = 1150;
     let tempScore = totalPoints;
     let currentLevel = 0;
   
@@ -53,39 +53,51 @@ export default function HomeScreen({ navigation }) {
     
 
     // Each Individual Level Component
-    const Item = ({percentageString, level, total, isClaimed, onPress}) => (
-        <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
-            <View style={{width:'10%', alignItems:'center'}}>
-                <Text style={{fontSize:15, fontWeight:600}}>
-                    {level}
-                </Text>
-            </View>
-            <View style={{ width:'65%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-                <View style={{position:'absolute', width:'80%', flexDirection:'row-reverse', paddingBottom:20}}>
-                    <Text style={{fontSize:10}}>
-                        {total}
+    const Item = ({percentageString, level, total, isClaimed, onPress, current}) => {
+
+        let btnBackgroundColor = '#3FFD3B'; // Default: Green
+
+        if (isClaimed) {
+            btnBackgroundColor = '#858585'; // Dark Grey
+        } else if (!isClaimed && current < total) {
+            btnBackgroundColor = '#ECECEC'; // Grey
+        }
+        
+
+        return (
+            <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
+                <View style={{width:'10%', alignItems:'center'}}>
+                    <Text style={{fontSize:15, fontWeight:600}}>
+                        {level}
                     </Text>
                 </View>
-                <View style={{backgroundColor:'#ECECEC', width:'95%', height:10, borderRadius:5}}>
-                    <View style={{backgroundColor:'#4F60FF', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
+                <View style={{ width:'65%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+                    <View style={{position:'absolute', width:'80%', flexDirection:'row-reverse', paddingBottom:20}}>
+                        <Text style={{fontSize:10}}>
+                            {total}
+                        </Text>
+                    </View>
+                    <View style={{backgroundColor:'#ECECEC', width:'95%', height:10, borderRadius:5}}>
+                        <View style={{backgroundColor:'#4F60FF', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
+                        </View>
                     </View>
                 </View>
-            </View>
-            <View style={{width:'25%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-                <TouchableOpacity onPress={onPress} style={{borderRadius:12, height:'80%', width:'90%', backgroundColor:'#ECECEC', alignItems:'center', justifyContent:'center'}}>
-                    {isClaimed ? (
-                        <Text>
+                <View style={{width:'25%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+                    <TouchableOpacity onPress={onPress} style={{borderRadius:12, height:'80%', width:'90%', backgroundColor:btnBackgroundColor, alignItems:'center', justifyContent:'center'}}>
+                        {isClaimed ? (
+                            <Text>
                         Claimed
-                        </Text>
-                    ):(
-                        <Text>
+                            </Text>
+                        ):(
+                            <Text>
                         Claim
-                        </Text>
-                    )}
-                </TouchableOpacity>
+                            </Text>
+                        )}
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
-    );
+        )
+    };
 
 
     const handleClaimPrize = (level, levelCompleted, isClaimed, prize) => {
