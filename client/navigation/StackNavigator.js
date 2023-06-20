@@ -10,10 +10,10 @@ import useAuth from '../hooks/useAuth';
 const Stack = createStackNavigator();
 
 export default function StackNavigator() {
-    const {isLoggedIn} = useAuth()
+    const { user } = useAuth()
     return (
         <Stack.Navigator>
-            {isLoggedIn == false ? (
+            {user ? (
                 <Stack.Group screenOptions={{ headerShown: false, presentation: 'fullScreenModal', animationEnabled: false}}>
                     <Stack.Screen name="HomeStack" component={HomeStack}/> 
                     <Stack.Screen name="QuestsStack" component={QuestsStack}/> 
