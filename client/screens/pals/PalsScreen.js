@@ -1,4 +1,4 @@
-import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, TextInput, ScrollView, Image } from 'react-native';
+import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Image } from 'react-native';
 import React, { useState, useEffect} from "react";
 import BottomNavigator from '../../components/BottomNavigation';
 import { SelectList} from 'react-native-dropdown-select-list'
