@@ -12,6 +12,7 @@ export default function QuestsScreen({ navigation }) {
     const { user } = useAuth()
     const isFocused = useIsFocused()
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -82,6 +83,7 @@ export default function QuestsScreen({ navigation }) {
 
 
     const renderQuests = ({ item }) => {
+        // console.log(item)
         const currentTime = new Date()
 
         const isClickable = (type) => {
@@ -142,7 +144,7 @@ export default function QuestsScreen({ navigation }) {
                     //not started: startdate not reached
                     state = "Not Started"
                     text = "Starting on: " + convertDate(start)
-                } else if (start <= currentTime < end) {
+                } else if (start <= currentTime && currentTime < end) {
                     //ongoing: startdate passed but not enddate
                     state = "Ongoing"
                     text = "Expires: " + convertDate(end)
@@ -155,7 +157,7 @@ export default function QuestsScreen({ navigation }) {
                     text= ""
                 }
             }
-            if (type === "daily") {
+            if (type === "daily" &&  !isComplete) {
                 text = "Click to login!"
             }
 
@@ -170,7 +172,7 @@ export default function QuestsScreen({ navigation }) {
         }
 
         return (
-            <TouchableOpacity style={styles.listcard} onPress={()=>isClickable(item.type)} disabled={item.completedUsers.includes(user._id) || item.type !== "daily" ? currentTime < new Date(item.startDate): false || item.type !== "daily" ? currentTime >= new Date(item.endDate) : false }>
+            <TouchableOpacity style={styles.listcard} onPress={()=>isClickable(item.type)} disabled={item.completedUsers.includes(user._id) || (item.type !== "daily" ? currentTime < new Date(item.startDate): false) || (item.type !== "daily" ? currentTime >= new Date(item.endDate) : false) }>
                 <View style={{ width:'95%'}}>
                     <View>
                         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>

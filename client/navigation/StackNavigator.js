@@ -10,7 +10,7 @@ import useAuth from '../hooks/useAuth';
 const Stack = createStackNavigator();
 
 export default function StackNavigator() {
-    const {isLoggedIn} = useAuth()
+    const { user } = useAuth()
     return (
         <Stack.Navigator>
             {isLoggedIn ? (

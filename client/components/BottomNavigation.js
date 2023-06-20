@@ -61,9 +61,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: "Arial",
-        borderWidth:1,
         borderRadius:30,
-        borderColor:'#D9D9D9',
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 3 },
         shadowOpacity: 0.5,
@@ -84,10 +82,5 @@ const styles = StyleSheet.create({
     },
     iconDescription: {
         fontSize:11,
-        // shadowColor: '#000',
-        // shadowOffset: { width: 1, height: 1 },
-        // shadowOpacity: 0.5,
-        // shadowRadius: 1,
-        // elevation: 1,
     }
 });
