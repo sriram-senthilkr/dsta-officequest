@@ -87,7 +87,6 @@ export default function PalsScreen({ navigation }) {
         setShowPrizeModal(!showPrizeModal)
     }
     const togglePalModal = () => {
-        console.log(showPalModal)
         setShowPalModal(!showPalModal)
     }
 
