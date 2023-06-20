@@ -67,7 +67,7 @@ const getQuests = asyncHandler(async (req, res) => {
 });
 
 const completeQuest = asyncHandler(async (req, res) => {
-    const { userId, questId } = req.params
+    const { userId, questId } = req.params;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -89,7 +89,6 @@ const completeQuest = asyncHandler(async (req, res) => {
     res.status(200).json(quest);
 });
 
-
 const getUserPals = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -101,16 +100,16 @@ const getUserPals = asyncHandler(async (req, res) => {
 });
 
 const completeQuiz = async (req, res) => {
-    const { userId, points } = req.body
+    const { userId, points } = req.body;
 
     try {
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(400).end('User not found')
+            return res.status(400).end('User not found');
         }
-        const quest = await Quest.findOne({ type:'quiz' })
+        const quest = await Quest.findOne({ type: 'quiz' });
         if (!quest) {
-            return res.status(404).end('No Quiz')
+            return res.status(404).end('No Quiz');
         }
         if (!quest.completedUsers.includes(userId)) {
             quest.completedUsers.push(userId);
@@ -120,10 +119,50 @@ const completeQuiz = async (req, res) => {
         await user.save();
         return res.status(200).json(quest);
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
+const getPrizeClaimed = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            res.status(400).json({ message: 'User not found!' });
+            return;
+        }
+        const prizeClaimedArray = await User.findById(req.params.id).select(
+            'prizeClaimed'
+        );
+        res.status(200).json(prizeClaimedArray);
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+};
+
+const claimPrize = async (req, res) => {
+    try {
+        const { level } = req.body;
+        if (level > 10 || level < 1) {
+            res.status(405).json({ message: 'Level out of index!' });
+            return;
+        }
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            res.status(400).json({ message: 'User not found!' });
+            return;
+        }
+        const prizeClaimedArray = user.prizeClaimed;
+        if (prizeClaimedArray[level - 1] === 1) {
+            res.status(404).json({ message: 'Prize already claimed' });
+            return;
+        }
+        prizeClaimedArray[level - 1] = 1;
+        await user.save();
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+};
 
 module.exports = {
     getUser,
@@ -135,4 +174,6 @@ module.exports = {
     completeQuest,
     getUserPals,
     completeQuiz,
+    claimPrize,
+    getPrizeClaimed,
 };
