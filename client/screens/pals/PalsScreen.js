@@ -26,7 +26,7 @@ export default function PalsScreen({ navigation }) {
         {key: 6, name:'soda', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
         {key: 7, name:'vending machine', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
         {key: 8, name:'toaster', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
-        {key: 9, name:'soda', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
+        {key: 9, name:'soda', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
     ])
     const [commonPals, setCommonPals] = useState([])
     const [rarePals, setRarePals] = useState([])
