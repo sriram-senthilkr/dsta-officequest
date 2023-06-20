@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from "react-native-vector-icons";
+import { generatePal } from '../../api/pals';
 import { getUserPoints } from "../../api/user";
+import PrizeModal from '../../components/PrizeModal';
+import useAuth from '../../hooks/useAuth';
+
 import BottomNavigator from '../../components/BottomNavigation';
 import CountdownTimer from "./CountdownTimer";
 
 export default function HomeScreen({ navigation }) {
+    const { user, logoutUser } = useAuth()
     const [data, setData] = useState(oldData);
+    const [showModal, setShowModal] = useState(false)
+    const [prize, setPrize] = useState(null)
 
     // Calculating the current level and points for each bar
-    // let totalPoints = getUserPoints(userID);
+    // let totalPoints = getUserPoints(user._id);
     let totalPoints = 1150;
     let tempScore = totalPoints;
     let currentLevel = 0;
@@ -49,14 +56,47 @@ export default function HomeScreen({ navigation }) {
         calculateTotalPoints();
     }, []);
     */}
+
     
     
+
+    const toggleModal = () => {
+        setShowModal(!showModal)
+    }
+
+    const claimGacha = async ( userId ) => {
+        console.log("claim")
+        
+        const res = await generatePal(userId)
+        setPrize(res)
+        setShowModal(true)
+    }
+
+    const handleClaimPrize = (level, levelCompleted, isClaimed, prize) => {
+        if (isClaimed == true) {
+            Alert.alert("Error", "You have already claimed this prize!");
+        } else if (isClaimed == false && levelCompleted == false) {
+            Alert.alert("Error", "You cannot redeem this yet!");
+        } else {
+            claimGacha(user._id);
+            isClaimed = true;
+            // mongoDBData[level].isClaimed = true;
+            const newData = data.map(item => {
+                if (item.level === level) {
+                    return { ...item, isClaimed: true };
+                }
+                return item;
+            });
+            setData(newData);
+
+        }
+    };
 
     // Each Individual Level Component
     const Item = ({percentageString, level, total, isClaimed, onPress, current}) => {
 
+        // Change Background for button
         let btnBackgroundColor = '#3FFD3B'; // Default: Green
-
         if (isClaimed) {
             btnBackgroundColor = '#858585'; // Dark Grey
         } else if (!isClaimed && current < total) {
@@ -97,27 +137,6 @@ export default function HomeScreen({ navigation }) {
                 </View>
             </View>
         )
-    };
-
-
-    const handleClaimPrize = (level, levelCompleted, isClaimed, prize) => {
-        if (isClaimed == true) {
-            Alert.alert("Error", "You have already claimed this prize!");
-        } else if (isClaimed == false && levelCompleted == false) {
-            Alert.alert("Error", "You cannot redeem this yet!");
-        } else {
-            Alert.alert("Congratulations!", "You have won a " + prize + " for level " + level + "!");
-            isClaimed = true;
-            // mongoDBData[level].isClaimed = true;
-            const newData = data.map(item => {
-                if (item.level === level) {
-                    return { ...item, isClaimed: true };
-                }
-                return item;
-            });
-            setData(newData);
-
-        }
     };
     
 
@@ -209,9 +228,11 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.bottomNavigation}>
                     <BottomNavigator navigation={navigation} />
                 </View>
+                <PrizeModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
             </View>
         </View>
 
+        
     );
 }
 
