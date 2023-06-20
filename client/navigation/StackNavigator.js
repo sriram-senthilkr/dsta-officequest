@@ -13,7 +13,7 @@ export default function StackNavigator() {
     const { user } = useAuth()
     return (
         <Stack.Navigator>
-            {isLoggedIn ? (
+            {user ? (
                 <Stack.Group screenOptions={{ headerShown: false, presentation: 'fullScreenModal', animationEnabled: false}}>
                     <Stack.Screen name="HomeStack" component={HomeStack}/> 
                     <Stack.Screen name="QuestsStack" component={QuestsStack}/> 
