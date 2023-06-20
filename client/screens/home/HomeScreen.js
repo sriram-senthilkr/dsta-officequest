@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from "react-native-vector-icons";
+import { getUserPoints } from "../../api/user";
 import BottomNavigator from '../../components/BottomNavigation';
 import CountdownTimer from "./CountdownTimer";
 
@@ -8,6 +9,7 @@ export default function HomeScreen({ navigation }) {
     const [data, setData] = useState(oldData);
 
     // Calculating the current level and points for each bar
+    // let totalPoints = getUserPoints(userID);
     let totalPoints = 500;
     let tempScore = totalPoints;
     let currentLevel = 0;
@@ -133,67 +135,70 @@ export default function HomeScreen({ navigation }) {
 
     // Rendering the page
     return (
-        
-        <View style={styles.page}>
-            <View style={styles.pageHome}>
+        <View style={styles.background}>
+            <ImageBackground source={require('../../assets/background.png')} style={styles.backgroundImage}/>
 
-                <View style={styles.topTab}>
+            <View style={styles.page}>
+                <View style={styles.pageHome}>
+                
+                    <View style={styles.topTab}>
 
-                    <Text style={styles.headerText}>
+                        <Text style={styles.headerText}>
                         Welcome
-                    </Text>
+                        </Text>
 
-                    <View style={{paddingRight:'7%', paddingBottom:'1%',}}>
-                        <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
-                            <Ionicons name="person" color="#444" size={30}/>
-                        </TouchableOpacity>
+                        <View style={{paddingRight:'7%', paddingBottom:'1%',}}>
+                            <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
+                                <Ionicons name="person" color="#444" size={30}/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
 
-                <View style={{width:'100%', flexGrow:1, backgroundColor:'#D9D9D9', alignItems:'center', justifyContent:'center'}}>
-                    <View style={{width:'100%', height:'100%', position:'absolute', justifyContent:'space-evenly'}}>
-                        <View style={{height:'80%', justifyContent:'center', alignItems:'center'}}>
-                            <View style={[styles.defaultCard, {width:'90%', backgroundColor:'#FBE6B8'}]}>
-                                <View style={{height:60, width:'85%',justifyContent:'center'}}>
-                                    <Text style={{fontSize:30, fontWeight:700, color:"#A27A4E"}}>
+                    <View style={{width:'100%', flexGrow:1, alignItems:'center', justifyContent:'center'}}>
+                        <View style={{width:'100%', height:'100%', position:'absolute', justifyContent:'space-evenly'}}>
+                            <View style={{height:'80%', justifyContent:'center', alignItems:'center'}}>
+                                <View style={[styles.defaultCard, {width:'90%', backgroundColor:'#FBE6B8'}]}> 
+                                    <View style={{height:60, width:'85%',justifyContent:'center'}}>
+                                        <Text style={{fontSize:30, fontWeight:700, color:"#A27A4E"}}>
                                         The Breakroom
-                                    </Text>
-                                </View>
-                                <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                    <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
-                                        <View style={{height:'90%', width:'90%'}}>
-                                            <FlatList
-                                                style={{height:0, width:'100%'}}
-                                                data={data}
-                                                renderItem={renderItem}
-                                                keyExtractor={item => item.level}
-                                                showsVerticalScrollIndicator={false}
-                                            />
-                                        </View>
-                                        <View style={{paddingVertical:8}}>
-                                            <CountdownTimer />
+                                        </Text>
+                                    </View>
+                                    <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
+                                        <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, backgroundColor:'white', justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
+                                            <View style={{height:'90%', width:'90%'}}>
+                                                <FlatList
+                                                    style={{height:0, width:'100%'}}
+                                                    data={data}
+                                                    renderItem={renderItem}
+                                                    keyExtractor={item => item.level}
+                                                    showsVerticalScrollIndicator={false}
+                                                />
+                                            </View>
+                                            <View style={{paddingVertical:8}}>
+                                                <CountdownTimer />
+                                            </View>
+
                                         </View>
                                     </View>
                                 </View>
-                                
-                                
+                               
                             </View>
-                        </View>
-                        <View style={{height:'12%', justifyContent:'center', alignItems:'center'}}>
-                            <View style={[styles.defaultCard, { width:'60%', flexDirection:'row', borderRadius:40, height:"80%"}]}>
-                                <Text style={{fontWeight:500}}>Current Level: </Text>
-                                <Text style={{fontSize:20 , fontWeight:600}}>{currentLevel}</Text>
+                            <View style={{height:'12%', justifyContent:'center', alignItems:'center'}}>
+                                <View style={[styles.defaultCard, { width:'60%', flexDirection:'row', borderRadius:40, height:"80%"}]}>
+                                    <Text style={{fontWeight:500}}>Current Level: </Text>
+                                    <Text style={{fontSize:20 , fontWeight:600}}>{currentLevel}</Text>
+                                </View>
+                               
                             </View>
                         </View>
                     </View>
-                </View>
 
-            </View>
-            <View style={styles.bottomNavigation}>
-                <BottomNavigator navigation={navigation} />
+                </View>
+                <View style={styles.bottomNavigation}>
+                    <BottomNavigator navigation={navigation} />
+                </View>
             </View>
         </View>
-        
 
     );
 }
@@ -284,11 +289,26 @@ const oldData = [
     
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: "cover",
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        position: "absolute",
+    },
     page: {
+        // flex: 1,
         height: "100%",
         width: "100%",
         minWidth: 330,
-        backgroundColor: '#D9D9D9',
+
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: "Arial",
@@ -296,7 +316,6 @@ const styles = StyleSheet.create({
     pageHome: {
         width: "100%",
         flexGrow: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         flexDirection: "column",
     },
@@ -306,7 +325,6 @@ const styles = StyleSheet.create({
 
     },
     topTab: {
-        backgroundColor:'#D9D9D9',
         flexDirection:'row',
         alignItems: 'flex-end',
         justifyContent: 'space-between',
@@ -338,4 +356,5 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
         elevation: 1,
     }
+
 });
