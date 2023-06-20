@@ -5,32 +5,37 @@ import { SelectList} from 'react-native-dropdown-select-list'
 import { getUserPals } from '../../api/user';
 import { useIsFocused } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
+import ViewPrizeModal from '../../components/ViewPrizeModal';
+import ViewPalModal from '../../components/ViewPalModal'
 
 
 
 export default function PalsScreen({ navigation }) {
+    const [showPrizeModal, setShowPrizeModal] = useState(false)
+    const [showPalModal, setShowPalModal] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const [username, setUsername] = useState('')
+    const [highlightedPal, setHighlightedPal] = useState([])
     const [selectPal, setSelectPal] = useState('')
     const isFocused = useIsFocused()
     const [palsNumber, setPalsNumber] = useState([])
     const { user } = useAuth()
     const [pals, setPals] = useState([])
-    const [allPals, setAllPals]= useState([
-        {key: 0, name:'Cheeseburger', total:0, image:require('../../assets/cheeseburger.png'), lockedImage:require('../../assets/cheeseburger_black.png')},
-        {key: 1, name:'coffee', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
-        {key: 2, name:'ice cream', total:0, image:require('../../assets/ice_cream.png'), lockedImage:require('../../assets/ice_cream_black.png')},
-        {key: 3, name:'microwave', total:0, image:require('../../assets/microwave.png'), lockedImage:require('../../assets/microwave_black.png')},
-        {key: 4, name:'onigiri', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
-        {key: 5, name:'salmon', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
-        {key: 6, name:'soda', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
-        {key: 7, name:'vending machine', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
-        {key: 8, name:'toaster', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
-        {key: 9, name:'soda', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
-    ])
     const [commonPals, setCommonPals] = useState([])
     const [rarePals, setRarePals] = useState([])
     const [superRarePals, setSuperRarePals] = useState([])
+    const [allPals, setAllPals]= useState([
+        {key: 0, name:'Cheeseburger', description:'You are what you eat', total:0, image:require('../../assets/cheeseburger.png'), lockedImage:require('../../assets/cheeseburger_black.png')},
+        {key: 1, name:'coffee', description:'Drink me!', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
+        {key: 2, name:'ice cream', description:'Cold Cold Cold', total:0, image:require('../../assets/ice_cream.png'), lockedImage:require('../../assets/ice_cream_black.png')},
+        {key: 3, name:'microwave', description:'I cook food!', total:0, image:require('../../assets/microwave.png'), lockedImage:require('../../assets/microwave_black.png')},
+        {key: 4, name:'onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
+        {key: 5, name:'salmon', description:'Salmon-nella...', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
+        {key: 6, name:'soda', description:'Coke? Or Pepsi...', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
+        {key: 7, name:'vending machine', description:'Dorameon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
+        {key: 8, name:'toaster', description:'Better then microwave', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
+        {key: 9, name:'hotdog', description:'Hot dwagg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
+    ])
 
     useEffect(() => {
             
@@ -78,12 +83,18 @@ export default function PalsScreen({ navigation }) {
 
     }
 
+    const togglePrizeModal = () => {
+        setShowPrizeModal(!showPrizeModal)
+    }
+    const togglePalModal = () => {
+        console.log(showPalModal)
+        setShowPalModal(!showPalModal)
+    }
 
-    const Item = ({name, total, image, lockedImage}) => (
+    const Item = ({name, total, image, lockedImage, onPress}) => (
         <View style={{width:80, height:70,alignItems:'center', flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
-
             <View style={{flexDirection:'row-reverse'}}>
-                <View style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
+                <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
                         <Image 
                         style={{width: 45, height: 45}}
@@ -98,23 +109,29 @@ export default function PalsScreen({ navigation }) {
                             resizeMode={'contain'}
                         />
                     )}
-                </View>
-                <View style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={{width:16, height:16, borderRadius:8, backgroundColor:'#A7A7A7', position:'absolute', justifyContent:'center', alignItems:'center'}}>
                     <Text style={{fontSize:10}}>
                         {total}
                     </Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
 
 
     const renderItem = ({item}) => {
+        function handleHighlightPal () {
+            setHighlightedPal(item)
+            togglePalModal()
+        }
+
         return (
             <Item 
                 total={item.total}
                 image={item.image}
                 lockedImage={item.lockedImage}
+                onPress={()=>handleHighlightPal()}
             />
         )
     }
@@ -134,11 +151,11 @@ export default function PalsScreen({ navigation }) {
                                 <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'white'}]}>
                                     <View style={{height:65, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
                                         <Text style={{fontSize:30, fontWeight:700}}>
-                                    PantryPals
+                                            PantryPals
                                         </Text>
-                                        <TouchableOpacity style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
+                                        <TouchableOpacity onPress={togglePrizeModal} style={{height:30, width:60, backgroundColor:'#E0E0E0', borderRadius:9, justifyContent:'center', alignItems:'center'}}>
                                             <Text>
-                                            Prize
+                                                Prize
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -149,7 +166,7 @@ export default function PalsScreen({ navigation }) {
                                                     <View style={{alignItems:'center'}}>
                                                         <View style={{width:'95%'}}>
                                                             <Text style={{fontWeight:600, fontSize:16}}>
-                                                            Common
+                                                                Common
                                                             </Text>
                                                             <View style={{height:90, width:'100%'}}>
                                                                 {<FlatList
@@ -163,7 +180,7 @@ export default function PalsScreen({ navigation }) {
                                                         </View>
                                                         <View style={{width:'95%'}}>
                                                             <Text style={{fontWeight:600, fontSize:16}}>
-                                                            Rare
+                                                                Rare
                                                             </Text>
                                                             <View style={{height:90, width:'100%'}}>
                                                                 <FlatList
@@ -252,6 +269,8 @@ export default function PalsScreen({ navigation }) {
                     <BottomNavigator navigation={navigation} />
                 </View>
             </View>
+            <ViewPrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
+            <ViewPalModal visible={showPalModal} closeModal={togglePalModal} highlightedPal={highlightedPal}/>
         </View>
     );
 }
