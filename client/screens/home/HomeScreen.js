@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useIsFocused, useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from "react-native-vector-icons";
 import { generatePal } from '../../api/pals';
@@ -10,14 +10,17 @@ import BottomNavigator from '../../components/BottomNavigation';
 import CountdownTimer from "./CountdownTimer";
 
 export default function HomeScreen({ navigation }) {
-    const { user, logoutUser } = useAuth()
+    const { user } = useAuth();
     const [data, setData] = useState(oldData);
     const [showModal, setShowModal] = useState(false)
     const [prize, setPrize] = useState(null)
+    const [refresh, setRefresh] = useState(false)
+    // const isFocused = useIsFocused()
+
 
     // Calculating the current level and points for each bar
     // let totalPoints = getUserPoints(user._id);
-    let totalPoints = 1150;
+    let totalPoints = 2650;
     let tempScore = totalPoints;
     let currentLevel = 0;
   
@@ -57,11 +60,25 @@ export default function HomeScreen({ navigation }) {
     }, []);
     */}
 
-    
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             setData(data)
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    //     fetchData()
+    //     if (refresh) {
+    //         setRefresh(false)
+    //     }
+        
+    // }, [refresh]);
     
 
     const toggleModal = () => {
         setShowModal(!showModal)
+        setRefresh(true)
     }
 
     const claimGacha = async ( userId ) => {
@@ -72,6 +89,17 @@ export default function HomeScreen({ navigation }) {
         setShowModal(true)
     }
 
+    const updateClaim = (level) => {
+        const newData = data.map(item => {
+            if (item.level === level) {
+                return { ...item, isClaimed: true };
+            }
+            return item;
+        });
+        setData(newData);
+    }
+        
+
     const handleClaimPrize = (level, levelCompleted, isClaimed, prize) => {
         if (isClaimed == true) {
             Alert.alert("Error", "You have already claimed this prize!");
@@ -79,16 +107,17 @@ export default function HomeScreen({ navigation }) {
             Alert.alert("Error", "You cannot redeem this yet!");
         } else {
             claimGacha(user._id);
-            isClaimed = true;
+            // isClaimed = true;
             // mongoDBData[level].isClaimed = true;
-            const newData = data.map(item => {
-                if (item.level === level) {
-                    return { ...item, isClaimed: true };
-                }
-                return item;
-            });
-            setData(newData);
-
+            // const newData = data.map(item => {
+            //     if (item.level === level) {
+            //         return { ...item, isClaimed: true };
+            //     }
+            //     return item;
+            // });
+            // setData(newData);
+            updateClaim(level);
+            
         }
     };
 
