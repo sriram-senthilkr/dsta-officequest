@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Alert, FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native';
-import BottomNavigator from '../../components/BottomNavigation';
-import { getLeaderboard } from "../../api/leaderboard";
+import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
 
 export default function LeaderboardScreen({ navigation }) {
     const [data, setData] = useState(oldData);
@@ -88,7 +86,7 @@ export default function LeaderboardScreen({ navigation }) {
                 </View>
             </View>
             <View style={styles.bottomNavigation}>
-                <BottomNavigator navigation={navigation} />
+                {/* <BottomNavigator navigation={navigation} /> */}
             </View>
         </View>
     );
