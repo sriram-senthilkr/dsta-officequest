@@ -6,7 +6,7 @@ import LongInput from '../../components/LongInput';
 import BackButton from '../../components/BackButton';
 import { resetQuests } from '../../api/quest';
 import { generatePal } from '../../api/pals';
-import PrizeModal from '../../components/PrizeModal';
+import RollModal from '../../components/RollModal';
 
 // eslint-disable-next-line no-unused-vars
 const SettingScreen = ({ navigation }) => {
@@ -74,7 +74,7 @@ const SettingScreen = ({ navigation }) => {
             <LongButton text="Roll Gacha" onPress={()=>{handleRoll(user._id)}}/>
 
             <LongButton text="Logout" textColor="white" color="#FD5B61" onPress={()=>{handleLogout()}}/>
-            <PrizeModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
+            <RollModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
         </View>
     )
 }

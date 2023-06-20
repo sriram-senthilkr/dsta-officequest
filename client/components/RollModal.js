@@ -7,18 +7,30 @@ import React from 'react'
 //closeModal: setState for visiblestate (setState())
 //prize: prize to show (string)
 //prizetype: "gacha" or "others"
-const PrizeModal = ({ visible, closeModal, prize, prizeType }) => {
-    const map = [
-        {key: 0, name:'Cheeseburger', description:'You are what you eat', image:require('../assets/cheeseburger.png')},
-        {key: 1, name:'coffee', description:'Drink me!', image:require('../assets/coffee.png')},
-        {key: 2, name:'ice cream', description:'Cold Cold Cold', image:require('../assets/ice_cream.png')},
-        {key: 3, name:'microwave', description:'I cook food!', image:require('../assets/microwave.png')},
-        {key: 4, name:'onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', image:require('../assets/onigiri.png')},
-        {key: 5, name:'salmon', description:'Salmon-nella...', image:require('../assets/salmon_maki.png')},
-        {key: 6, name:'soda', description:'Coke? Or Pepsi...', image:require('../assets/soda.png')},
-        {key: 7, name:'vending machine', description:'Dorameon!', image:require('../assets/vending_machine.png')},
-        {key: 8, name:'toaster', description:'Better then microwave', image:require('../assets/toaster.png')},
-        {key: 9, name:'hotdog', description:'Hot dwagg!', image:require('../assets/hotdog.png')},
+const RollModal = ({ visible, closeModal, prize }) => {
+    const imageMap = [
+        require('../assets/cheeseburger.png'),
+        require('../assets/coffee.png'),
+        require('../assets/ice_cream.png'),
+        require('../assets/microwave.png'),
+        require('../assets/onigiri.png'),
+        require('../assets/salmon_maki.png'),
+        require('../assets/soda.png'),
+        require('../assets/vending_machine.png'),
+        require('../assets/toaster.png'),
+        require('../assets/hotdog.png'),
+    ]
+    const nameMap = [
+        {name:'Cheeseburger', description:'You are what you eat'},
+        {name:'Coffee', description:'Drink me!'},
+        {name:'Ice cream', description:'Cold Cold Cold'},
+        {name:'Microwave', description:'I cook food!'},
+        {name:'Onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!'},
+        {name:'Salmon', description:'Salmon-nella...'},
+        {name:'Soda', description:'Coke? Or Pepsi...'},
+        {name:'Vending machine', description:'Dorameon!'},
+        {name:'Toaster', description:'Better then microwave'},
+        {name:'Hotdog', description:'Hot dwagg!'}
     ]
 
     // const gacha = (prizeType === 'gacha') ? (
@@ -41,12 +53,14 @@ const PrizeModal = ({ visible, closeModal, prize, prizeType }) => {
                     <View style={styles.modalView}>
                         <Text style={{fontWeight: 600, fontSize: 40, marginBottom:20}}>Congrats!</Text>
                         <Text style={{fontSize: 20, marginBottom: 20}}>You received:</Text>
-                        <Text style={styles.modalText}>{prize}</Text>
-                        {/* <Image
-                            style={{width:45, height:45}}
-                            source={map.filter(obj=>obj.key === prize).image}
+                        
+                        <Image
+                            style={{width:45, height:45, marginBottom:10}}
+                            source={imageMap[`${prize}`]}
                             resizeMode={'contain'}
-                        /> */}
+                        />
+                        <Text style={{ textAlign:'center', fontWeight:'bold'}}>{nameMap[prize].name}</Text>
+                        <Text style={{ textAlign:'center', marginBottom:20}}>{nameMap[prize].description}</Text>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => closeModal()}
@@ -99,11 +113,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
 });
 
   
-export default PrizeModal
+export default RollModal
