@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from "react";
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from "react-native-vector-icons";
 import BottomNavigator from '../../components/BottomNavigation';
 import CountdownTimer from "./CountdownTimer";
@@ -160,7 +160,7 @@ export default function HomeScreen({ navigation }) {
                                     </Text>
                                 </View>
                                 <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                    <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, backgroundColor:'white', justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
+                                    <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
                                         <View style={{height:'90%', width:'90%'}}>
                                             <FlatList
                                                 style={{height:0, width:'100%'}}

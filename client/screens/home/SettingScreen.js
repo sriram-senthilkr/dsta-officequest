@@ -27,7 +27,7 @@ const SettingScreen = ({ navigation }) => {
             alert()
         )
     }
-    
+
     return (
         <View style={styles.page}>
             <View style={styles.topBar}>
@@ -51,7 +51,7 @@ const SettingScreen = ({ navigation }) => {
                 onChangeText={()=>{console.log("onchange")}}
             />
             <LongButton text="Save" onPress={()=>{console.log("save username")}}/>
-            <LongButton text="Logout" onPress={()=>{handleLogout()}}/>
+            <LongButton text="Logout" textColor="white" color="#FD5B61" onPress={()=>{handleLogout()}}/>
             <LongButton text="Reset Quests" onPress={()=>{handleReset(user._id)}}/>
         </View>
     )
