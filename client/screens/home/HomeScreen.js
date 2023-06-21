@@ -21,32 +21,21 @@ export default function HomeScreen({ navigation }) {
     const [prizeClaimed, setPrizeClaimed] = useState([])
     const isFocused = useIsFocused()
 
+
+
     useEffect(() => {
-    // Calculating the current level and points for each bar
-        // const fetchUserPoints = async () => {
-        //     try {
-                
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // };
-        
-
-        const fetchPrizeClaimed = async () => {
+        const fetchAPIData = async () => {
             try {
-                const dbData = await getPrizeClaimed(user._id);
-                // setPrizeClaimed(dbData.data);
-                console.log("Prize claimed array retrieved: " + dbData.data)
+                const dbData = await getUserPoints(user._id);
+                console.log("Total points retrieved: " + totalPoints)
 
-                const dbData2 = await getUserPoints(user._id);
-                // setTotalPoints(dbData2.data);
-                console.log("Total points retrieved: " + dbData2.data)
-                console.log(totalPoints)
+                const dbData2 = await getPrizeClaimed(user._id);
+                console.log("Prize claimed array retrieved: " + dbData2.data)
 
-                const tempPrizeClaimed = dbData.data
-                let tempScore = dbData2.data;
+                const tempPrizeClaimed = dbData2.data;
+                let tempScore = dbData.data;
                 let tempData = data;
-
+  
                 for (let i = 0; i < tempData.length; i++) {
                     if (tempPrizeClaimed[i] === 1) {
                         tempData[i].isClaimed = true;
@@ -66,28 +55,17 @@ export default function HomeScreen({ navigation }) {
                     }
                 }
                 setData(tempData);
-                setTotalPoints(dbData2.data);
-                setPrizeClaimed(dbData.data);
+                setTotalPoints(dbData.data);
+                setPrizeClaimed(dbData2.data);
 
             } catch (error) {
-                console.log(error);
+                console.log(error);;
             }
+
             
-
-        };
-
-        // fetchUserPoints();
-        fetchPrizeClaimed();
-        console.log(prizeClaimed)
-        
-
-        
-
-        if (refresh) {
-            setRefresh(false)
         }
-    }, [isFocused, refresh]);
-    
+        fetchAPIData();
+    }, [isFocused, refresh])
    
 
     const updateDbClaimArray = async (level) => {
@@ -116,14 +94,20 @@ export default function HomeScreen({ navigation }) {
 
     const claimVoucher = async ( userId ) => {
         console.log("claim Prize")
-        // setShowPrizeModal(true)
+        setShowPrizeModal(true)
     }
 
     const claimPal = async ( userId ) => { 
         console.log("claim Pal")
-        const res = await generatePal(userId)
-        setPrize(res)
-        // setShowPalModal(true)
+        try{
+            const res = await generatePal(userId)
+            setPrize(res.data)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error);
+        }
+        
+        setShowPalModal(true)
     }
 
         
@@ -141,7 +125,6 @@ export default function HomeScreen({ navigation }) {
             }
             updateDbClaimArray(level);
             updateFClaimArray(level);
-            // setRefresh(true);
         }
     };
 
@@ -288,6 +271,8 @@ export default function HomeScreen({ navigation }) {
                 </View>
                 {/* <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
                 <PalModal visible={showPalModal} closeModal={togglePalModal} prize={prize}/> */}
+                <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal} prizeName={"2 x Movie Tickets"}/>
+                <PalModal visible={showPalModal} closeModal={togglePalModal} prize={prize}/>
             </View>
         </View>
         
@@ -447,3 +432,16 @@ const styles = StyleSheet.create({
     }
 
 });
+
+const allPals = [
+    {key: 0, name:'Cheeseburger', description:'You are what you eat', total:0, image:require('../../assets/cheeseburger.png'), lockedImage:require('../../assets/cheeseburger_black.png')},
+    {key: 1, name:'Coffee', description:'Drink me!', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
+    {key: 2, name:'Ice cream', description:'Cold Cold Cold', total:0, image:require('../../assets/ice_cream.png'), lockedImage:require('../../assets/ice_cream_black.png')},
+    {key: 3, name:'Microwave', description:'I cook food!', total:0, image:require('../../assets/microwave.png'), lockedImage:require('../../assets/microwave_black.png')},
+    {key: 4, name:'Onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
+    {key: 5, name:'Salmon', description:'Salmon-nella...', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
+    {key: 6, name:'Soda', description:'Coke? Or Pepsi...', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
+    {key: 7, name:'Vending machine', description:'Doraemon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
+    {key: 8, name:'Toaster', description:'Better then microwave', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
+    {key: 9, name:'Hotdog', description:'Hot dawgg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
+];
