@@ -10,20 +10,25 @@ import ViewPalModal from '../../components/ViewPalModal'
 
 
 
+
 export default function PalsScreen({ navigation }) {
     const [showPrizeModal, setShowPrizeModal] = useState(false)
     const [showPalModal, setShowPalModal] = useState(false)
     const [refresh, setRefresh] = useState(false)
-    const [username, setUsername] = useState('')
-    // const username = useRef('')
-    const [highlightedPal, setHighlightedPal] = useState([])
-    const [selectPal, setSelectPal] = useState('')
+    const username = useRef('')
+    //const [highlightedPal, setHighlightedPal] = useState([])
+    const highlightedPal = useRef([])
+    //const [selectPal, setSelectPal] = useState('')
+    const selectPal = useRef('')
     const isFocused = useIsFocused()
     const { user } = useAuth()
     const [pals, setPals] = useState([])
-    const [commonPals, setCommonPals] = useState([])
-    const [rarePals, setRarePals] = useState([])
-    const [superRarePals, setSuperRarePals] = useState([])
+    //const [commonPals, setCommonPals] = useState([])
+    const commonPals = useRef([])
+    //const [rarePals, setRarePals] = useState([])
+    const rarePals = useRef([])
+    //const [superRarePals, setSuperRarePals] = useState([])
+    const superRarePals = useRef([])
     const [allPals, setAllPals]= useState([
         {key: 0, name:'Cheeseburger', description:'You are what you eat', total:0, image:require('../../assets/cheeseburger.png'), lockedImage:require('../../assets/cheeseburger_black.png')},
         {key: 1, name:'Coffee', description:'Drink me!', total:0, image:require('../../assets/coffee.png'), lockedImage:require('../../assets/coffee_black.png')},
@@ -38,7 +43,7 @@ export default function PalsScreen({ navigation }) {
     ])
 
     useEffect(() => {
-        console.log('asddas')
+        console.log('reloaded')
         if (isFocused) {
             fetchData()
         }
@@ -47,25 +52,27 @@ export default function PalsScreen({ navigation }) {
             setRefresh(false)
             fetchData()
         }
-    }, [isFocused])
+    }, [isFocused, refresh])
 
 
     async function fetchData() {
         
         try {
-            const data = await getUserPals(user._id)
-
+            const fullData = await getUserPals(user._id)
+            const data = fullData.data
+            var updated = ([])
             for (var i = 0; i < data.length; i++) {
                 const objectIndex = allPals.findIndex(pal => pal.key === i);
                 const updatedPals = [...allPals];
                 const total = data[i]
                 updatedPals[objectIndex].total = total;
-                setAllPals(updatedPals);
+                updated = updatedPals
             }
 
-            setCommonPals(allPals.slice(0,5))
-            setRarePals(allPals.slice(5,8))
-            setSuperRarePals(allPals.slice(8,10))
+            commonPals.current = (updated.slice(0,5))
+            rarePals.current = (updated.slice(5,8))
+            superRarePals.current = (updated.slice(8,10))
+            setAllPals(updated);
 
         } catch (error) {
             console.log(error)
@@ -91,15 +98,24 @@ export default function PalsScreen({ navigation }) {
         Alert.alert('claimed')
     }
 
-    function handleSendPal () {
-        const nameToFind = selectPal;
+    async function handleSendPal () {
+        const nameToFind = selectPal.current;
         const palNumber = allPals.findIndex(pal => pal.name === nameToFind);  
+        const sendTo = username.current.toString()
+        console.log(sendTo)
         try {
-            sendPal (user._id, username, palNumber)
-            Alert.alert('sent successful')
-            setRefresh(true)
+            const response = await sendPal (user._id, sendTo, palNumber)
+            console.log(palNumber)
+            if (response.error === true) {
+                SetError(response.message)
+                Alert.alert(response.message)
+            }
+            else {
+                Alert.alert('sent successful')
+                setRefresh(true)
+            }
         } catch (error) {
-            Alert.alert("error")
+            Alert.alert('error')
         }
     }
 
@@ -115,12 +131,17 @@ export default function PalsScreen({ navigation }) {
             <View style={{flexDirection:'row-reverse'}}>
                 <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
+                        <View style={{justifyContent:'center', alignItems:'center'}}>
                         <Image 
                             style={{width: 45, height: 45}}
                             source={lockedImage}
                             resizeMode={'contain'}
                             opacity={0.3}
                         />
+                        <Text style={{position:'absolute', opacity:0.5, paddingTop:5}}>
+                            ?
+                        </Text>
+                        </View>
                     ):(
                         <Image 
                             style={{width: 45, height: 45}}
@@ -141,7 +162,7 @@ export default function PalsScreen({ navigation }) {
 
     const renderItem = ({item}) => {
         function handleHighlightPal () {
-            setHighlightedPal(item)
+            highlightedPal.current = (item)
             togglePalModal()
         }
         return (
@@ -167,7 +188,7 @@ export default function PalsScreen({ navigation }) {
                         <View style={{width:'100%', height:'100%', position:'absolute'}}>
                             <View style={{flexGrow:1, justifyContent:'center', alignItems:'center'}}>
                                 <View style={[styles.defaultCard, {position:'absolute', width:'90%', height:'100%',backgroundColor:'white'}]}>
-                                    <View style={{height:65, width:'85%',justifyContent:'space-between', alignItems:'center', flexDirection:'row'}}>
+                                    <View style={{height:80, width:'85%',justifyContent:'space-between', alignItems:'flex-end', flexDirection:'row', paddingBottom:20}}>
                                         <Text style={{fontSize:30, fontWeight:700}}>
                                             PantryPals
                                         </Text>
@@ -178,8 +199,8 @@ export default function PalsScreen({ navigation }) {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                        <View style={{height:'100%', width:'90%', position:'absolute', justifyContent:'flex-start', alignItems:'center',}}>
-                                            <View style={{height:'60%', width:'100%'}}>
+                                        <View style={{height:'100%', width:'90%', position:'absolute', justifyContent:'flex-start', alignItems:'center'}}>
+                                            <View style={{height:'65%', width:'100%'}}>
                                                 <ScrollView style={{position:'absolute', height:'100%', width:'100%',}}>
                                                     <View style={{alignItems:'center'}}>
                                                         <View style={{width:'95%'}}>
@@ -191,7 +212,7 @@ export default function PalsScreen({ navigation }) {
                                                                     horizontal
                                                                     style={{height:0, width:'100%'}}
                                                                     showsHorizontalScrollIndicator={false}
-                                                                    data={commonPals}
+                                                                    data={commonPals.current}
                                                                     renderItem={renderItem}
                                                                     maxToRenderPerBatch={3}
                                                                 />}
@@ -206,7 +227,7 @@ export default function PalsScreen({ navigation }) {
                                                                     horizontal
                                                                     style={{height:0, width:'100%'}}
                                                                     showsHorizontalScrollIndicator={false}
-                                                                    data={rarePals}
+                                                                    data={rarePals.current}
                                                                     renderItem={renderItem}
                                                                 />
                                                             </View>
@@ -220,7 +241,7 @@ export default function PalsScreen({ navigation }) {
                                                                     horizontal
                                                                     style={{height:0, width:'100%'}}
                                                                     showsHorizontalScrollIndicator={false}
-                                                                    data={superRarePals}
+                                                                    data={superRarePals.current}
                                                                     renderItem={renderItem}
                                                                 />
                                                             </View>
@@ -228,21 +249,20 @@ export default function PalsScreen({ navigation }) {
                                                     </View>
                                                 </ScrollView>
                                             </View>
-                                            <View style={{width:'90%', height:130, justifyContent:'space-around'}}>
+                                            <View style={{width:'90%', height:'30%', justifyContent:'space-around'}}>
                                                 <View style={{flexDirection:'row', justifyContent:'space-around'}}>
-                                                    <View style={{width:'63%'}}>
+                                                    <View style={{width:'55%'}}>
                                                         <Text style={{paddingLeft:5, fontWeight:600}}>
                                                     Send Pals to:
                                                         </Text>
                                                         <TextInput style={styles.textInput}
                                                             placeholder="username" 
-                                                            onChangeText={(val) => setUsername(val)} 
+                                                            onChangeText={(val) => (username.current = (val))} 
                                                             autoCapitalize="none" 
                                                             autoCorrect={false} 
-                                                            value={username}
                                                         />
                                                     </View>
-                                                    <View style={{width:'33%'}}>
+                                                    <View style={{width:'40%'}}>
                                                         <Text style={{paddingLeft:5, fontWeight:600}}>
                                                     Select Pal:
                                                         </Text>
@@ -253,7 +273,7 @@ export default function PalsScreen({ navigation }) {
                                                                 dropdownTextStyles={styles.dropdownTextStyles}
                                                                 boxStyles={styles.boxStyles}
                                                                 inputStyles={styles.inputStyles}  
-                                                                setSelected={(val) => setSelectPal(val)} 
+                                                                setSelected={(val) => (selectPal.current = (val))} 
                                                                 data={pals} 
                                                                 save="value"
                                                                 placeholder='Select'
@@ -289,7 +309,7 @@ export default function PalsScreen({ navigation }) {
                 </View>
             </View>
             <ViewPrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
-            <ViewPalModal visible={showPalModal} closeModal={togglePalModal} highlightedPal={highlightedPal}/>
+            <ViewPalModal visible={showPalModal} closeModal={togglePalModal} highlightedPal={highlightedPal.current}/>
         </View>
     );
 }
