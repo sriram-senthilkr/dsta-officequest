@@ -4,7 +4,7 @@ import { Ionicons } from "react-native-vector-icons";
 const NavigationIcon = ({ route, isFocused }) => {
     const size = 25
     const nonColor = '#999'
-    const focusColor = '#000'
+    const focusColor = '#FFF'
     if (route === "Home") {
         return (
             <Ionicons name={"home-outline"} size={size} color={isFocused ? focusColor : nonColor}/>

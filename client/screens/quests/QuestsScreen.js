@@ -181,7 +181,7 @@ export default function QuestsScreen({ navigation }) {
                             <Text style={{ fontSize: 24, fontWeight: 600}}>{item.title}</Text>
                             <View style={{ flexDirection:'column'}}>
                                 <Text>Points:</Text>
-                                <Text style={{ fontSize: 14, fontWeight: 600}}>{item.points}</Text>
+                                <Text style={{ fontSize: 14, fontWeight: 800, color:'#AF9D5A'}}>{item.points}</Text>
                             </View>
                         </View>
                         
@@ -197,7 +197,7 @@ export default function QuestsScreen({ navigation }) {
 
     return (
         <View style={styles.background}>
-            <ImageBackground source={require('../../assets/background.png')} style={styles.backgroundImage}/>
+            <ImageBackground source={require('../../assets/bb.jpg')} style={styles.backgroundImage}/>
             <View style={styles.page}>
                 <View style={styles.pageHome}>
 

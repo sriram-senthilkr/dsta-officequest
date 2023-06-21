@@ -25,7 +25,7 @@ Content-Type: application/json
 # daily drop: 648fcfcc93c637b4fda41515
 # on time: 648fcfe293c637b4fda41517
 # company event: 648fcff793c637b4fda41519
-GET http://localhost:3001/quests/pw/648fcfe293c637b4fda41517
+GET http://localhost:3001/quests/pw/648fcff793c637b4fda41519
 
 Content-Type: application/json
 

@@ -40,7 +40,7 @@ const TabBar = ({ state, descriptors, navigation}) => {
                     <View key={index} style={styles.mainItemContainer}>
                         <Pressable
                             onPress={onPress}
-                            style = {{backgroundColor: isFocused?"#D9D9D9": "#FFF", borderRadius: 21, }}
+                            style = {{backgroundColor: isFocused?"#AF9D5A": "#FFF", borderRadius: 21, }}
                         >
                             <View style={{ justifyContent: 'center', alignItems:'center', flex:1, padding:15 }}>
                                 <NavigationIcon isFocused={isFocused} route={label}/>

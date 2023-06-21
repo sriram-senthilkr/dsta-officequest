@@ -107,7 +107,7 @@ export default function PalsScreen({ navigation }) {
             const response = await sendPal (user._id, sendTo, palNumber)
             console.log(palNumber)
             if (response.error === true) {
-                SetError(response.message)
+                // setError(response.message)
                 Alert.alert(response.message)
             }
             else {
@@ -132,15 +132,15 @@ export default function PalsScreen({ navigation }) {
                 <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
                         <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <Image 
-                            style={{width: 45, height: 45}}
-                            source={lockedImage}
-                            resizeMode={'contain'}
-                            opacity={0.3}
-                        />
-                        <Text style={{position:'absolute', opacity:0.5, paddingTop:5}}>
-                            ?
-                        </Text>
+                            <Image 
+                                style={{width: 45, height: 45}}
+                                source={lockedImage}
+                                resizeMode={'contain'}
+                                opacity={0.3}
+                            />
+                            <Text style={{position:'absolute', opacity:0.5, paddingTop:5}}>
+                                ?
+                            </Text>
                         </View>
                     ):(
                         <Image 
@@ -177,7 +177,7 @@ export default function PalsScreen({ navigation }) {
 
     return (
         <View style={styles.background}>
-            <ImageBackground source={require('../../assets/background.png')} style={styles.backgroundImage}/>
+            <ImageBackground source={require('../../assets/bb.jpg')} style={styles.backgroundImage}/>
             <View style={styles.page}>
                 <View style={styles.pageHome}>
 
@@ -264,7 +264,7 @@ export default function PalsScreen({ navigation }) {
                                                     </View>
                                                     <View style={{width:'40%'}}>
                                                         <Text style={{paddingLeft:5, fontWeight:600}}>
-                                                    Select Pal:
+                                                            Select Pal:
                                                         </Text>
                                                         <View style={{height:45}}>
                                                             <SelectList
@@ -283,8 +283,8 @@ export default function PalsScreen({ navigation }) {
                                                         </View>
                                                     </View>
                                                 </View>
-                                                <TouchableOpacity onPress={()=>handleSendPal()} style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                                                    <Text style={{fontSize:16, fontWeight:600}}>
+                                                <TouchableOpacity onPress={()=>handleSendPal()} style={{ height:45, width:'100%', borderRadius:12, backgroundColor:'#AF9D5A', justifyContent:'center', alignItems:'center', zIndex:-1}}>
+                                                    <Text style={{fontSize:16, fontWeight:600, color:'white'}}>
                                                     Send
                                                     </Text>
                                                 </TouchableOpacity>
@@ -294,9 +294,9 @@ export default function PalsScreen({ navigation }) {
                                 </View>
                             </View>
                             <View style={{height:75, paddingVertical:15, justifyContent:'center', alignItems:'center', zIndex:-1}}>
-                                <TouchableOpacity activeOpacity={0.9} onPress={()=>handleClaimPrize()} style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'#E0E0E0', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
-                                    <Text style={{fontSize:16, fontWeight:600}}>
-                                    Redeem Prize
+                                <TouchableOpacity activeOpacity={0.9} onPress={()=>handleClaimPrize()} style={{zIndex:-999999, height:'100%', width:'70%', borderRadius:18, backgroundColor:'white', justifyContent:'center', alignItems:'center', shadowColor: '#000', shadowOffset: { width: 2, height: 2 }, shadowOpacity: 0.5, shadowRadius: 1, elevation: 1,}}>
+                                    <Text style={{fontSize:16, fontWeight:600, color:'#AF9D5A'}}>
+                                        Redeem Prize
                                     </Text>
                                 </TouchableOpacity>
                             </View>
