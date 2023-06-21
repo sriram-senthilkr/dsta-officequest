@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
-import {FlatList, StyleSheet, Text, View } from 'react-native';
+import {FlatList, StyleSheet, Text, View, RefreshControl } from 'react-native';
 import BottomNavigator from '../../components/BottomNavigation';
 import { getLeaderboard } from "../../api/leaderboard";
 
 export default function LeaderboardScreen({ navigation }) {
 
     const [data, setData] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        const getData = async () => {
-            try {
-                const leaderboardArray = await getLeaderboard();
-                setData(leaderboardArray.data)
-            } catch (error) {
-                console.log(error)
-            }
+        getData();
+    }, []);
+
+    const getData = async () => {
+        try {
+            const leaderboardArray = await getLeaderboard();
+            setData(leaderboardArray.data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setRefreshing(false);
         }
-        getData()
-    }, [])
+    };
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        getData();
+    };
 
     // Each Individual Level Component
     const Item = ({total, name, level, backgroundColor}) => (
@@ -66,7 +75,6 @@ export default function LeaderboardScreen({ navigation }) {
 
     // Rendering the page
     return (
-        
         <View style={styles.page}>
             <View style={styles.pageHome}>
                 <View style={{width:'100%', flexGrow:1, backgroundColor:'#D9D9D9', alignItems:'center', justifyContent:'center'}}>
@@ -87,6 +95,12 @@ export default function LeaderboardScreen({ navigation }) {
                                                 data={data}
                                                 renderItem={renderItem}
                                                 showsVerticalScrollIndicator={false}
+                                                refreshControl={
+                                                    <RefreshControl
+                                                      refreshing={refreshing}
+                                                      onRefresh={onRefresh}
+                                                    />
+                                                  }
                                             />
                                         </View>
                                         <View style={{paddingVertical:8}}>
