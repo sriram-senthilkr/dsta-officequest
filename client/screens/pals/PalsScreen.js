@@ -125,12 +125,17 @@ export default function PalsScreen({ navigation }) {
             <View style={{flexDirection:'row-reverse'}}>
                 <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
+                        <View style={{justifyContent:'center', alignItems:'center'}}>
                         <Image 
                             style={{width: 45, height: 45}}
                             source={lockedImage}
                             resizeMode={'contain'}
                             opacity={0.3}
                         />
+                        <Text style={{position:'absolute', opacity:0.5}}>
+                            ?
+                        </Text>
+                        </View>
                     ):(
                         <Image 
                             style={{width: 45, height: 45}}
