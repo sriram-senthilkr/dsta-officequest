@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Arial",
         borderRadius:30,
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 3 },

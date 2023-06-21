@@ -39,10 +39,9 @@ const AddQuestScreen = () => {
         <View style={styles.page}>
             <View style={styles.topBar}>
                 <BackButton/>
-            </View>
-            <View style={{ alignItems: 'flex-start', width:'100%'}}>
                 <Text style={{ fontSize: 35, fontWeight: 900}}>Add Quest</Text>
             </View>
+        
             <View style={{width:'100%', alignItems:'center'}}>
                 <LongInput label="Title" placeholder="Quest Name" onChangeText={(title) => setQuest({...quest, title: title})}/>
                 
@@ -66,7 +65,7 @@ const AddQuestScreen = () => {
                 <LongInput label="Points" placeholder="200" onChangeText={(points) => setQuest({...quest, points: points})}/>
                 
                 
-                <Text style={{textAlign:'left', fontSize:20, marginTop: 20}}>{startDate.toString()}</Text>
+                <Text style={{textAlign:'left', fontSize:20, marginTop: 10}}>{startDate.toString()}</Text>
                 <LongButton text="Pick Start Date" color="#B1b1b1" onPress={() => setOpenStart(true)}/>
 
                 <DateTimePickerModal
@@ -96,7 +95,7 @@ const AddQuestScreen = () => {
                     isDarkModeEnabled={true}
                 />
             </View>
-            <View style={{width:'100%', marginTop:50}}>
+            <View style={{width:'100%', marginTop:20}}>
                 <LongButton text="Add" onPress={()=>handleSubmit()}/>
             </View>
         </View>
@@ -117,7 +116,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        fontFamily: "Arial",
         paddingTop: 40,
         padding: 20
     },
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
         width:"100%",
         alignItems: "center",
         flexDirection: "row",
-        
+        gap:20
     },
     dropdownStyles: {
         position:"absolute",
@@ -156,13 +154,11 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 500,
         color: "#6A6A6A",
-        fontFamily: "Arial",
         alignSelf:'flex-start'
     },
     bodyText: {
         width:"100%",
         fontSize: 18,
-        fontFamily: "Arial",
     },
 })
 

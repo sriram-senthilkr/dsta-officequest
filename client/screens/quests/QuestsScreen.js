@@ -162,10 +162,10 @@ export default function QuestsScreen({ navigation }) {
             }
 
             return (
-                <View>
+                <View style={{width:'100%'}}>
                     <Text style={{ color: 'gray'}}>{text}</Text>
-                    <View style={{ marginTop: 4, borderRadius: 10, backgroundColor: '#D9D9D9', padding: 4, width:'35%', justifyContent:'center', alignItems:'center'}}>
-                        <Text style={{ color: 'gray'}}>{state}</Text>
+                    <View style={{ marginTop: 4, borderRadius: 10, backgroundColor: '#D9D9D9', padding: 4, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                        <Text style={{ color: 'black', fontWeight:600}}>{state}</Text>
                     </View>
                 </View>
             )
@@ -175,7 +175,7 @@ export default function QuestsScreen({ navigation }) {
         const cardStyles = disabled ? styles.disabledCard : styles.listcard
         return (
             <TouchableOpacity style={cardStyles} onPress={()=>isClickable(item.type)} disabled={disabled}>
-                <View style={{ width:'95%'}}>
+                <View style={{ width:'100%'}}>
                     <View>
                         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
                             <Text style={{ fontSize: 24, fontWeight: 600}}>{item.title}</Text>
@@ -254,7 +254,6 @@ const styles = StyleSheet.create({
         minWidth: 330,
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Arial",
     },
     pageHome: {
         width: "100%",

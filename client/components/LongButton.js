@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
         cursor: "pointer"
     },
     buttonText: {
-        fontFamily: "Arial",
         textAlign: "center",
         fontSize: 16,
         fontWeight: 700,

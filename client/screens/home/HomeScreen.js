@@ -392,7 +392,6 @@ const styles = StyleSheet.create({
 
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Arial",
     },
     pageHome: {
         width: "100%",
