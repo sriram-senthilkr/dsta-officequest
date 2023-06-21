@@ -37,9 +37,9 @@ export default function PalsScreen({ navigation }) {
         {key: 4, name:'Onigiri', description:'What did the rice ball say to the seaweed? Im onigiri-nally yours!', total:0, image:require('../../assets/onigiri.png'), lockedImage:require('../../assets/onigiri_black.png')},
         {key: 5, name:'Salmon', description:'Salmon-nella...', total:0, image:require('../../assets/salmon_maki.png'), lockedImage:require('../../assets/salmon_maki_black.png')},
         {key: 6, name:'Soda', description:'Coke? Or Pepsi...', total:0, image:require('../../assets/soda.png'), lockedImage:require('../../assets/soda_black.png')},
-        {key: 7, name:'Vending machine', description:'Dorameon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
+        {key: 7, name:'Vending machine', description:'Doraemon!', total:0, image:require('../../assets/vending_machine.png'), lockedImage:require('../../assets/vending_machine_black.png')},
         {key: 8, name:'Toaster', description:'Better then microwave', total:0, image:require('../../assets/toaster.png'), lockedImage:require('../../assets/toaster_black.png')},
-        {key: 9, name:'Hotdog', description:'Hot dwagg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
+        {key: 9, name:'Hotdog', description:'Hot dawgg!', total:0, image:require('../../assets/hotdog.png'), lockedImage:require('../../assets/hotdog_black.png')},
     ])
 
     useEffect(() => {
@@ -91,11 +91,11 @@ export default function PalsScreen({ navigation }) {
     function handleClaimPrize () {
         for(var i = 0; i < allPals.length; i++) {
             if (allPals[i].total == 0) {
-                Alert.alert("Collect all pals to claim!")
+                Alert.alert("Collect all Pantry Pals to claim!")
                 return
             }
         }
-        Alert.alert('claimed')
+        Alert.alert('Claimed!')
     }
 
     async function handleSendPal () {
@@ -111,11 +111,11 @@ export default function PalsScreen({ navigation }) {
                 Alert.alert(response.message)
             }
             else {
-                Alert.alert('sent successful')
+                Alert.alert('Pal Sent Successfully!')
                 setRefresh(true)
             }
         } catch (error) {
-            Alert.alert('error')
+            Alert.alert('Error. Please try again.')
         }
     }
 
