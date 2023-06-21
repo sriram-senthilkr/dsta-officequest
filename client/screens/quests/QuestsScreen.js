@@ -171,8 +171,10 @@ export default function QuestsScreen({ navigation }) {
             )
         }
 
+        const disabled = item.completedUsers.includes(user._id) || (item.type !== "daily" ? currentTime < new Date(item.startDate): false) || (item.type !== "daily" ? currentTime >= new Date(item.endDate) : false)
+        const cardStyles = disabled ? styles.disabledCard : styles.listcard
         return (
-            <TouchableOpacity style={styles.listcard} onPress={()=>isClickable(item.type)} disabled={item.completedUsers.includes(user._id) || (item.type !== "daily" ? currentTime < new Date(item.startDate): false) || (item.type !== "daily" ? currentTime >= new Date(item.endDate) : false) }>
+            <TouchableOpacity style={cardStyles} onPress={()=>isClickable(item.type)} disabled={disabled}>
                 <View style={{ width:'95%'}}>
                     <View>
                         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
@@ -285,6 +287,14 @@ const styles = StyleSheet.create({
         backgroundColor:'#F5F5F5',
         borderRadius:20,
         padding: 20
+
+    },
+    disabledCard: {
+        width: '100%',
+        backgroundColor:'#F5F5F5',
+        borderRadius:20,
+        padding: 20,
+        opacity: 0.4
 
     },
 });
