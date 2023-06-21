@@ -34,11 +34,11 @@ export default function LoginScreen({ navigation }) {
                 </View>
                 <View style={styles.headerBar}>
                     <View style={{paddingHorizontal: 7}}>
-                        <Text style={styles.bigText}>Log</Text>
+                        <Text style={styles.bigText}>Login</Text>
                     </View>
-                    <View style={{padding: 7}}>
+                    {/* <View style={{padding: 7}}>
                         <Text style={styles.bigText}>In</Text>
-                    </View>
+                    </View> */}
                 </View>
                 <View style={{height: '70%', width:'100%', alignItems:'center', justifyContent:'flex-start', paddingTop: 0}}>
                     <LongInput label="Email" placeholder="example@mail.com" value={loginDetails.email} onChangeText={(email) => setLoginDetails({...loginDetails, email: email})} />
@@ -47,7 +47,7 @@ export default function LoginScreen({ navigation }) {
                 </View>
 
                 <View style={{height: '10%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
-                    <LongButton text="Login" onPress={() => handleLogin()}/>
+                    <LongButton text="Login" onPress={() => handleLogin()} color="#AF9D5A" textColor="white"/>
                 </View>
             </View>
 
@@ -56,6 +56,20 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: "cover",
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        position: "absolute",
+    },
     page: {
         height: "100%",
         width: "100%",
