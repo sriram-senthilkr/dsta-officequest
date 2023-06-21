@@ -12,7 +12,7 @@ export default function StartScreen({ navigation }) {
                 <View style={{alignItems: 'center', justifyContent: 'center', height: "85%"}}>
                     <Image 
                         style={{width: 200, height: 200}}
-                        source={require('../../assets/officequest_logo.png')}
+                        source={require('../../assets/office_quest_logo.png')}
                         resizeMode={'contain'}
                     />
                 </View>
