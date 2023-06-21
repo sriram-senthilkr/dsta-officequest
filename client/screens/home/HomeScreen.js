@@ -1,10 +1,11 @@
-import React, { useEffect, useIsFocused, useState } from "react";
+import { useIsFocused } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
 import { Alert, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from "react-native-vector-icons";
 import { generatePal } from '../../api/pals';
-import { getUserPoints } from "../../api/user";
+import { claimPrize, getPrizeClaimed, getUserPoints } from "../../api/user";
 import BottomNavigator from '../../components/BottomNavigation';
-import RollModal from '../../components/RollModal';
+import PalModal from '../../components/RollModal';
 import PrizeModal from '../../components/ViewPrizeModal';
 import useAuth from '../../hooks/useAuth';
 import CountdownTimer from "./CountdownTimer";
@@ -16,103 +17,115 @@ export default function HomeScreen({ navigation }) {
     const [showPalModal, setShowPalModal] = useState(false)
     const [prize, setPrize] = useState(null)
     const [refresh, setRefresh] = useState(false)
-    // const isFocused = useIsFocused()
+    const [totalPoints, setTotalPoints] = useState(null)
+    const [prizeClaimed, setPrizeClaimed] = useState([])
+    const isFocused = useIsFocused()
 
-
+    useEffect(() => {
     // Calculating the current level and points for each bar
-    // let totalPoints = getUserPoints(user._id);
-    let totalPoints = 2650;
-    let tempScore = totalPoints;
-    let currentLevel = 0;
-  
-    for (let i = 0; i < data.length; i++) {
-        // data[i].isClaimed = mongoDBData.isClaimed;
+        // const fetchUserPoints = async () => {
+        //     try {
+                
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // };
+        
 
-        if (tempScore >= data[i].total) {
-            data[i].current = data[i].total;
-            data[i].levelCompleted = true;
-            tempScore -= data[i].total;
-            currentLevel++;
-        } else if (tempScore === 0) {
-            data[i].current = 0;
-        } else {
-            data[i].current = tempScore;
-            tempScore = 0;
-            currentLevel++;
-        }
-    }
-
-    {/* In case the on top doesnt work
-    function calculateTotalPoints() {
-        const newData = data.map(item => {
-            if (tempScore >= item.total) {
-                currentLevel++;
-                tempScore -= item.total;
-                return { ...item, current: item.total, levelCompleted: true };
-            } else {
-                return { ...item, current: tempScore, levelCompleted: false };
-            }
-        });
-        setData(newData);
-    }
-
-    useEffect(() => {
-        calculateTotalPoints();
-    }, []);
-    
-    OR
-
-    useEffect(() => {
-        const fetchData = async () => {
+        const fetchPrizeClaimed = async () => {
             try {
-                setData(data)
+                const dbData = await getPrizeClaimed(user._id);
+                // setPrizeClaimed(dbData.data);
+                console.log("Prize claimed array retrieved: " + dbData.data)
+
+                const dbData2 = await getUserPoints(user._id);
+                // setTotalPoints(dbData2.data);
+                console.log("Total points retrieved: " + dbData2.data)
+                console.log(totalPoints)
+
+                const tempPrizeClaimed = dbData.data
+                let tempScore = dbData2.data;
+                let tempData = data;
+
+                for (let i = 0; i < tempData.length; i++) {
+                    if (tempPrizeClaimed[i] === 1) {
+                        tempData[i].isClaimed = true;
+                    } else {
+                        tempData[i].isClaimed = false;
+                    }
+
+                    if (tempScore >= tempData[i].total) {
+                        tempData[i].current = tempData[i].total;
+                        tempData[i].levelCompleted = true;
+                        tempScore -= tempData[i].total;
+                    } else if (tempScore === 0) {
+                        tempData[i].current = 0;
+                    } else {
+                        tempData[i].current = tempScore;
+                        tempScore = 0;
+                    }
+                }
+                setData(tempData);
+                setTotalPoints(dbData2.data);
+                setPrizeClaimed(dbData.data);
+
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
-        }
-        fetchData()
+            
+
+        };
+
+        // fetchUserPoints();
+        fetchPrizeClaimed();
+        console.log(prizeClaimed)
+        
+
+        
+
         if (refresh) {
             setRefresh(false)
         }
-        
-    }, [refresh]);
-    */}
+    }, [isFocused, refresh]);
+    
+   
+
+    const updateDbClaimArray = async (level) => {
+        try {
+            const dbData = await claimPrize(user._id, level);
+            console.log("Updated db claimprize array")
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateFClaimArray = async (level) => {
+        const tempData = data;
+        tempData[level - 1].isClaimed = true;
+        setData(tempData);
+    };
     
 
     const togglePrizeModal = () => {
         setShowPrizeModal(!showPrizeModal)
-        setRefresh(true)
     }
 
     const togglePalModal = () => {
         setShowPalModal(!showPalModal)
-        setRefresh(true)
     }
 
-    const claimPrize = async ( userId ) => {
+    const claimVoucher = async ( userId ) => {
         console.log("claim Prize")
-        const res = await generatePal(userId)
-        setPrize(res)
-        setShowPrizeModal(true)
+        // setShowPrizeModal(true)
     }
 
     const claimPal = async ( userId ) => { 
         console.log("claim Pal")
         const res = await generatePal(userId)
         setPrize(res)
-        setShowPalModal(true)
+        // setShowPalModal(true)
     }
 
-
-    const updateClaim = (level) => {
-        const newData = data.map(item => {
-            if (item.level === level) {
-                return { ...item, isClaimed: true };
-            }
-            return item;
-        });
-        setData(newData);
-    }
         
 
     const handleClaimPrize = (level, levelCompleted, isClaimed, prize) => {
@@ -122,21 +135,13 @@ export default function HomeScreen({ navigation }) {
             Alert.alert("Error", "You cannot redeem this yet!");
         } else {
             if (level == 5 || level == 10) {
-                claimPrize(user._id);
+                claimVoucher(user._id);
             } else {
                 claimPal(user._id);
             }
-            // isClaimed = true;
-            // mongoDBData[level].isClaimed = true;
-            // const newData = data.map(item => {
-            //     if (item.level === level) {
-            //         return { ...item, isClaimed: true };
-            //     }
-            //     return item;
-            // });
-            // setData(newData);
-            updateClaim(level);
-            
+            updateDbClaimArray(level);
+            updateFClaimArray(level);
+            // setRefresh(true);
         }
     };
 
@@ -144,11 +149,14 @@ export default function HomeScreen({ navigation }) {
     const Item = ({percentageString, level, total, isClaimed, onPress, current}) => {
 
         // Change Background for button
-        let btnBackgroundColor = '#3FFD3B'; // Default: Green
+        let btnBackgroundColor = '#66AD47'; // Default: Green
+        let textColor = 'black'
         if (isClaimed) {
-            btnBackgroundColor = '#858585'; // Dark Grey
+            btnBackgroundColor = '#A0A0A0'; // Dark Grey
+            textColor = 'grey'
         } else if (!isClaimed && current < total) {
-            btnBackgroundColor = '#ECECEC'; // Grey
+            btnBackgroundColor = '#D9D9D9'; // Grey
+            textColor = 'black'
         }
         
 
@@ -165,19 +173,19 @@ export default function HomeScreen({ navigation }) {
                             {total}
                         </Text>
                     </View>
-                    <View style={{backgroundColor:'#ECECEC', width:'95%', height:10, borderRadius:5}}>
-                        <View style={{backgroundColor:'#4F60FF', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
+                    <View style={{backgroundColor:'#C8C8C8', width:'95%', height:10, borderRadius:5}}>
+                        <View style={{backgroundColor:'#A77B06', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
                         </View>
                     </View>
                 </View>
                 <View style={{width:'25%', height:'100%', justifyContent:'center', alignItems:'center'}}>
                     <TouchableOpacity onPress={onPress} style={{borderRadius:12, height:'80%', width:'90%', backgroundColor:btnBackgroundColor, alignItems:'center', justifyContent:'center'}}>
                         {isClaimed ? (
-                            <Text>
+                            <Text style={{color:textColor, fontWeight:500}}>
                         Claimed
                             </Text>
                         ):(
-                            <Text>
+                            <Text style={{color:textColor, fontWeight:500}}>
                         Claim
                             </Text>
                         )}
@@ -213,9 +221,9 @@ export default function HomeScreen({ navigation }) {
     }
 
     // Rendering the page
-    return (
+    return totalPoints !== null && (
         <View style={styles.background}>
-            <ImageBackground source={require('../../assets/background.png')} style={styles.backgroundImage}/>
+            <ImageBackground source={require('../../assets/bb.jpg')} style={styles.backgroundImage}/>
 
             <View style={styles.page}>
                 <View style={styles.pageHome}>
@@ -227,7 +235,9 @@ export default function HomeScreen({ navigation }) {
                         </Text>
 
                         <View style={{paddingRight:'7%', paddingBottom:'1%',}}>
-                            <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center'}}>
+                            <TouchableOpacity onPress={()=>{navigation.navigate('Settings')}} 
+                                style={{width:40, height:40, borderRadius:20, backgroundColor:'#C2C4CA', alignItems:'center', justifyContent:'center', borderColor:'white', borderWidth:1, shadowColor: '#000', 
+                                    shadowOffset: { width: 1, height: 2 }, shadowOpacity: 0.5, shadowRadius: 2, elevation: 2,}}>
                                 <Ionicons name="person" color="#444" size={30}/>
                             </TouchableOpacity>
                         </View>
@@ -236,14 +246,14 @@ export default function HomeScreen({ navigation }) {
                     <View style={{width:'100%', flexGrow:1, alignItems:'center', justifyContent:'center'}}>
                         <View style={{width:'100%', height:'100%', position:'absolute', justifyContent:'space-evenly'}}>
                             <View style={{height:'80%', justifyContent:'center', alignItems:'center'}}>
-                                <View style={[styles.defaultCard, {width:'90%', backgroundColor:'#FBE6B8'}]}> 
+                                <View style={[styles.defaultCard, {width:'90%', backgroundColor:'white'}]}> 
                                     <View style={{height:60, width:'85%',justifyContent:'center'}}>
-                                        <Text style={{fontSize:30, fontWeight:700, color:"#A27A4E"}}>
+                                        <Text style={{fontSize:30, fontWeight:700, color:"black"}}>
                                         The Breakroom
                                         </Text>
                                     </View>
                                     <View style={{flexGrow:1, width:'100%', alignItems:'center'}}>
-                                        <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, justifyContent:'center', alignItems:'center', backgroundColor:"#FEF9EC"}}>
+                                        <View style={{height:'96%', width:'90%', position:'absolute', borderRadius:15, justifyContent:'center', alignItems:'center', backgroundColor:"#F5F5F5"}}>
                                             <View style={{height:'90%', width:'90%'}}>
                                                 <FlatList
                                                     style={{height:0, width:'100%'}}
@@ -263,9 +273,9 @@ export default function HomeScreen({ navigation }) {
                                
                             </View>
                             <View style={{height:'12%', justifyContent:'center', alignItems:'center'}}>
-                                <View style={[styles.defaultCard, { width:'60%', flexDirection:'row', borderRadius:40, height:"80%"}]}>
-                                    <Text style={{fontWeight:500}}>Current Level: </Text>
-                                    <Text style={{fontSize:20 , fontWeight:600}}>{currentLevel}</Text>
+                                <View style={[styles.defaultCard, { width:'60%', flexDirection:'row', borderRadius:40, height:"80%", }]}>
+                                    <Text style={{fontWeight:500, color:'#AF9D5A'}}>Current Points: </Text>
+                                    <Text style={{fontSize:20 , fontWeight:600, color:'#AF9D5A'}}>{totalPoints}</Text>
                                 </View>
                                
                             </View>
@@ -276,8 +286,8 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.bottomNavigation}>
                     {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
-                <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
-                {/* <RollModal visible={showPalModal} closeModal={togglePalModal} prize={prize} prizeType="gacha"/> */}
+                {/* <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
+                <PalModal visible={showPalModal} closeModal={togglePalModal} prize={prize}/> */}
             </View>
         </View>
         
@@ -420,7 +430,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,
         elevation: 2,
-
         justifyContent: 'center',
         alignItems: 'center'
     },
