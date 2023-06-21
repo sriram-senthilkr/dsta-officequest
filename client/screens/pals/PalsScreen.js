@@ -10,12 +10,12 @@ import ViewPalModal from '../../components/ViewPalModal'
 
 
 
+
 export default function PalsScreen({ navigation }) {
     const [showPrizeModal, setShowPrizeModal] = useState(false)
     const [showPalModal, setShowPalModal] = useState(false)
     const [refresh, setRefresh] = useState(false)
-    const [username, setUsername] = useState('')
-    // const username = useRef('')
+    const username = useRef('')
     const [highlightedPal, setHighlightedPal] = useState([])
     const [selectPal, setSelectPal] = useState('')
     const isFocused = useIsFocused()
@@ -38,7 +38,7 @@ export default function PalsScreen({ navigation }) {
     ])
 
     useEffect(() => {
-        console.log('asddas')
+        console.log('reloaded')
         if (isFocused) {
             fetchData()
         }
@@ -47,13 +47,14 @@ export default function PalsScreen({ navigation }) {
             setRefresh(false)
             fetchData()
         }
-    }, [isFocused])
+    }, [isFocused, refresh])
 
 
     async function fetchData() {
         
         try {
-            const data = await getUserPals(user._id)
+            const fullData = await getUserPals(user._id)
+            const data = fullData.data
 
             for (var i = 0; i < data.length; i++) {
                 const objectIndex = allPals.findIndex(pal => pal.key === i);
@@ -91,15 +92,24 @@ export default function PalsScreen({ navigation }) {
         Alert.alert('claimed')
     }
 
-    function handleSendPal () {
+    async function handleSendPal () {
         const nameToFind = selectPal;
         const palNumber = allPals.findIndex(pal => pal.name === nameToFind);  
+        const sendTo = username.current.toString()
+        console.log(sendTo)
         try {
-            sendPal (user._id, username, palNumber)
-            Alert.alert('sent successful')
-            setRefresh(true)
+            const response = await sendPal (user._id, sendTo, palNumber)
+            console.log(palNumber)
+            if (response.error === true) {
+                SetError(response.message)
+                Alert.alert(response.message)
+            }
+            else {
+                Alert.alert('sent successful')
+                setRefresh(true)
+            }
         } catch (error) {
-            Alert.alert("error")
+            Alert.alert("errorr")
         }
     }
 
@@ -115,12 +125,17 @@ export default function PalsScreen({ navigation }) {
             <View style={{flexDirection:'row-reverse'}}>
                 <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
+                        <View style={{justifyContent:'center', alignItems:'center'}}>
                         <Image 
                             style={{width: 45, height: 45}}
                             source={lockedImage}
                             resizeMode={'contain'}
                             opacity={0.3}
                         />
+                        <Text style={{position:'absolute', opacity:0.5}}>
+                            ?
+                        </Text>
+                        </View>
                     ):(
                         <Image 
                             style={{width: 45, height: 45}}
@@ -236,10 +251,9 @@ export default function PalsScreen({ navigation }) {
                                                         </Text>
                                                         <TextInput style={styles.textInput}
                                                             placeholder="username" 
-                                                            onChangeText={(val) => setUsername(val)} 
+                                                            onChangeText={(val) => (username.current = (val))} 
                                                             autoCapitalize="none" 
                                                             autoCorrect={false} 
-                                                            value={username}
                                                         />
                                                     </View>
                                                     <View style={{width:'33%'}}>
