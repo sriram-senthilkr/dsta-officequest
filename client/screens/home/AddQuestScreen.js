@@ -40,7 +40,7 @@ const AddQuestScreen = () => {
             <View style={styles.topBar}>
                 <BackButton/>
             </View>
-            <View style={{ alignItems: 'start', width:'100%'}}>
+            <View style={{ alignItems: 'flex-start', width:'100%'}}>
                 <Text style={{ fontSize: 35, fontWeight: 900}}>Add Quest</Text>
             </View>
             <View style={{width:'100%', alignItems:'center'}}>
