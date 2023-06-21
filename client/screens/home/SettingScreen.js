@@ -50,10 +50,10 @@ const SettingScreen = ({ navigation }) => {
             <View style={styles.topBar}>
                 <BackButton/>
             </View>
-            <View style={{ alignItems: 'start', width:'100%'}}>
+            <View style={{ alignItems: 'flex-start', width:'100%'}}>
                 <Text style={{ fontSize: 35, fontWeight: 900}}>Settings</Text>
             </View>
-            <View style={{ width:'100%', alignItems:'start', marginTop:10, gap:5}}>
+            <View style={{ width:'100%', alignItems:'flex-start', marginTop:10, gap:5}}>
                 <Text style={styles.mediumText}>Profile</Text>
                 {user && <View style={{ width:'90%', alignSelf:'center', gap:5}}>
                     <Text style={styles.bodyText}>Username: {user.username}</Text>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         minWidth: 330,
         backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'start',
+        justifyContent: 'flex-start',
         fontFamily: "Arial",
         paddingTop: 40,
         padding: 20
