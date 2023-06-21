@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#D9D9D9',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Arial",
     },
     pageHome: {
         width: "100%",

@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     normalBoldText: {
         fontSize: 15,
         fontWeight: 700,
-        fontFamily: "Arial",
         paddingVertical:10
     },
     textInput: {

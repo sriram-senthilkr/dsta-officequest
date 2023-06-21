@@ -62,14 +62,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Arial",
     },
     pageLogin: {
         height: "90%",
         width: "90%",
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Arial",
     },
     topBar: {
         height: "10%",
@@ -91,6 +89,5 @@ const styles = StyleSheet.create({
     bigText: {
         fontSize: 35,
         fontWeight: "900",
-        fontFamily: "Arial",
     },
 });

@@ -53,9 +53,10 @@ const SettingScreen = ({ navigation }) => {
         <View style={styles.page}>
             <View style={styles.topBar}>
                 <BackButton/>
+                <Text style={{ fontSize: 35, fontWeight: 900}}>Settings</Text>
             </View>
             <View style={{ alignItems: 'flex-start', width:'100%'}}>
-                <Text style={{ fontSize: 35, fontWeight: 900}}>Settings</Text>
+                
             </View>
             <View style={{ width:'100%', alignItems:'flex-start', marginTop:10, gap:5}}>
                 <Text style={styles.mediumText}>Profile</Text>
@@ -101,10 +102,10 @@ const styles = StyleSheet.create({
         width:"100%",
         alignItems: "center",
         flexDirection: "row",
-        
+        gap: 20
     },
     mediumText: {
-        fontSize: 30,
+        fontSize: 20,
         fontWeight: 500,
         color: "#6A6A6A",
         fontFamily: "Arial",
