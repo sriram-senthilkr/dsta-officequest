@@ -179,7 +179,7 @@ export default function QuestsScreen({ navigation }) {
                     <View>
                         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
                             <Text style={{ fontSize: 24, fontWeight: 600}}>{item.title}</Text>
-                            <View style={{ flexDirection:'col'}}>
+                            <View style={{ flexDirection:'column'}}>
                                 <Text>Points:</Text>
                                 <Text style={{ fontSize: 14, fontWeight: 600}}>{item.points}</Text>
                             </View>
