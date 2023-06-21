@@ -39,11 +39,11 @@ export default function RegistrationScreen({ navigation }) {
                 </View>
                 <View style={styles.headerBar}>
                     <View style={{paddingHorizontal: 7}}>
-                        <Text style={styles.bigText}>Sign</Text>
+                        <Text style={styles.bigText}>Signup</Text>
                     </View>
-                    <View style={{padding: 7}}>
+                    {/* <View style={{padding: 7}}>
                         <Text style={styles.bigText}>Up</Text>
-                    </View>
+                    </View> */}
                 </View>
                 <View style={{height: '70%', width:'100%', justifyContent:'flex-start' ,alignItems:'center', paddingTop:0}}>
                     <LongInput label="Email" placeholder="example@mail.com" value={loginDetails.email} onChangeText={(email) => setLoginDetails({...loginDetails, email: email})} />
@@ -54,7 +54,7 @@ export default function RegistrationScreen({ navigation }) {
                 </View>
 
                 <View style={{height: '10%', width: '100%', justifyContent:'center', alignItems: 'center'}}>
-                    <LongButton text="Register" onPress={() => register()}/>
+                    <LongButton text="Register" onPress={() => register()} color="#AF9D5A" textColor="white"/>
                 </View>
             </View>
 
