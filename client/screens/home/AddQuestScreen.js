@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         minWidth: 330,
         backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'start',
+        justifyContent: 'flex-start',
         fontFamily: "Arial",
         paddingTop: 40,
         padding: 20
