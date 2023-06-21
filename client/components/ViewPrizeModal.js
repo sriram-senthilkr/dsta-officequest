@@ -1,5 +1,5 @@
-import { View, Text, Modal, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
 
 
 //NOTE: declare const [showModal, setShowModal] = useState(false) in parent
@@ -7,7 +7,7 @@ import React from 'react'
 //closeModal: setState for visiblestate (setState())
 //prize: prize to show (string)
 //prizetype: "gacha" or "others"
-const ViewPrizeModal = ({ visible, closeModal }) => {
+const ViewPrizeModal = ({ visible, closeModal , prizeName}) => {
     return (
         <View style={styles.back}>
             <Modal
@@ -23,7 +23,7 @@ const ViewPrizeModal = ({ visible, closeModal }) => {
                     <View style={styles.modalView}>
                         <Text style={{fontWeight: 600, fontSize: 40, marginBottom:20}}>This Season</Text>
                         <Text style={{fontSize: 20, marginBottom: 20}}>Prize:</Text>
-                        <Text style={styles.modalText}>2 x GV Tickets </Text>
+                        <Text style={styles.modalText}>{prizeName} </Text>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => closeModal()}

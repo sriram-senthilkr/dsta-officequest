@@ -1,12 +1,12 @@
-import { StyleSheet, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Image, Alert } from 'react-native';
-import React, { useState, useEffect, useRef } from "react";
-import { SelectList} from 'react-native-dropdown-select-list'
-import { getUserPals } from '../../api/user';
-import { sendPal } from '../../api/pals';
 import { useIsFocused } from '@react-navigation/native';
-import useAuth from '../../hooks/useAuth';
+import React, { useEffect, useRef, useState } from "react";
+import { Alert, FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { sendPal } from '../../api/pals';
+import { getUserPals } from '../../api/user';
+import ViewPalModal from '../../components/ViewPalModal';
 import ViewPrizeModal from '../../components/ViewPrizeModal';
-import ViewPalModal from '../../components/ViewPalModal'
+import useAuth from '../../hooks/useAuth';
 
 
 
@@ -132,15 +132,15 @@ export default function PalsScreen({ navigation }) {
                 <TouchableOpacity onPress={onPress} style={{width:60, height:60, borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                     {total == 0 ? (
                         <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <Image 
-                            style={{width: 45, height: 45}}
-                            source={lockedImage}
-                            resizeMode={'contain'}
-                            opacity={0.3}
-                        />
-                        <Text style={{position:'absolute', opacity:0.5, paddingTop:5}}>
+                            <Image 
+                                style={{width: 45, height: 45}}
+                                source={lockedImage}
+                                resizeMode={'contain'}
+                                opacity={0.3}
+                            />
+                            <Text style={{position:'absolute', opacity:0.5, paddingTop:5}}>
                             ?
-                        </Text>
+                            </Text>
                         </View>
                     ):(
                         <Image 
@@ -308,7 +308,7 @@ export default function PalsScreen({ navigation }) {
                     {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
             </View>
-            <ViewPrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
+            <ViewPrizeModal visible={showPrizeModal} closeModal={togglePrizeModal} prizeName={"2 x MBS Hotel Stay"}/>
             <ViewPalModal visible={showPalModal} closeModal={togglePalModal} highlightedPal={highlightedPal.current}/>
         </View>
     );

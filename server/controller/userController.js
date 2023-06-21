@@ -165,6 +165,7 @@ const getPrizeClaimed = async (req, res) => {
 const claimPrize = async (req, res) => {
     try {
         const { level } = req.body;
+        console.log(level);
         if (level > 10 || level < 1) {
             res.status(405).json({ message: 'Level out of index!' });
             return;
