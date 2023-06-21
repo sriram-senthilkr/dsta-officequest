@@ -1,5 +1,5 @@
 import { View, Text, Image, Modal, Pressable, StyleSheet } from 'react-native'
-import React from 'react'
+import React,{useState} from 'react'
 
 
 //NOTE: declare const [showModal, setShowModal] = useState(false) in parent
@@ -7,7 +7,9 @@ import React from 'react'
 //closeModal: setState for visiblestate (setState())
 //prize: prize to show (string)
 //prizetype: "gacha" or "others"
-const RollModal = ({ visible, closeModal, prize }) => {
+const RollModal = ({ visible, closeModal, prize}) => {
+    const [openTicket, setOpenTicket] = useState(false)
+    const ticket = require('../assets/pal_ticket.png')
     const imageMap = [
         require('../assets/cheeseburger.png'),
         require('../assets/coffee.png'),
@@ -36,7 +38,12 @@ const RollModal = ({ visible, closeModal, prize }) => {
     //     map.filter(obj=>obj.key === prize).image
     // ) : prize
 
-    
+
+    function handleClose() {
+        setOpenTicket(false)
+        closeModal()
+    }
+
 
     return prize !== null ? (
         <View style={styles.back}>
@@ -48,7 +55,8 @@ const RollModal = ({ visible, closeModal, prize }) => {
                     closeModal()
                 }}
             >
-                <View style={styles.centeredView}>
+                {openTicket ? (
+                    <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={{fontWeight: 600, fontSize: 40, marginBottom:20}}>Congrats!</Text>
                         <Text style={{fontSize: 20, marginBottom: 20}}>You received:</Text>
@@ -62,12 +70,36 @@ const RollModal = ({ visible, closeModal, prize }) => {
                         <Text style={{ textAlign:'center', marginBottom:20}}>{nameMap[prize].description}</Text>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => closeModal()}
+                            onPress={() => handleClose()}
                         >
                             <Text style={styles.textStyle}>Close</Text>
                         </Pressable>
                     </View>
-                </View>
+                    </View>
+                ):(
+                    <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={{fontWeight: 600, fontSize: 40, marginBottom:20}}>Congrats!</Text>
+                        <Text style={{fontSize: 20, marginBottom: 20}}>You received a ticket!</Text>
+                        
+                        <Image
+                            style={{width:45, height:45, marginBottom:10}}
+                            source={ticket}
+                            resizeMode={'contain'}
+                        />
+                        <Text style={{ textAlign:'center', marginBottom:20}}>Open me!</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setOpenTicket(true)}
+                        >
+                            <Text style={styles.textStyle}>Open</Text>
+                        </Pressable>
+                    </View>
+                    </View>
+                )}
+
+
+                
             </Modal>
         </View>
     ) : null
