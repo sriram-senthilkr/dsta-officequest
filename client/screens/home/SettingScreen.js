@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        fontFamily: "Arial",
         paddingTop: 40,
         padding: 20
     },
@@ -108,13 +107,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 500,
         color: "#6A6A6A",
-        fontFamily: "Arial",
         alignSelf:'flex-start'
     },
     bodyText: {
         width:"100%",
         fontSize: 18,
-        fontFamily: "Arial",
     },
 })
 
