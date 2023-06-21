@@ -63,7 +63,7 @@ const SettingScreen = ({ navigation }) => {
                 {user && <View style={{ width:'90%', alignSelf:'center', gap:5}}>
                     <Text style={styles.bodyText}>Username: {user.username}</Text>
                     <Text style={styles.bodyText}>Email: {user.email}</Text>
-                    <Text style={styles.bodyText}>UserID: {user._id}</Text>
+                    {/* <Text style={styles.bodyText}>UserID: {user._id}</Text> */}
                 </View>}
             </View>
             <LongInput 

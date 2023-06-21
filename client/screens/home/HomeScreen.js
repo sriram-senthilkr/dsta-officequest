@@ -157,7 +157,7 @@ export default function HomeScreen({ navigation }) {
                         </Text>
                     </View>
                     <View style={{backgroundColor:'#C8C8C8', width:'95%', height:10, borderRadius:5}}>
-                        <View style={{backgroundColor:'#A77B06', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
+                        <View style={{backgroundColor:'#AF9D5A', width:percentageString, height:'100%', borderRadius:5, position:'absolute'}}>
                         </View>
                     </View>
                 </View>
@@ -269,8 +269,6 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.bottomNavigation}>
                     {/* <BottomNavigator navigation={navigation} /> */}
                 </View>
-                {/* <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal}/>
-                <PalModal visible={showPalModal} closeModal={togglePalModal} prize={prize}/> */}
                 <PrizeModal visible={showPrizeModal} closeModal={togglePrizeModal} prizeName={"2 x Movie Tickets"}/>
                 <PalModal visible={showPalModal} closeModal={togglePalModal} prize={prize}/>
             </View>

@@ -9,8 +9,6 @@ import ViewPrizeModal from '../../components/ViewPrizeModal';
 import useAuth from '../../hooks/useAuth';
 
 
-
-
 export default function PalsScreen({ navigation }) {
     const [showPrizeModal, setShowPrizeModal] = useState(false)
     const [showPalModal, setShowPalModal] = useState(false)
