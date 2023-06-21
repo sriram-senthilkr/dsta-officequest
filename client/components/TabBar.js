@@ -6,6 +6,11 @@ const {width} = Dimensions.get('window')
 
 
 const TabBar = ({ state, descriptors, navigation}) => {
+    const focusedOptions = descriptors[state.routes[state.index].key].options
+
+    if (focusedOptions.tabBarVisible === false) {
+        return null
+    }
     return (
         <View style={styles.mainContainer}>
             {state.routes.map((route, index) => {

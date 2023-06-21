@@ -6,10 +6,18 @@ import QuestsStack from './QuestsStack';
 import PalsStack from './PalsStack';
 import LeaderboardStack from './LeaderboardStack';
 import TabBar from '../components/TabBar';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+    const getTabBarVisibility = (route) => {
+        const routeName = getFocusedRouteNameFromRoute(route)
+        if (routeName === 'Settings' || routeName === 'PasswordModal' || routeName === 'QuizModal') {
+            return false;
+        }
+        return true
+    }
     return (
         <Tab.Navigator
             initialRouteName={'Home'}
@@ -21,19 +29,15 @@ const BottomTabNavigator = () => {
             tabBar={props => <TabBar {...props} />}
         >
             <Tab.Screen name="Home" component={HomeStack}
-                // options={{
-                //     tabBarIcon: ({focused, color, size})=>(
-                //         <Ionicons name={focused ? "home" : "home-outline"} color={color} size={size}/>
-                //     ),
-                // }}
+                options={({route}) => ({
+                    tabBarVisible: getTabBarVisibility(route),
+                })}
             />
 
             <Tab.Screen name="Quests" component={QuestsStack}
-                // options={{
-                //     tabBarIcon: ({focused, color, size})=>(
-                //         <Ionicons name={focused ? "rocket" : "rocket-outline"} color={color} size={size}/>
-                //     ),
-                // }}
+                options={({route}) => ({
+                    tabBarVisible: getTabBarVisibility(route),
+                })}
             />
 
             <Tab.Screen name="Pals" component={PalsStack}
