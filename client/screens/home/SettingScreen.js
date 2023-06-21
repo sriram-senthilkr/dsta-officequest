@@ -45,6 +45,10 @@ const SettingScreen = ({ navigation }) => {
         setShowModal(true)
     }
 
+    const handleAdd = () => {
+        navigation.navigate('AddQuest')
+    }
+
     return (
         <View style={styles.page}>
             <View style={styles.topBar}>
@@ -69,9 +73,10 @@ const SettingScreen = ({ navigation }) => {
             />
             <LongButton text="Save" onPress={()=>{console.log("save username")}}/>
 
-            <Text style={styles.mediumText}>Cheats</Text>
+            <Text style={styles.mediumText}>Admin</Text>
             <LongButton text="Reset Quests" onPress={()=>{handleReset(user._id)}}/>
             <LongButton text="Roll Gacha" onPress={()=>{handleRoll(user._id)}}/>
+            <LongButton text="Add Quest" onPress={()=>{handleAdd()}}/>
 
             <LongButton text="Logout" textColor="white" color="#FD5B61" onPress={()=>{handleLogout()}}/>
             <RollModal visible={showModal} closeModal={toggleModal} prize={prize} prizeType="gacha"/>
