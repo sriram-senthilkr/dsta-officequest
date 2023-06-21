@@ -230,6 +230,8 @@ Sets the prize in prizeClaimed Array to 1
 @Returns:{ data: User Object, error: boolean, message: string }
 */
 export const claimPrize = async (userId, level) => {
+    console.log("userid: " + userId)
+    console.log("level: " + level)
     try {
         const url = `${uri}/users/${userId}/claim-prize`;
         const response = await fetch(url, {
@@ -255,7 +257,7 @@ export const claimPrize = async (userId, level) => {
         }
         if (response.status === 200) {
             const data = await response.json();
-            //console.log(data);
+            console.log(data);
             return {
                 error: false,
                 message: 'Success',
