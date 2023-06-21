@@ -20,7 +20,7 @@ export default function LeaderboardScreen({ navigation }) {
     }, [])
 
     // Each Individual Level Component
-    const Item = ({total, name, level}) => (
+    const Item = ({total, name, level, backgroundColor}) => (
         <View style={{width:'100%', height:55,alignItems:'center', flexDirection:'row'}}>
             <View style={{width:'10%', alignItems:'center'}}>
                 <Text style={{fontSize:15, fontWeight:600}}>
@@ -29,7 +29,7 @@ export default function LeaderboardScreen({ navigation }) {
             </View>
             
             <View style={{ width: '95%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <View style={{ borderRadius: 12, height: '80%', width: '90%', backgroundColor: '#e6e4e1', alignItems: 'center', justifyContent: 'space-between', paddingRight: 10, flexDirection: 'row', paddingLeft: 10}}>
+                <View style={{ borderRadius: 12, height: '80%', width: '90%', backgroundColor: backgroundColor, alignItems: 'center', justifyContent: 'space-between', paddingRight: 10, flexDirection: 'row', paddingLeft: 10}}>
                     <Text style={{fontSize:17, fontWeight:400}}>
                         {name}
                     </Text>
@@ -43,11 +43,23 @@ export default function LeaderboardScreen({ navigation }) {
 
     // Rendering the list of levels
     const renderItem = ({item, index}) => {
+        let backgroundColor = '#e6e4e1'; // Default background color
+
+        // Set the first three rows to green color
+        if (index == 0) {
+          backgroundColor = '#63db4b';
+        } else if (index == 1) {
+            backgroundColor = '#8fd980';
+        } else if (index == 2) {
+            backgroundColor = '#b6e8ac';
+        }
+        
         return (
             <Item
                 level={index}
                 total={item.points}
                 name={item.username}
+                backgroundColor={backgroundColor}
             />
         )
     }
