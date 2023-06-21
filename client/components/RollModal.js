@@ -8,7 +8,6 @@ import React from 'react'
 //prize: prize to show (string)
 //prizetype: "gacha" or "others"
 const RollModal = ({ visible, closeModal, prize }) => {
-    console.log(prize)
     const imageMap = [
         require('../assets/cheeseburger.png'),
         require('../assets/coffee.png'),
@@ -33,8 +32,6 @@ const RollModal = ({ visible, closeModal, prize }) => {
         {name:'Toaster', description:'Better then microwave'},
         {name:'Hotdog', description:'Hot dwagg!'}
     ]
-    console.log(nameMap[0].name)
-    console.log(nameMap[0].description)
     // const gacha = (prizeType === 'gacha') ? (
     //     map.filter(obj=>obj.key === prize).image
     // ) : prize

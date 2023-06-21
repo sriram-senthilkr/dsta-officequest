@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
     const getTabBarVisibility = (route) => {
         const routeName = getFocusedRouteNameFromRoute(route)
-        if (routeName === 'Settings' || routeName === 'PasswordModal' || routeName === 'QuizModal') {
+        if (routeName === 'Settings' || routeName === 'PasswordModal' || routeName === 'QuizModal' || routeName === 'AddQuest') {
             return false;
         }
         return true
