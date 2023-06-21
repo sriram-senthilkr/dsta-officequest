@@ -264,8 +264,8 @@ export default function HomeScreen({ navigation }) {
                             </View>
                             <View style={{height:'12%', justifyContent:'center', alignItems:'center'}}>
                                 <View style={[styles.defaultCard, { width:'60%', flexDirection:'row', borderRadius:40, height:"80%"}]}>
-                                    <Text style={{fontWeight:500}}>Current Level: </Text>
-                                    <Text style={{fontSize:20 , fontWeight:600}}>{currentLevel}</Text>
+                                    <Text style={{fontWeight:500}}>Current Points: </Text>
+                                    <Text style={{fontSize:20 , fontWeight:600}}>{totalPoints}</Text>
                                 </View>
                                
                             </View>
