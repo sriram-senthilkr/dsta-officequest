@@ -8,15 +8,15 @@ export default function LeaderboardScreen({ navigation }) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      const getData = async () => {
-        try {
-          const leaderboardArray = await getLeaderboard();
-          setData(leaderboardArray.data)
-        } catch (error) {
-          console.log(error)
+        const getData = async () => {
+            try {
+                const leaderboardArray = await getLeaderboard();
+                setData(leaderboardArray.data)
+            } catch (error) {
+                console.log(error)
+            }
         }
-      }
-      getData()
+        getData()
     }, [])
 
     // Each Individual Level Component
@@ -43,13 +43,13 @@ export default function LeaderboardScreen({ navigation }) {
 
     // Rendering the list of levels
     const renderItem = ({item, index}) => {
-      return (
-        <Item
-        level={index}
-        total={item.points}
-        name={item.username}
-        />
-      )
+        return (
+            <Item
+                level={index}
+                total={item.points}
+                name={item.username}
+            />
+        )
     }
 
     // Rendering the page
@@ -87,7 +87,7 @@ export default function LeaderboardScreen({ navigation }) {
                 </View>
             </View>
             <View style={styles.bottomNavigation}>
-                <BottomNavigator navigation={navigation} />
+                {/* <BottomNavigator navigation={navigation} /> */}
             </View>
         </View>
     );
